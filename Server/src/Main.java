@@ -34,3 +34,7 @@ public class Main {
 
     }
 }
+
+// who do you want to talk to, by port number
+// every time a new server thread we add it to hash map by port number and name pair
+// every time client connects, we see a list of users to connect to
