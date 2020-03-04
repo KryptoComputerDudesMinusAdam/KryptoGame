@@ -1,29 +1,29 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         try{
+            // create port number
             Scanner scan = new Scanner(System.in);
             System.out.println("Please input the port number you want your server to run on: ");
             int port = scan.nextInt();
 
-            if (args.length < 1) return;
-
             try (ServerSocket serverSocket = new ServerSocket(port)) {
-
-                System.out.println("Server is listening on port " + port);
-
-                while (true) {
+                // wait for connection
+                System.out.println("ServerSocket awaiting connections...");
+                while(true){
                     Socket socket = serverSocket.accept();
-                    System.out.println("New client connected");
-
                     new ServerThread(socket).start();
+                    System.out.println("Connection from port: " + socket.getPort() + " hostname: " + socket.getInetAddress().getHostName());
                 }
-
+            } catch (EOFException ex) {
+                System.out.println("EOF exception: " + ex.getMessage());
             } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());
                 ex.printStackTrace();
