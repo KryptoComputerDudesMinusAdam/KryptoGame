@@ -1,27 +1,17 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         try{
-//            String clientSentence;
-//            String capitalizedSentence;
-//            ServerSocket welcomeSocket = new ServerSocket(6789);
-//
-//            while(true) {
-//                Socket connectionSocket = welcomeSocket.accept();
-//                BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-//                OutputStream output = connectionSocket.getOutputStream();
-//                DataOutputStream outToClient = new DataOutputStream(output);
-//                clientSentence = inFromClient.readLine();
-//                capitalizedSentence = clientSentence.toUpperCase() + '\n';
-//                outToClient.writeBytes(capitalizedSentence);
-//            }
-            if (args.length < 1) return;
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Please input the port number you want your server to run on: ");
+            int port = scan.nextInt();
 
-            int port = Integer.parseInt(args[0]);
+            if (args.length < 1) return;
 
             try (ServerSocket serverSocket = new ServerSocket(port)) {
 
