@@ -6,12 +6,9 @@ import java.util.concurrent.TimeUnit;
 public class Client {
 
     public static void main(String[] args) {
-        // get port
-        Scanner scan = new Scanner(System.in);
-//        System.out.println("Enter port: ");
-//        int port = scan.nextInt();
-
-        int port = 5555;
+        //Scanner scan = new Scanner(System.in);
+        //System.out.println("Enter port: ");
+        //int port = scan.nextInt();
 
         //connect to socket
         try{
@@ -19,18 +16,24 @@ public class Client {
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
+        int port = 5555;
         try(Socket socket = new Socket("localhost", port)) {
+            // initialize threads for client
             ReceiverThread recv = new ReceiverThread(socket);
             SenderThread send = new SenderThread(socket);
 
+            // start threads for client
             recv.start();
             send.start();
 
+            // allow threads to know about each other
             recv.sender = send;
             send.receiver = recv;
 
 
             while(true){
+                // keep client running while server is on
+                // TODO: catch when server is off and exit app
             }
 
         }catch (Exception e) {
@@ -40,6 +43,7 @@ public class Client {
     }
 }
 
+// handles sending messages to server from client
 class SenderThread extends Thread {
     private Socket socket; // server
     public ReceiverThread receiver;
@@ -92,6 +96,7 @@ class SenderThread extends Thread {
     }
 }
 
+// handles receiving messages from server to client
 class ReceiverThread extends Thread {
     private Socket socket;
     public SenderThread sender;
@@ -113,13 +118,13 @@ class ReceiverThread extends Thread {
             while (socket.isConnected() && !sender.isSending){
                 //String response = dataInputStream.readUTF();
                 Message m = (Message) objectInputStream.readObject();
-                if(m.e.equals("SUCCESS")){
+                if(m.encryptedMessage.equals("SUCCESS")){
                     sender.preparationMode = false;
                 }
-                if(m.option != -1){
-                    System.out.println("\nFrom Client: "+m.e);
+                if(m.cypherOption != -1){
+                    System.out.println("\nFrom Client: "+m.encryptedMessage);
                 } else{
-                    System.out.println("\nFrom Server: "+m.e);
+                    System.out.println("\nFrom Server: "+m.encryptedMessage);
                 }
             }
 
