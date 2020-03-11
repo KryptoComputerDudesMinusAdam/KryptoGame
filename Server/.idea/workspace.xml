@@ -1,13 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="07b0f441-37e0-481c-9303-47410444770b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Server/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Server/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Server/ServerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Server/ServerThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerThread.java" afterDir="false" />
+    <list default="true" id="2db8ea02-1445-43b6-badb-9fb37a83c5a7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../.localized" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Main/Java/Java.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Main/Spring 2019/Data Mgmt Final Project/ApacheJCS/ApacheJCS.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Main/Spring 2019/DataMgmt/Data Mgmt Final Project/temp/temp.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Portfolio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Background.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Background.imageset/SOIS_Background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Background.imageset/SOIS_Background@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Background.imageset/SOIS_Background@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_Blue.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_Blue.imageset/SOIS_Logo_Blue.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_Blue.imageset/SOIS_Logo_Blue@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_Blue.imageset/SOIS_Logo_Blue@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_White.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_White.imageset/SOIS_Logo_White.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_White.imageset/SOIS_Logo_White@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp.iOS/Assets.xcassets/Logo_White.imageset/SOIS_Logo_White@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/AdminHomePage.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/AdminHomePage.xaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/App.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/App.xaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/HomePage.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/HomePage.xaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/LoginPage.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/LoginPage.xaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/LoginViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/MainPage.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Projects/StockUp/StockUp/MainPage.xaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client/src/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Client/src/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$Day1.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$Recit1.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$cit 2 .docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$cture 7.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$ect 4 .docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$in Prog day 1.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$per 4 Final.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$per 4 Outline.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$thur Murray- Xavier La Rosa Cover Letter.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../~$vier La Rosa- Resume.docx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,20 +56,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ServerThread.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+            <state relative-caret-position="150">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -44,34 +67,26 @@
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>close</find>
-      <find>ServerTh</find>
+      <find>who do</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ServerThread.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="830" />
-    <option name="width" value="850" />
-    <option name="height" value="1050" />
+    <option name="x" value="-1920" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -95,14 +110,15 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1583557756421" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1583907135545" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -120,7 +136,7 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Server" />
-      <option name="PROGRAM_PARAMETERS" value="8888" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method v="2">
@@ -138,44 +154,44 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="07b0f441-37e0-481c-9303-47410444770b" name="Default Changelist" comment="" />
-      <created>1583290324117</created>
+      <changelist id="2db8ea02-1445-43b6-badb-9fb37a83c5a7" name="Default Changelist" comment="" />
+      <created>1583871570768</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1583290324117</updated>
-      <workItem from="1583290325491" duration="2870000" />
-      <workItem from="1583557165575" duration="487000" />
+      <updated>1583871570768</updated>
+      <workItem from="1583871575153" duration="679000" />
+      <workItem from="1583887025277" duration="10074000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15703000" />
+    <option name="totallyTimeSpent" value="10753000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="830" y="0" width="850" height="1050" extended-state="0" />
+    <frame x="-1920" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.037128713" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.03940362" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
-      <window_info id="Learn" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info id="Image Layers" order="7" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Learn" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32959184" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.319802" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="12" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32871288" />
+      <window_info anchor="bottom" id="Database Changes" order="11" />
+      <window_info anchor="bottom" id="Version Control" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -191,27 +207,10 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/src.zip!/java.base/java/net/Socket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="902" column="23" selection-start-line="902" selection-start-column="23" selection-end-line="902" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+        <state relative-caret-position="150">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
