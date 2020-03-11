@@ -69,7 +69,7 @@ class ServerThread extends Thread {
                 }
             }
             System.out.println("Client name: "+this.clientName);
-            System.out.println("Client port: "+this.clientPort);
+            System.out.println("\tClient port: "+this.clientPort);
 
             // "empty chat room" until client list is 2 or more
             while(Server.contacts.size() < 2){
@@ -91,20 +91,28 @@ class ServerThread extends Thread {
                 }
             }
 
-            // wait for receiver to also want to connect to current client
-            System.out.println(this.clientName+" "+this.clientPort+" wants to connect to "+this.receiver);
-            // TODO: need to implement a waiting connection, maybe use time increment to refresh connection
-            objectOutputStream.writeObject(new Message("SUCCESS"));
-
-            // add to connections
-            // TODO: this is a weird way of keeping track of connections, maybe we can find something better
-            Server.connections.put(this.clientName, this.receiver);
-            Server.connections.put(this.receiver, this.clientName);
+            // assign the receiver thread
             for(ServerThread st : Server.clients){
                 if(st.clientName.toLowerCase().equals(this.receiver)){
                     receiverThread = st;
                 }
             }
+
+            // wait for receiver to also want to connect to current client
+            System.out.println(this.clientName+" wants to connect to "+this.receiver);
+            while(receiverThread.receiver == null){
+                System.out.println("Waiting for "+this.receiver+" to connect back...");
+                objectOutputStream.writeObject(new Message("Awaiting connection from "+receiverThread.clientName));
+                TimeUnit.SECONDS.sleep(2);
+            }
+            System.out.println("Receiver: "+receiverThread.clientName + " connected with "+receiverThread.receiver);
+            objectOutputStream.writeObject(new Message("SUCCESS"));
+            TimeUnit.SECONDS.sleep(2);
+
+            // add to connections
+            // TODO: this is a weird way of keeping track of connections, maybe we can find something better
+            Server.connections.put(this.clientName, this.receiver);
+            Server.connections.put(this.receiver, this.clientName);
 
             // client can now receive and send messages from their receiver (other client)
             while(true){
@@ -118,11 +126,11 @@ class ServerThread extends Thread {
                 // receive messages from client
                 Message m = (Message) objectInputStream.readObject();
                 if(m.cypherOption != -1){ // message is intended for other client, send it to other client
-                    System.out.println(m.encryptedMessage);
-                    System.out.println("Sending to: "+receiverThread.clientName);
+                    System.out.println(this.clientName+" said: "+m.encryptedMessage);
+                    System.out.println("\tSending to: "+receiverThread.clientName);
                     receiverThread.incomingMessages.add(m);
                 } else{ // message is intended for server, just print it
-                    System.out.println(m.encryptedMessage);
+                    System.out.println(this.clientName+" said: "+m.encryptedMessage);
                 }
             }
 
