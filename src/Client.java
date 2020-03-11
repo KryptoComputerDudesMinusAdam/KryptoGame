@@ -39,7 +39,6 @@ public class Client {
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 }
 
@@ -111,7 +110,7 @@ class ReceiverThread extends Thread {
                     sender.preparationMode = false;
                 }
                 if(m.cypherOption != -1){
-                    System.out.println("\nFrom Client: "+m.encryptedMessage);
+                    System.out.println("\nFrom Client: "+m.encryptedMessage+"\n\t with encryption option: "+m.cypherOption);
                 } else{
                     System.out.println("\nFrom Server: "+m.encryptedMessage);
                 }
