@@ -3,7 +3,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class Client {
 
     public static void main(String[] args) {
         // get port
@@ -11,11 +11,11 @@ public class Main {
 //        System.out.println("Enter port: ");
 //        int port = scan.nextInt();
 
-        int port = 9999;
+        int port = 5555;
 
         //connect to socket
         try{
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(4);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }

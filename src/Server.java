@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
     public static HashMap<Integer, String> contacts = new HashMap<>();
@@ -13,7 +14,7 @@ public class Server {
 //        System.out.println("Enter port: ");
 //        int port = scan.nextInt();
 
-        int port = 9999;
+        int port = 5555;
 
         try(ServerSocket serverSocket = new ServerSocket(port)){
             while(true){
@@ -72,17 +73,15 @@ class ServerThread extends Thread {
             System.out.println("Client port: "+this.clientPort);
 
             // show contacts
-            objectOutputStream.writeObject(new Message("waiting for other clients ..."));
             //dataOutputStream.writeUTF("waiting for other clients ...");
             //dataOutputStream.flush();
-            while(true){
-                if(Server.contacts.size() > 1){
-                    objectOutputStream.writeObject(new Message("Contacts list\n"+Server.contacts.toString()));
-                    //dataOutputStream.writeUTF("Contacts list\n"+Server.contacts.toString());
-                    //dataOutputStream.flush();
-                    break;
-                }
+            while(Server.contacts.size() < 2){
+                objectOutputStream.writeObject(new Message("waiting for other clients ..."));
+                TimeUnit.SECONDS.sleep(5);
             }
+            objectOutputStream.writeObject(new Message("Contacts list\n"+Server.contacts.toString()));
+            //dataOutputStream.writeUTF("Contacts list\n"+Server.contacts.toString());
+            //dataOutputStream.flush();
 
             // ask for receiver
             objectOutputStream.writeObject(new Message("Who do you want to talk to?"));
