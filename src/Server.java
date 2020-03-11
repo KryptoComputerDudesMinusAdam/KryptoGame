@@ -86,6 +86,7 @@ class ServerThread extends Thread {
                     this.receiver = m.encryptedMessage;
                     break;
                 } else{
+                    objectOutputStream.writeObject(new Message("No match, try again"));
                     System.out.println(m.encryptedMessage +"\ndoes not exist in\n"+Server.contacts.toString());
                 }
             }

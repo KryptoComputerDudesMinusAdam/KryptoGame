@@ -60,8 +60,6 @@ class SenderThread extends Thread {
             Scanner scanStr = new Scanner(System.in);
             Scanner scanInt = new Scanner(System.in);
             OutputStream outputStream = socket.getOutputStream();
-            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
-
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
             System.out.println("Sender Thread Running");
@@ -72,10 +70,6 @@ class SenderThread extends Thread {
                 if(preparationMode){
                     System.out.print("Message Server: ");
                     message = scanStr.nextLine();
-                    isSending = true;
-                    //dataOutputStream.writeUTF(message);
-                    //dataOutputStream.flush();
-                    isSending = false;
                     objectOutputStream.writeObject(new Message(message));
                 } else{
                     isSending = true;
@@ -83,8 +77,6 @@ class SenderThread extends Thread {
                     message = scanStr.nextLine();
                     System.out.print("\tOption: ");
                     int option = scanInt.nextInt();
-                    //dataOutputStream.writeUTF(message);
-                    //dataOutputStream.flush();
                     isSending = false;
                     objectOutputStream.writeObject(new Message(message, option));
                 }
@@ -109,14 +101,11 @@ class ReceiverThread extends Thread {
         try {
             // for receiving messages
             InputStream inputStream = socket.getInputStream();
-            DataInputStream dataInputStream = new DataInputStream(inputStream);
-
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
 
             System.out.println("Receiver Thread Running");
             while (socket.isConnected() && !sender.isSending){
-                //String response = dataInputStream.readUTF();
                 Message m = (Message) objectInputStream.readObject();
                 if(m.encryptedMessage.equals("SUCCESS")){
                     sender.preparationMode = false;
