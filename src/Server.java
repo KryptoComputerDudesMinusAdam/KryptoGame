@@ -151,4 +151,7 @@ TODO: Found a way that maybe Attacker will work and how it can actually be a gam
         - Attacker wins game
     - If Attacker reaches -6 points, Server closes Attacker socket
         - Attacker loses game
+    - *Attacker cant go below 0 points
+    - *Attacker has 6 wrong attempts
+
  */
