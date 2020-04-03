@@ -1,0 +1,129 @@
+package sample.model;
+
+import java.io.*;
+import java.net.Socket;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
+public class Client {
+
+    public Client(String host, int port, String name){
+        //Scanner scan = new Scanner(System.in);
+        //System.out.println("Enter port: ");
+        //int port = scan.nextInt();
+
+        //connect to socket
+        try{
+            TimeUnit.SECONDS.sleep(4);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        try(Socket socket = new Socket(host, port)) {
+            // initialize threads for client
+            ReceiverThread recv = new ReceiverThread(socket);
+            SenderThread send = new SenderThread(socket);
+
+            // start threads for client
+            recv.start();
+            send.start();
+
+            // allow threads to know about each other
+            recv.sender = send;
+            send.receiver = recv;
+
+
+            while(true){
+                // keep client running while server is on
+                // TODO: catch when server is off and exit app
+            }
+
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+
+    }
+}
+
+// handles sending messages to server from client
+class SenderThread extends Thread {
+    private Socket socket; // server
+    public ReceiverThread receiver;
+    public boolean isSending = false;
+    public boolean preparationMode = true;
+
+    public SenderThread(Socket socket){
+        this.socket = socket;
+    }
+
+    public synchronized void run(){
+        try{
+            // for sending messages
+            Scanner scanStr = new Scanner(System.in);
+            Scanner scanInt = new Scanner(System.in);
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+            System.out.println("Sender Thread Running");
+
+            String message="";
+            while(!message.toLowerCase().equals("exit")){
+                TimeUnit.SECONDS.sleep(2);
+                if(preparationMode){
+                    System.out.print("Message Server: ");
+                    message = scanStr.nextLine();
+                    objectOutputStream.writeObject(new Message(message));
+                } else{
+                    isSending = true;
+                    System.out.print("Message Client: ");
+                    message = scanStr.nextLine();
+                    System.out.print("\tOption: ");
+                    int option = scanInt.nextInt();
+                    isSending = false;
+                    objectOutputStream.writeObject(new Message(message, option));
+                }
+
+            }
+        } catch(Exception e){
+            System.out.println("CAUGHT"+e.getMessage());
+        }
+    }
+}
+
+// handles receiving messages from server to client
+class ReceiverThread extends Thread {
+    private Socket socket;
+    public SenderThread sender;
+
+    public ReceiverThread(Socket socket){
+        this.socket = socket;
+    }
+
+    public synchronized void run() {
+        try {
+            // for receiving messages
+            InputStream inputStream = socket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+
+            System.out.println("Receiver Thread Running");
+            while (socket.isConnected() && !sender.isSending){
+                Message m = (Message) objectInputStream.readObject();
+                if(m.encryptedMessage.equals("SUCCESS")){
+                    sender.preparationMode = false;
+                }
+                if(m.cypherOption != -1){
+                    System.out.println("\nFrom Client: "+m.encryptedMessage+"\n\t with encryption option: "+m.cypherOption);
+                } else{
+                    System.out.println("\nFrom Server: "+m.encryptedMessage);
+                }
+            }
+
+        } catch (Exception e){
+            System.out.println("SUPER CAUGHT"+e.getMessage());
+        }
+    }
+}
