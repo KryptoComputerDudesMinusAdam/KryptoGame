@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.MenuController">
+   <children>
+      <Label layoutX="215.0" layoutY="21.0" text="KryptoChat" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="serverButton" onAction="#handleServerButton" layoutX="215.0" layoutY="140.0" mnemonicParsing="false" text="Run a Server" />
+      <Button fx:id="clientButton" onAction="#handleClientButton" layoutX="217.0" layoutY="209.0" mnemonicParsing="false" text="Run a Client" />
+      <Button fx:id="attackerButton" onAction="#handleAttackerButton" layoutX="206.0" layoutY="272.0" mnemonicParsing="false" text="Run an Attacker" />
+   </children>
+</Pane>
