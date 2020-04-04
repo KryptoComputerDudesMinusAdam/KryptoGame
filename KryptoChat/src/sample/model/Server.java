@@ -18,21 +18,21 @@ public class Server {
 
         // setup server
         int port = 5555;
-        try(ServerSocket serverSocket = new ServerSocket(port)){
-            while(true){
-                // wait for connections
-                System.out.println("Server is open for connections...");
-                Socket socket = serverSocket.accept();
-                System.out.println("Connection received from port: "+socket.getPort());
-
-                // create a client thread and add client thread into list of clients
-                ServerThread client = new ServerThread(socket);
-                client.start();
-                clients.add(client);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+//        try(ServerSocket serverSocket = new ServerSocket(port)){
+//            while(true){
+//                // wait for connections
+//                System.out.println("Server is open for connections...");
+//                Socket socket = serverSocket.accept();
+//                System.out.println("Connection received from port: "+socket.getPort());
+//
+//                // create a client thread and add client thread into list of clients
+//                ServerThread client = new ServerThread(socket);
+//                client.start();
+//                clients.add(client);
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 }
 
