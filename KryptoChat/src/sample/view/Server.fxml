@@ -6,9 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.view.Server"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.ServerController">
+    <children>
+        <Label layoutX="264.0" layoutY="25.0" text="SERVER DEMO TEST" />
+        <Button fx:id="connect" layoutX="109.0" layoutY="173.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Connect" />
+        <TextField fx:id="port" layoutX="265.0" layoutY="119.0" prefHeight="27.0" prefWidth="70.0" promptText="Port #" />
+        <ChoiceBox fx:id="modeOfAttack" layoutX="355.0" layoutY="173.0" prefWidth="150.0" />
+    </children>
+</Pane>
