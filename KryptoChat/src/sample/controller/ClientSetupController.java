@@ -9,6 +9,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.net.Socket;
+import java.util.concurrent.TimeUnit;
+
 public class ClientSetupController {
 
     @FXML
@@ -20,16 +23,11 @@ public class ClientSetupController {
     @FXML
     ListView<String> contactsListView;
 
-    public void handleServerButton(ActionEvent event)
-    {
-        /*
-            TODO:
-                try and connect to server
-         */
+    public void handleServerButton(ActionEvent event){
         if(hostnameTextField.getText() != null &&
                 serverTextField.getText() != null &&
                 clientNameTextField.getText() != null){
-            
+            new ClientThread(hostnameTextField.getText(), Integer.parseInt(serverTextField.getText())).start();
         }
     }
 
@@ -42,6 +40,27 @@ public class ClientSetupController {
             ClientChatRoomController UI = loader.getController();
             Controller.newWindow(root);
         } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+class ClientThread extends Thread {
+    private String host;
+    private int port;
+
+    public ClientThread(String host, int port){
+        this.host = host;
+        this.port = port;
+    }
+
+    public void run(){
+        try(Socket socket = new Socket(host, port)) {
+            while(true){
+                // keep client running while server is on
+                // TODO: catch when server is off and exit app
+            }
+        }catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
