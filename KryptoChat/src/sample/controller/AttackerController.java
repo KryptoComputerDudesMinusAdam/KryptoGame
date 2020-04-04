@@ -1,4 +1,6 @@
 package sample.controller;
 
-public class AttackerController {
+public class AttackerController
+{
+
 }

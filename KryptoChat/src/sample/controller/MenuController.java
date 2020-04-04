@@ -10,13 +10,25 @@ public class MenuController {
     @FXML
     Button serverButton, clientButton, attackerButton;
 
+    // Server button
     public void handleServerButton(ActionEvent event){
         /*
             TODO:
                 view server window
          */
+        try{
+            // display user interface
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../view/Server.fxml"));
+            Parent root = loader.load();
+            ServerController UI = loader.getController();
+            Controller.newWindow(root);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
+    // Client
     public void handleClientButton(ActionEvent event){
         try{
             // display user interface
@@ -30,10 +42,20 @@ public class MenuController {
         }
     }
 
+    // Attacker
     public void handleAttackerButton(ActionEvent event){
         /*
-            TODO:
-                view attacker window
+            TODO: view attacker window
          */
+        try{
+            // display user interface
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../view/AttackerSetup.fxml"));
+            Parent root = loader.load();
+            AttackerSetupController UI = loader.getController();
+            Controller.newWindow(root);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
