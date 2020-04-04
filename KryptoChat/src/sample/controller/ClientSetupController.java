@@ -20,7 +20,8 @@ public class ClientSetupController {
     @FXML
     ListView<String> contactsListView;
 
-    public void handleServerButton(ActionEvent event){
+    public void handleServerButton(ActionEvent event)
+    {
         /*
             TODO:
                 try and connect to server

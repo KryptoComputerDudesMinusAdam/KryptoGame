@@ -1,6 +1,6 @@
 package sample.model;
 
-public class Cyphers {
+public class Cipher {
     /*
     TODO:
         Add Mono-Alphabetic Cypher
