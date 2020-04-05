@@ -1,12 +1,18 @@
 package sample.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 // every message sent and received is of this format
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static String contacts = "contacts";
+    public static String clientName = "clientName";
+
     public String encryptedMessage;
     public int cypherOption;
+    public String typeOfMessage;
 
     public Message(String encryptedMessage, int cypherOption){ // meant for messages to be encrypted/decrypted
         this.encryptedMessage = encryptedMessage;
@@ -18,3 +24,5 @@ public class Message implements Serializable {
         this.cypherOption = -1;
     }
 }
+
+

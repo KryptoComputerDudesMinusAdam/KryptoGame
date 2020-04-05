@@ -1,13 +1,20 @@
 package sample.controller;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import sample.model.Message;
+import sample.model.MessageList;
+
+import java.io.*;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientSetupController {
 
@@ -18,19 +25,46 @@ public class ClientSetupController {
     @FXML
     ComboBox<String> encryptionComboBox;
     @FXML
-    ListView<String> contactsListView;
+    ListView<Message> contactsListView;
+    private ObservableList<Message> observableList;
+    private List<Message> contacts = new ArrayList<>();
 
-    public void handleServerButton(ActionEvent event)
-    {
-        /*
-            TODO:
-                try and connect to server
-         */
+    public void handleServerButton(ActionEvent event){
         if(hostnameTextField.getText() != null &&
                 serverTextField.getText() != null &&
                 clientNameTextField.getText() != null){
-            
-        }
+            String host = hostnameTextField.getText();
+            int port = Integer.parseInt(serverTextField.getText());
+            new Thread(() -> {
+                try(Socket socket = new Socket(host, port)) {
+                    // for sending messages
+                    OutputStream outputStream = socket.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+                    // for receiving messages
+                    InputStream inputStream = socket.getInputStream();
+                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+                    // add your name into the server's contacts list
+                    objectOutputStream.writeObject(new Message(clientNameTextField.getText()));
+
+                    // wait for contacts list to render
+                    initializeListView();
+                    new Thread(() ->{ // continuously update list view with contacts list
+                        try {
+                            MessageList ms = (MessageList) objectInputStream.readObject();
+                            if(ms.typeOfMessage != null && ms.typeOfMessage.equals(Message.contacts)){
+                                displayContacts(ms);
+                            }
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }).start();
+            }
     }
 
     public void handleReceiverButton(ActionEvent event){
@@ -44,5 +78,30 @@ public class ClientSetupController {
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void initializeListView(){
+        observableList = FXCollections.observableArrayList(contacts);
+        contactsListView.setItems(observableList);
+        contactsListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Message message, boolean empty) {
+                super.updateItem(message, empty);
+                if (empty || message == null || message.encryptedMessage == null) {
+                    setText(null);
+                } else {
+                    setText(message.encryptedMessage);
+                }
+            }
+        });
+    }
+
+    public void displayContacts(MessageList ms){
+        Platform.runLater(() -> {
+            contacts.clear();
+            contacts.addAll(ms.messages);
+            observableList.setAll(contacts);
+            contactsListView.setItems(observableList);
+        });
     }
 }
