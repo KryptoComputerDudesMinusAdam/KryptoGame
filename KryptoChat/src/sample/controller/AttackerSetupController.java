@@ -7,10 +7,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import sample.model.Message;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 
-public class AttackerSetupController {
+public class AttackerSetupController
+{
     ObservableList<String> list = FXCollections.observableArrayList();
     @FXML
     private Button connect;
@@ -25,20 +29,22 @@ public class AttackerSetupController {
         addData();
     }
 
+
+    /*
+        TODO: try and connect to server
+    */
     public void handleConnectButton(ActionEvent event)
     {
-        /*
-            TODO: try and connect to server
-         */
-        try {
-            if(port.getText() != null)
-            {
-                int i = Integer.parseInt(port.getText().toString());
-            }
-
-        }catch (NumberFormatException e)
+        if(port.getText() != null)
         {
+            int pt = Integer.parseInt(port.getText());
+            try
+            {
 
+            }catch (Exception e)
+            {
+
+            }
         }
     }
 
