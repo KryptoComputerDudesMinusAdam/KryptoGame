@@ -15,7 +15,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="hostnameTextField" layoutX="136.0" layoutY="52.0" prefHeight="27.0" prefWidth="262.0" promptText="Server Hostname (IP address or &quot;localhost&quot;)" />
+      <TextField fx:id="hostnameTextField" layoutX="136.0" layoutY="52.0" prefHeight="27.0" prefWidth="262.0" promptText="Server Hostname (IP address or &quot;localhost&quot;)" text="0.0.0.0"/>
       <TextField fx:id="serverTextField" layoutX="135.0" layoutY="85.0" prefHeight="27.0" prefWidth="262.0" promptText="Server Port" />
       <TextField fx:id="clientNameTextField" layoutX="136.0" layoutY="117.0" prefHeight="27.0" prefWidth="262.0" promptText="Client Name" />
       <Button fx:id="serverButton" layoutX="207.0" layoutY="152.0" mnemonicParsing="false" onAction="#handleServerButton" text="Connect to Server" />

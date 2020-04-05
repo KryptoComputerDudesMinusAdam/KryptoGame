@@ -10,13 +10,17 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import sample.model.Message;
+import sample.model.MessageList;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ServerController {
 
@@ -28,10 +32,8 @@ public class ServerController {
     ListView<Message> listView;
     private ObservableList<Message> observableList;
     private List<Message> messages = new ArrayList<>();
-
-    public ServerController(){
-
-    }
+    public static List<ServerClientThread> clients = new ArrayList<>();
+    public static HashMap<Integer, String> contacts = new HashMap<>();
 
     public void handleConnectButton(ActionEvent event){
         initializeListView();
@@ -39,27 +41,24 @@ public class ServerController {
         // add port number
         if(portTextField.getText() != null){
             int port = Integer.parseInt(portTextField.getText());
-            //new ServerSocketThread(port, this).start();
+            // wait for connections
+            new Thread(() -> {
+                try(ServerSocket serverSocket = new ServerSocket(port)) {
+                    while(true) {
+                        // look for connection
+                        displayNewMessage(new Message("Server is open for connection..."));
+                        Socket socket = serverSocket.accept();
 
-
-                    // wait for connections
-                    new Thread(() -> {
-                        try(ServerSocket serverSocket = new ServerSocket(port)) {
-                            while(true) {
-                                displayNewMessage(new Message("Server is open for connection..."));
-                                Socket socket = serverSocket.accept();
-                                displayNewMessage(new Message("Received connection from port " + socket.getPort()));
-                            }
-                        } catch (IOException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }).start();
-
-
-                    // create a client thread and add client thread into list of clients
-//                ServerThread client = new ServerThread(socket);
-//                client.start();
-//                clients.add(client);
+                        // add new client and run a thread
+                        displayNewMessage(new Message("Received connection from port " + socket.getPort()));
+                        ServerClientThread client = new ServerClientThread(socket, this);
+                        client.start();
+                        clients.add(client);
+                    }
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            }).start();
         }
     }
 
@@ -89,35 +88,67 @@ public class ServerController {
             observableList.setAll(messages);
             listView.setItems(observableList);
         });
-
     }
 }
 
-class ServerSocketThread extends Thread{
-    private int port;
+class ServerClientThread extends Thread {
+    private Socket socket;
     private ServerController serverController;
 
-    public ServerSocketThread(int port, ServerController serverController){
-        this.port = port;
+    public ServerClientThread(Socket socket, ServerController serverController){
+        this.socket = socket;
         this.serverController = serverController;
     }
 
-    public void run(){
-        try(ServerSocket serverSocket = new ServerSocket(port)){
-            while(true){
-                // wait for connections
-                serverController.displayNewMessage(new Message("Server is open for connection..."));
-                Socket socket = serverSocket.accept();
-                serverController.displayNewMessage(new Message("Recevied connection from port "+socket.getPort()));
+    public void start(){
+            String clientName;
+            int clientPort;
+            try {
+                new Thread(()->{
+                    while(true){
+                        try {
+                            TimeUnit.SECONDS.sleep(2);
+                            System.out.println("Status: "+socket.isClosed());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                // for sending messages
+                OutputStream outputStream = socket.getOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+                // for receiving messages
+                InputStream inputStream = socket.getInputStream();
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+                // first message from client must contain their name
+                Message m = (Message) objectInputStream.readObject();
+                while(true){
+                    if(!ServerController.contacts.containsValue(m.encryptedMessage)){
+                        clientName = m.encryptedMessage;
+                        clientPort = socket.getPort();
+                        ServerController.contacts.put(clientPort, clientName);
+                        break;
+                    }
+                }
+                serverController.displayNewMessage(new Message("Added "+ServerController.contacts.get(clientPort)));
 
 
-                // create a client thread and add client thread into list of clients
-//                ServerThread client = new ServerThread(socket);
-//                client.start();
-//                clients.add(client);
+                while(true){
+                    System.out.println("in while");
+                    // send contacts list to client
+                    List<Message> messages = new ArrayList<>();
+                    for(Map.Entry<Integer, String> entry : ServerController.contacts.entrySet()) {
+                        Integer key = entry.getKey();
+                        String value = entry.getValue();
+                        messages.add(new Message(value));
+                    }
+                    MessageList ms = new MessageList(messages, Message.contacts);
+                    objectOutputStream.writeObject(ms);
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
