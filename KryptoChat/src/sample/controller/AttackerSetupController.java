@@ -7,10 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import sample.model.Message;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 
 public class AttackerSetupController
@@ -22,6 +18,7 @@ public class AttackerSetupController
     private TextField port;
     @FXML
     private ChoiceBox<String> choiceBox;
+
 
     // Initialize choice box
     public void init()
@@ -51,7 +48,6 @@ public class AttackerSetupController
     //Add data to the choice box
     private void addData()
     {
-        list.removeAll(list);
         list.addAll("Known-Plaintext Attack",
                 "Ciphertext Only Attack",
                 "Chosen Plaintext Attack",
