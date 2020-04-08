@@ -1,4 +1,5 @@
 package sample.controller;
 
-public class CiphertextOnlyAttack {
+public class CiphertextOnlyAttack extends AttackerSetupController
+{
 }

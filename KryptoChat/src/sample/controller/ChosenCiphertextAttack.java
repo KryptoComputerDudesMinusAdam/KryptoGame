@@ -1,5 +1,5 @@
 package sample.controller;
 
-public class ChosenCiphertextAttack
+public class ChosenCiphertextAttack extends AttackerSetupController
 {
 }

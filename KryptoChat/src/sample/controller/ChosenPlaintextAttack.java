@@ -1,6 +1,6 @@
 package sample.controller;
 
-public class ChosenPlaintextAttack
+public class ChosenPlaintextAttack extends AttackerSetupController
 {
 
 }
