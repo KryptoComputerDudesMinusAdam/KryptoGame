@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -52,6 +54,9 @@ public class AttackerSetupController
 
                 Parent root = loader.load();
                 Controller.newWindow(root);
+
+                Stage stage = (Stage) connect.getScene().getWindow();
+                stage.close();
             } catch (IOException e) {
                 this.connected.setTextFill(Color.web("#008000"));
                 this.connected.setText("Unable to connect");
