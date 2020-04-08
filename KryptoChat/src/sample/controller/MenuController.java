@@ -10,6 +10,7 @@ public class MenuController {
     @FXML
     Button serverButton, clientButton, attackerButton;
 
+
     // Server button
     public void handleServerButton(ActionEvent event){
         /*
@@ -43,10 +44,8 @@ public class MenuController {
     }
 
     // Attacker
-    public void handleAttackerButton(ActionEvent event){
-        /*
-            TODO: view attacker window
-         */
+    public void handleAttackerButton(ActionEvent event)
+    {
         try{
             // display user interface
             FXMLLoader loader = new FXMLLoader();

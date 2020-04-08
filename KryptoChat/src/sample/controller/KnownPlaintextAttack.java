@@ -1,4 +1,6 @@
 package sample.controller;
 
-public class KnownPlaintextAttack {
+public class KnownPlaintextAttack extends AttackerSetupController
+{
+
 }
