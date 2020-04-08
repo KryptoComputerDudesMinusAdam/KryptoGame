@@ -86,7 +86,7 @@ class CustomServerThread extends Thread {
         try {
             // create a server socket
             ServerSocket serverSocket = new ServerSocket(port);
-            
+
             // continuously look for connections
             while (true) {
                 serverController.displayNewMessage(new Message("Server is open for connection..."));
