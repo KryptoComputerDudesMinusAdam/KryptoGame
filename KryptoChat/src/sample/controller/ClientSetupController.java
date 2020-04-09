@@ -40,12 +40,6 @@ public class ClientSetupController {
 
     public void handleReceiverButton(ActionEvent event){
         try{
-//            // display user interface
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
-//            Parent root = loader.load();
-//            ClientChatRoomController UI = loader.getController();
-//            Controller.newWindow(root);
             clientServerThread.sendMessage(contactsListView.getSelectionModel().getSelectedItem().encryptedMessage, Message.conversationInvite);
         } catch(Exception e){
             System.out.println(e.getMessage());
@@ -65,7 +59,7 @@ public class ClientSetupController {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
-            Parent root = null;
+            Parent root;
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
             Controller.newWindow(root);

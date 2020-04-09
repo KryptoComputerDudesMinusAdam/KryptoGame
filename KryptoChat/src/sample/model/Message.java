@@ -1,8 +1,6 @@
 package sample.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 // every message sent and received is of this format
 public class Message implements Serializable {

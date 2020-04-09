@@ -13,10 +13,6 @@ public class MenuController {
 
     // Server button
     public void handleServerButton(ActionEvent event){
-        /*
-            TODO:
-                view server window
-         */
         try{
             // display user interface
             FXMLLoader loader = new FXMLLoader();
