@@ -26,7 +26,6 @@ public class ClientSetupController {
     ComboBox<String> encryptionComboBox;
     @FXML
     ListView<Message> contactsListView;
-    private ObservableList<Message> observableList;
     private List<Message> contacts = new ArrayList<>();
     private ClientServerThread clientServerThread;
 
@@ -56,28 +55,12 @@ public class ClientSetupController {
         }
     }
 
-    private void initializeListView(){
-        observableList = FXCollections.observableArrayList(contacts);
-        contactsListView.setItems(observableList);
-        contactsListView.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Message message, boolean empty) {
-                super.updateItem(message, empty);
-                if (empty || message == null || message.encryptedMessage == null) {
-                    setText(null);
-                } else {
-                    setText(message.encryptedMessage);
-                }
-            }
-        });
-    }
-
     void updateContacts(Message m){
         Platform.runLater(() -> {
-            initializeListView();
+            Controller.initializeListView(contacts, contactsListView);
             contacts.add(m);
-            observableList.setAll(contacts);
-            contactsListView.setItems(observableList);
+            contactsListView.getItems().setAll(contacts);
+            contactsListView.refresh();
         });
     }
 }

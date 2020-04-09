@@ -6,9 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import sample.model.Message;
-import sample.model.MessageList;
 
+import sample.model.Message;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,14 +18,13 @@ public class ServerController {
     @FXML Button connectButton, disconnectButton;
     @FXML TextField portTextField;
     @FXML ListView<Message> listView;
-    private ObservableList<Message> observableList;
     private List<Message> messages = new ArrayList<>();
     public static List<ServerClientThread> clients = new ArrayList<>();
     public static HashMap<Integer, String> contacts = new HashMap<>();
 
     public void handleConnectButton(ActionEvent event){
         // initialize the list view
-        initializeListView();
+        Controller.initializeListView(messages, listView);
 
         // start up the server thread
         if(portTextField.getText() != null){
@@ -41,27 +39,13 @@ public class ServerController {
         displayNewMessage(new Message("Closing server down"));
     }
 
-    private void initializeListView(){
-        observableList = FXCollections.observableArrayList(messages);
-        listView.setItems(observableList);
-        listView.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Message message, boolean empty) {
-                super.updateItem(message, empty);
-                if (empty || message == null || message.encryptedMessage == null) {
-                    setText(null);
-                } else {
-                    setText(message.encryptedMessage);
-                }
-            }
-        });
-    }
+
 
     public void displayNewMessage(Message m){
         Platform.runLater(() -> {
             messages.add(m);
-            observableList.setAll(messages);
-            listView.setItems(observableList);
+            listView.getItems().setAll(messages);
+            listView.refresh();
         });
     }
 }
