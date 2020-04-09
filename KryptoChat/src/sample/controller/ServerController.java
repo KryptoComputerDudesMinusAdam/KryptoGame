@@ -137,24 +137,14 @@ class ServerClientThread extends Thread {
                 try {
                     while(true){
                         Message message = (Message) objectInputStream.readObject();
-                        switch(message.typeOfMessage){
-                            case Message.conversationInvite:
-                                // client wants to send an invitation
-                                for(ServerClientThread client : ServerController.clients){
-                                    if(client.clientName.equals(message.encryptedMessage)){
-                                        Message inviteMessage = new Message(clientName);
-                                        inviteMessage.typeOfMessage = Message.conversationInvite;
-                                        client.objectOutputStream.writeObject(inviteMessage);
-                                        break;
-                                    }
-                                }
+                        // client wants to send a message to another client
+                        for(ServerClientThread client : ServerController.clients){
+                            if(client.clientName.equals(message.encryptedMessage)){
+                                Message messageToOtherClient = new Message(clientName);
+                                messageToOtherClient.typeOfMessage = message.typeOfMessage;
+                                client.objectOutputStream.writeObject(messageToOtherClient);
                                 break;
-                            case Message.conversationAccept:
-                                // client wants to accept an invitation
-                                break;
-                            case Message.conversationDecline:
-                                // client wants to decline an invitation
-                                break;
+                            }
                         }
                     }
                 } catch (IOException | ClassNotFoundException e) {

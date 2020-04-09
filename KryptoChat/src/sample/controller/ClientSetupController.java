@@ -44,7 +44,7 @@ public class ClientSetupController {
 //            Parent root = loader.load();
 //            ClientChatRoomController UI = loader.getController();
 //            Controller.newWindow(root);
-            clientServerThread.sendInvite(contactsListView.getSelectionModel().getSelectedItem().encryptedMessage);
+            clientServerThread.sendMessage(contactsListView.getSelectionModel().getSelectedItem().encryptedMessage, Message.conversationInvite);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -106,15 +106,25 @@ class ClientServerThread extends Thread {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " invited you to chat.\nWould you like to connect?", ButtonType.YES, ButtonType.NO);
                                     alert.showAndWait();
                                     if(alert.getResult() == ButtonType.YES) {
-                                        //do stuff
+                                        sendMessage(m.encryptedMessage, Message.conversationAccept);
+                                    } else if(alert.getResult() == ButtonType.NO){
+                                        sendMessage(m.encryptedMessage, Message.conversationDecline);
                                     }
                                 });
                                 break;
                             case Message.conversationAccept:
                                 // another user accepted connection
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!", ButtonType.OK);
+                                    alert.showAndWait();
+                                });
                                 break;
                             case Message.conversationDecline:
                                 // another user declined connection
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " declined the invite.", ButtonType.OK);
+                                    alert.showAndWait();
+                                });
                                 break;
                         }
                     } catch (IOException | ClassNotFoundException e) {
@@ -127,10 +137,10 @@ class ClientServerThread extends Thread {
         }
     }
 
-    void sendInvite(String receiver){
+    void sendMessage(String receiver, String typeOfMessage){
         try {
             Message m = new Message(receiver);
-            m.typeOfMessage = Message.conversationInvite;
+            m.typeOfMessage = typeOfMessage;
             objectOutputStream.writeObject(m);
         } catch (IOException e) {
             e.printStackTrace();
