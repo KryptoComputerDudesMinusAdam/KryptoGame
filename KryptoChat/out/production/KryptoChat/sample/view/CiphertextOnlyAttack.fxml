@@ -13,7 +13,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="back" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" text="Back" />
+        <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
     </children>
 </Pane>
 

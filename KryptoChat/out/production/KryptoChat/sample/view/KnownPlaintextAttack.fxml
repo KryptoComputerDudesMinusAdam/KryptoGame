@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.KnownPlaintextAttack">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.KnownPlaintextAttack">
     <children>
         <Label layoutX="214.0" layoutY="14.0" text="Known Plaintext Attack">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="back" layoutX="14.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Back" />
+        <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
       <ListView fx:id="plaintext" layoutX="14.0" layoutY="83.0" prefHeight="200.0" prefWidth="169.0" />
       <Label layoutX="76.0" layoutY="59.0" prefHeight="17.0" prefWidth="56.0" text="Plaintext" textAlignment="CENTER" />
       <Label layoutX="236.0" layoutY="59.0" prefHeight="17.0" prefWidth="62.0" text="Ciphertext" textAlignment="CENTER" />
@@ -21,6 +19,6 @@
       <Button fx:id="query_server" layoutX="368.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Query Server" />
       <ListView fx:id="response" layoutX="368.0" layoutY="113.0" prefHeight="136.0" prefWidth="227.0" />
       <Button fx:id="copy_message" layoutX="368.0" layoutY="256.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Copy message" />
-      <Button fx:id="run_analsis" layoutX="482.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Run Analysis" />
+      <Button fx:id="run_analysis" layoutX="482.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Run Analysis" />
     </children>
 </Pane>
