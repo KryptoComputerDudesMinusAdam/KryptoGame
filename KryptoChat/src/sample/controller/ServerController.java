@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import sample.model.Message;
+import sample.model.Server;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,8 +21,6 @@ public class ServerController {
     @FXML TextField portTextField;
     @FXML ListView<Message> listView;
     private List<Message> messages = new ArrayList<>();
-    public static List<ServerClientThread> clients = new ArrayList<>();
-    public static HashMap<Integer, String> contacts = new HashMap<>();
 
     public void handleConnectButton(ActionEvent event){
         // initialize the list view
@@ -54,8 +54,10 @@ public class ServerController {
 class ServerThread extends Thread {
     int port;
     private ServerController serverController;
+    static List<ServerClientThread> clients = new ArrayList<>();
+    static HashMap<String, String> connections = new HashMap<>();
 
-    public ServerThread(ServerController serverController){
+    ServerThread(ServerController serverController){
         this.serverController = serverController;
     }
 
@@ -72,26 +74,25 @@ class ServerThread extends Thread {
                 serverController.displayNewMessage(new Message("Received connection from port " + socket.getPort()));
                 ServerClientThread sct = new ServerClientThread(socket, serverController, this);
                 sct.start();
-                ServerController.clients.add(sct);
+                ServerThread.clients.add(sct);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void broadcastContactsList() {
+    void broadcastContactsList() {
         // send message to client: contacts list
-        try {
-            for (ServerClientThread sct : ServerController.clients) {
-                for (Map.Entry<Integer, String> entry : ServerController.contacts.entrySet()) {
-                    Message contact = new Message(entry.getValue());
+        ServerThread.clients.forEach(cl -> {
+            for (ServerClientThread sct: ServerThread.clients) {
+                try {
+                    Message contact = new Message(sct.clientId);
                     contact.typeOfMessage = Message.contacts;
-                    sct.objectOutputStream.writeObject(contact);
+                    cl.objectOutputStream.writeObject(contact);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }});
     }
 }
 
@@ -101,8 +102,8 @@ class ServerClientThread extends Thread {
     private ServerThread serverThread;
     private Socket socket;
 
-    private String clientName = "";
     private int clientPort;
+    String clientId;
     ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
 
@@ -124,13 +125,11 @@ class ServerClientThread extends Thread {
 
             // read message from client: client name and add to contacts list
             Message m = (Message) objectInputStream.readObject();
-            m.encryptedMessage+="#"+socket.getPort();
-            if(!ServerController.contacts.containsValue(m.encryptedMessage)){
-                clientName = m.encryptedMessage;
-                ServerController.contacts.put(clientPort, clientName);
-                serverController.displayNewMessage(new Message("Added "+ServerController.contacts.get(clientPort)));
-                serverThread.broadcastContactsList();
-            }
+            String clientName = m.encryptedMessage;
+            clientId = clientName +"#"+ clientPort;
+            serverController.displayNewMessage(new Message("Added "+clientId));
+            serverThread.broadcastContactsList();
+
 
             // continuously check for messages coming from client
             new Thread(()->{
@@ -138,11 +137,19 @@ class ServerClientThread extends Thread {
                     while(true){
                         Message message = (Message) objectInputStream.readObject();
                         // client wants to send a message to another client
-                        for(ServerClientThread client : ServerController.clients){
-                            if(client.clientName.equals(message.encryptedMessage)){
-                                Message messageToOtherClient = new Message(clientName);
+                        for(ServerClientThread client : ServerThread.clients){
+                            if(client.clientId.equals(message.encryptedMessage)){
+                                Message messageToOtherClient = new Message(clientId);
                                 messageToOtherClient.typeOfMessage = message.typeOfMessage;
                                 client.objectOutputStream.writeObject(messageToOtherClient);
+
+                                if(messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)){
+                                    // connect the two clients together
+                                    String client2Id = message.encryptedMessage;
+                                    ServerThread.connections.put(clientId, client2Id);
+                                    ServerThread.connections.put(client2Id, clientId);
+                                    serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
+                                }
                                 break;
                             }
                         }
