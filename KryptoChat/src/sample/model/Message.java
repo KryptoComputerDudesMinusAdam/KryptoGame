@@ -9,9 +9,9 @@ public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
     public static String contacts = "contacts";
     public static String clientName = "clientName";
-    public static String conversationInvite = "conversationInvite";
-    public static String conversationAccept = "conversationAccept";
-    public static String conversationDecline = "conversationDecline";
+    public final static String  conversationInvite = "conversationInvite";
+    public final static String conversationAccept = "conversationAccept";
+    public final static String conversationDecline = "conversationDecline";
 
     public String encryptedMessage;
     public int cypherOption;

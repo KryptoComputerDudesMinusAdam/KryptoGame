@@ -16,17 +16,13 @@ import java.util.*;
 
 public class ServerController {
 
-    @FXML
-    Button connectButton, disconnectButton;
-    @FXML
-    TextField portTextField;
-    @FXML
-    ListView<Message> listView;
+    @FXML Button connectButton, disconnectButton;
+    @FXML TextField portTextField;
+    @FXML ListView<Message> listView;
     private ObservableList<Message> observableList;
     private List<Message> messages = new ArrayList<>();
     public static List<ServerClientThread> clients = new ArrayList<>();
     public static HashMap<Integer, String> contacts = new HashMap<>();
-    public static HashMap<String, String> converstations = new HashMap<>();
 
     public void handleConnectButton(ActionEvent event){
         // initialize the list view
@@ -72,7 +68,7 @@ public class ServerController {
 
 class ServerThread extends Thread {
     int port;
-    ServerController serverController;
+    private ServerController serverController;
 
     public ServerThread(ServerController serverController){
         this.serverController = serverController;
@@ -83,47 +79,49 @@ class ServerThread extends Thread {
             // create a server socket
             ServerSocket serverSocket = new ServerSocket(port);
 
-            // continuously look for connections
+            // continuously look for and add connections
             while (true) {
                 serverController.displayNewMessage(new Message("Server is open for connection..."));
                 Socket socket = serverSocket.accept();
-                serverController.displayNewMessage(new Message("Received connection from port " + socket.getPort()));
 
-                // start and add thread to list of threads
-                ServerClientThread client = new ServerClientThread(socket, serverController, this);
-                client.start();
-                serverController.clients.add(client);
+                serverController.displayNewMessage(new Message("Received connection from port " + socket.getPort()));
+                ServerClientThread sct = new ServerClientThread(socket, serverController, this);
+                sct.start();
+                ServerController.clients.add(sct);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void broadcastContactsList() throws IOException {
+    public void broadcastContactsList() {
         // send message to client: contacts list
-        for(ServerClientThread sct : ServerController.clients){
-            for(Map.Entry<Integer, String> entry : ServerController.contacts.entrySet()){
-                Message contact = new Message(entry.getValue());
-                contact.typeOfMessage = Message.contacts;
-                sct.objectOutputStream.writeObject(contact);
+        try {
+            for (ServerClientThread sct : ServerController.clients) {
+                for (Map.Entry<Integer, String> entry : ServerController.contacts.entrySet()) {
+                    Message contact = new Message(entry.getValue());
+                    contact.typeOfMessage = Message.contacts;
+                    sct.objectOutputStream.writeObject(contact);
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
 
+// represents a single connection to a user
 class ServerClientThread extends Thread {
-    private Socket socket;
     private ServerController serverController;
     private ServerThread serverThread;
-    private OutputStream outputStream;
-    public ObjectOutputStream objectOutputStream;
-    private InputStream inputStream;
-    private ObjectInputStream objectInputStream;
-    Queue<Message> invites = new LinkedList<>();
-    String clientName = "";
-    int clientPort;
+    private Socket socket;
 
-    public ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread){
+    private String clientName = "";
+    private int clientPort;
+    ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream;
+
+    ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread){
         this.socket = socket;
         this.serverController = serverController;
         this.serverThread = serverThread;
@@ -133,13 +131,15 @@ class ServerClientThread extends Thread {
     public void run(){
 
         try {
-            outputStream = socket.getOutputStream();
+            // for writing and reading to sockets
+            OutputStream outputStream = socket.getOutputStream();
             objectOutputStream = new ObjectOutputStream(outputStream);
-            inputStream = socket.getInputStream();
+            InputStream inputStream = socket.getInputStream();
             objectInputStream = new ObjectInputStream(inputStream);
 
             // read message from client: client name and add to contacts list
             Message m = (Message) objectInputStream.readObject();
+            m.encryptedMessage+="#"+socket.getPort();
             if(!ServerController.contacts.containsValue(m.encryptedMessage)){
                 clientName = m.encryptedMessage;
                 ServerController.contacts.put(clientPort, clientName);
@@ -147,18 +147,29 @@ class ServerClientThread extends Thread {
                 serverThread.broadcastContactsList();
             }
 
-            // continuously check for invites coming from client
+            // continuously check for messages coming from client
             new Thread(()->{
                 try {
                     while(true){
                         Message message = (Message) objectInputStream.readObject();
-                        for(ServerClientThread client : ServerController.clients){
-                            if(client.clientName.equals(message.encryptedMessage)){
-                                Message inviteMessage = new Message(clientName);
-                                inviteMessage.typeOfMessage = Message.conversationInvite;
-                                client.objectOutputStream.writeObject(inviteMessage);
+                        switch(message.typeOfMessage){
+                            case Message.conversationInvite:
+                                // client wants to send an invitation
+                                for(ServerClientThread client : ServerController.clients){
+                                    if(client.clientName.equals(message.encryptedMessage)){
+                                        Message inviteMessage = new Message(clientName);
+                                        inviteMessage.typeOfMessage = Message.conversationInvite;
+                                        client.objectOutputStream.writeObject(inviteMessage);
+                                        break;
+                                    }
+                                }
                                 break;
-                            }
+                            case Message.conversationDecline:
+                                // client wants to decline an invitation
+                                break;
+                            case Message.conversationAccept:
+                                // client wants to accept and invitation
+                                break;
                         }
                     }
                 } catch (IOException | ClassNotFoundException e) {

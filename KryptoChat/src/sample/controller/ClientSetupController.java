@@ -122,7 +122,9 @@ class ClientServerThread extends Thread {
                         Message m = (Message) objectInputStream.readObject();
                         if(m.typeOfMessage.equals(Message.contacts)){
                             if(!clientSetupController.contactsListView.getItems().stream().anyMatch(co -> co.encryptedMessage.equals(m.encryptedMessage))){
-                                clientSetupController.updateContacts(m);
+                                Platform.runLater(()->{
+                                    clientSetupController.updateContacts(m);
+                                });
                             }
                         } else if(m.typeOfMessage.equals(Message.conversationInvite)){
                             // display confirmation pop up that somebody wants to connect with you
