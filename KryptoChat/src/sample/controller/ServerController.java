@@ -50,6 +50,7 @@ public class ServerController {
     }
 }
 
+// represents the server
 class ServerThread extends Thread {
     int port;
     private ServerController serverController;
@@ -94,7 +95,7 @@ class ServerThread extends Thread {
     }
 }
 
-// represents a single connection to a user
+// represents a single connection to a client
 class ServerClientThread extends Thread {
     private ServerController serverController;
     private ServerThread serverThread;
@@ -148,11 +149,11 @@ class ServerClientThread extends Thread {
                                     }
                                 }
                                 break;
+                            case Message.conversationAccept:
+                                // client wants to accept an invitation
+                                break;
                             case Message.conversationDecline:
                                 // client wants to decline an invitation
-                                break;
-                            case Message.conversationAccept:
-                                // client wants to accept and invitation
                                 break;
                         }
                     }
