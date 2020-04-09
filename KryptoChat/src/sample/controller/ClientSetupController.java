@@ -3,6 +3,8 @@ package sample.controller;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import sample.model.Message;
 
@@ -58,6 +60,19 @@ public class ClientSetupController {
             contactsListView.refresh();
         });
     }
+
+    void displayChatRoom(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
+            Parent root = null;
+            root = loader.load();
+            ClientChatRoomController UI = loader.getController();
+            Controller.newWindow(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 class ClientServerThread extends Thread {
@@ -107,6 +122,7 @@ class ClientServerThread extends Thread {
                                     alert.showAndWait();
                                     if(alert.getResult() == ButtonType.YES) {
                                         sendMessage(m.encryptedMessage, Message.conversationAccept);
+                                        clientSetupController.displayChatRoom();
                                     } else if(alert.getResult() == ButtonType.NO){
                                         sendMessage(m.encryptedMessage, Message.conversationDecline);
                                     }
@@ -117,6 +133,7 @@ class ClientServerThread extends Thread {
                                 Platform.runLater(() -> {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!", ButtonType.OK);
                                     alert.showAndWait();
+                                    clientSetupController.displayChatRoom();
                                 });
                                 break;
                             case Message.conversationDecline:
