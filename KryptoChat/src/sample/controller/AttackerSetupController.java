@@ -14,8 +14,8 @@ import java.io.*;
 import java.net.Socket;
 
 
-public class AttackerSetupController
-{
+public class AttackerSetupController implements Serializable {
+    public static Socket attack_socket;
     private String selected;
     ObservableList<String> list = FXCollections.observableArrayList();
     @FXML
@@ -39,12 +39,12 @@ public class AttackerSetupController
     */
     public void handleConnectButton(ActionEvent event)
     {
-        if(port.getText() != null && choiceBox.getValue() != null)
+        if(port.getText().length() != 0 && choiceBox.getValue() != null)
         {
             setSelection();
             int pt = Integer.parseInt(port.getText());
             try {
-                Socket socket = new Socket("0.0.0.0", pt);
+                attack_socket = new Socket("0.0.0.0", pt);
                 this.connected.setTextFill(Color.web("#800000"));
                 this.connected.setText("Connected");
                 FXMLLoader loader = new FXMLLoader();
@@ -58,15 +58,20 @@ public class AttackerSetupController
                 Stage stage = (Stage) connect.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
-                this.connected.setTextFill(Color.web("#008000"));
-                this.connected.setText("Unable to connect");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Info Box");
+                alert.setHeaderText("Ooops!");
+                alert.setContentText("Unable to connect,\ninput correct credentials");
+                alert.showAndWait();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Ooops!");
-            alert.setContentText("Please select a mode of Attack!");
-
+            if(choiceBox.getValue() == null)
+                alert.setContentText("Please select a mode of Attack!");
+            else
+                alert.setContentText("Please enter the server port number!");
             alert.showAndWait();
         }
     }
