@@ -1,39 +1,35 @@
 package sample.controller;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import sample.model.Message;
-import sample.model.MessageList;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class ClientSetupController {
 
     @FXML
     Button serverButton, receiverButton;
     @FXML
-    TextField hostnameTextField, serverTextField, clientNameTextField;
+    TextField hostnameTextField, portTextField, clientNameTextField;
     @FXML
     ComboBox<String> encryptionComboBox;
     @FXML
     ListView<Message> contactsListView;
-    private ObservableList<Message> observableList;
     private List<Message> contacts = new ArrayList<>();
     private ClientServerThread clientServerThread;
 
     public void handleServerButton(ActionEvent event){
-        if(hostnameTextField.getText() != null && serverTextField.getText() != null && clientNameTextField.getText() != null){
+        if(hostnameTextField.getText() != null && portTextField.getText() != null && clientNameTextField.getText() != null){
             String host = hostnameTextField.getText();
-            int port = Integer.parseInt(serverTextField.getText());
+            int port = Integer.parseInt(portTextField.getText());
             clientServerThread = new ClientServerThread(this);
             clientServerThread.port = port;
             clientServerThread.host = host;
@@ -44,41 +40,32 @@ public class ClientSetupController {
 
     public void handleReceiverButton(ActionEvent event){
         try{
-//            // display user interface
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
-//            Parent root = loader.load();
-//            ClientChatRoomController UI = loader.getController();
-//            Controller.newWindow(root);
-            clientServerThread.sendInvite(contactsListView.getSelectionModel().getSelectedItem().encryptedMessage);
+            clientServerThread.sendMessage(contactsListView.getSelectionModel().getSelectedItem().encryptedMessage, Message.conversationInvite);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
 
-    private void initializeListView(){
-        observableList = FXCollections.observableArrayList(contacts);
-        contactsListView.setItems(observableList);
-        contactsListView.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Message message, boolean empty) {
-                super.updateItem(message, empty);
-                if (empty || message == null || message.encryptedMessage == null) {
-                    setText(null);
-                } else {
-                    setText(message.encryptedMessage);
-                }
-            }
+    void updateContacts(Message m){
+        Platform.runLater(() -> {
+            Controller.initializeListView(contacts, contactsListView);
+            contacts.add(m);
+            contactsListView.getItems().setAll(contacts);
+            contactsListView.refresh();
         });
     }
 
-    void updateContacts(Message m){
-        Platform.runLater(() -> {
-            initializeListView();
-            contacts.add(m);
-            observableList.setAll(contacts);
-            contactsListView.setItems(observableList);
-        });
+    void displayChatRoom(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
+            Parent root;
+            root = loader.load();
+            ClientChatRoomController UI = loader.getController();
+            Controller.newWindow(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
@@ -86,76 +73,85 @@ class ClientServerThread extends Thread {
     String host;
     int port;
     String clientName;
-    private Socket socket;
-    private OutputStream outputStream;
     private ObjectOutputStream objectOutputStream;
-    private InputStream inputStream;
     private ObjectInputStream objectInputStream;
     private ClientSetupController clientSetupController;
-    Queue<MessageList> contactsQueue = new LinkedList<>();
-    public Queue<Message> messageQueue = new LinkedList<>();
 
-    public ClientServerThread(ClientSetupController clientSetupController){
+    ClientServerThread(ClientSetupController clientSetupController){
         this.clientSetupController = clientSetupController;
     }
 
     public void run(){
         try {
             // Create a socket to connect to the server
-            socket = new Socket(host, port);
+            Socket socket = new Socket(host, port);
 
-            // for sending messages
-            outputStream = socket.getOutputStream();
+            // for writing and reading to sockets
+            OutputStream outputStream = socket.getOutputStream();
             objectOutputStream = new ObjectOutputStream(outputStream);
-
-            // for receiving messages
-            inputStream = socket.getInputStream();
+            InputStream inputStream = socket.getInputStream();
             objectInputStream = new ObjectInputStream(inputStream);
 
-            // add your name into the server's contacts list
-            objectOutputStream.writeObject(new Message(clientName));
+            // add your name into the server's contacts
+            Message firstMessage = new Message(clientName);
+            firstMessage.typeOfMessage = Message.clientName;
+            objectOutputStream.writeObject(firstMessage);
 
-            // listen in for updated contacts list
+            // listen in for incoming messages
             new Thread(()->{
                 while(true) {
                     try {
                         Message m = (Message) objectInputStream.readObject();
-                        if(m.typeOfMessage.equals(Message.contacts)){
-                            if(!clientSetupController.contactsListView.getItems().stream().anyMatch(co -> co.encryptedMessage.equals(m.encryptedMessage))){
-                                clientSetupController.updateContacts(m);
-                            }
-                        } else if(m.typeOfMessage.equals(Message.conversationInvite)){
-                            // display confirmation pop up that somebody wants to connect with you
-                            Platform.runLater(() -> {
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " invited you to chat.\nWould you like to connect?", ButtonType.YES, ButtonType.NO);
-                                alert.showAndWait();
-
-                                if (alert.getResult() == ButtonType.YES) {
-                                    //do stuff
+                        switch (m.typeOfMessage) {
+                            case Message.contacts:
+                                // update contacts list if needed
+                                if (clientSetupController.contactsListView.getItems().stream().noneMatch(co -> co.encryptedMessage.equals(m.encryptedMessage))) {
+                                    Platform.runLater(() -> clientSetupController.updateContacts(m));
                                 }
-                            });
-
-                        } else if (m.typeOfMessage.equals(Message.conversationAccept)) {
-
-                        } else if (m.typeOfMessage.equals(Message.conversationDecline)){
-
+                                break;
+                            case Message.conversationInvite:
+                                // another user wants to connect
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " invited you to chat.\nWould you like to connect?", ButtonType.YES, ButtonType.NO);
+                                    alert.showAndWait();
+                                    if(alert.getResult() == ButtonType.YES) {
+                                        sendMessage(m.encryptedMessage, Message.conversationAccept);
+                                        clientSetupController.displayChatRoom();
+                                    } else if(alert.getResult() == ButtonType.NO){
+                                        sendMessage(m.encryptedMessage, Message.conversationDecline);
+                                    }
+                                });
+                                break;
+                            case Message.conversationAccept:
+                                // another user accepted connection
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!", ButtonType.OK);
+                                    alert.showAndWait();
+                                    clientSetupController.displayChatRoom();
+                                });
+                                break;
+                            case Message.conversationDecline:
+                                // another user declined connection
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " declined the invite.", ButtonType.OK);
+                                    alert.showAndWait();
+                                });
+                                break;
                         }
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
             }).start();
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void sendInvite(String receiver){
+    void sendMessage(String receiver, String typeOfMessage){
         try {
-            System.out.println("Sent invite");
             Message m = new Message(receiver);
-            m.typeOfMessage = Message.conversationInvite;
+            m.typeOfMessage = typeOfMessage;
             objectOutputStream.writeObject(m);
         } catch (IOException e) {
             e.printStackTrace();
