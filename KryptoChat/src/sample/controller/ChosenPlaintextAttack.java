@@ -30,4 +30,14 @@ public class ChosenPlaintextAttack extends AttackerSetupController
             System.out.println(e.getMessage());
         }
     }
+
+    public void queryDecryption(ActionEvent actionEvent)
+    {
+
+    }
+
+    public void save(ActionEvent actionEvent)
+    {
+
+    }
 }
