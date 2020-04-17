@@ -20,12 +20,10 @@ public class ChosenPlaintextAttack extends AttackerSetupController
             loader.setLocation(getClass().getResource("../view/AttackerSetup.fxml"));
             Parent root = loader.load();
             AttackerSetupController UI = loader.getController();
-            UI.init();
-            Controller.newWindow(root);
+            UI.init(Controller.newWindow(root));
 
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
-            attack_socket.close();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

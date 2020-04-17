@@ -3,19 +3,24 @@ package sample.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.*;
 import java.net.Socket;
 
+public class AttackerSetupController implements Serializable
+{
+    protected static Socket attack_socket;
+    protected static ObjectInputStream objis;
+    protected static ObjectOutputStream objos;
 
-public class AttackerSetupController implements Serializable {
-    public static Socket attack_socket;
     private String selected;
     ObservableList<String> list = FXCollections.observableArrayList();
     @FXML
@@ -28,7 +33,7 @@ public class AttackerSetupController implements Serializable {
     private Label connected = new Label("Connected");
 
     // Initialize choice box
-    public void init()
+    public void init(Stage stage)
     {
         addData();
     }
@@ -44,7 +49,8 @@ public class AttackerSetupController implements Serializable {
             setSelection();
             int pt = Integer.parseInt(port.getText());
             try {
-                attack_socket = new Socket("0.0.0.0", pt);
+                if(attack_socket == null)
+                    attack_socket = new Socket("0.0.0.0", pt);
                 this.connected.setTextFill(Color.web("#800000"));
                 this.connected.setText("Connected");
                 FXMLLoader loader = new FXMLLoader();
@@ -56,6 +62,7 @@ public class AttackerSetupController implements Serializable {
                 Controller.newWindow(root);
 
                 Stage stage = (Stage) connect.getScene().getWindow();
+
                 stage.close();
             } catch (IOException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

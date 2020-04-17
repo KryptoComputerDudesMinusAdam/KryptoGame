@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Controller {
 
-    public static void newWindow(Parent root){
+    public static Stage newWindow(Parent root){
         // New window (Stage)
         Scene secondScene = new Scene(root);
         Stage newWindow = new Stage();
@@ -22,6 +22,8 @@ public class Controller {
         newWindow.setX(newWindow.getX() + 25);
         newWindow.setY(newWindow.getY() + 25);
         newWindow.show();
+
+        return newWindow;
     }
 
     public static void initializeListView(List<Message> messages, ListView<Message> listView){
