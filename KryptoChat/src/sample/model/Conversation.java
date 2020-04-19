@@ -1,10 +1,11 @@
 package sample.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Conversation
-{
+public class Conversation implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected List<Message> msgs;
     protected String client1id;
     protected String client2id;
