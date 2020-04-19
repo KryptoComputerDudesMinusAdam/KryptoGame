@@ -3,14 +3,11 @@ package sample.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.*;
 import java.net.Socket;
@@ -29,12 +26,9 @@ public class AttackerSetupController implements Serializable
     private TextField port;
     @FXML
     private ChoiceBox<String> choiceBox;
-    @FXML
-    private Label connected = new Label("Connected");
 
     // Initialize choice box
-    public void init(Stage stage)
-    {
+    public void init() throws IOException {
         addData();
     }
 
@@ -49,20 +43,18 @@ public class AttackerSetupController implements Serializable
             setSelection();
             int pt = Integer.parseInt(port.getText());
             try {
-                if(attack_socket == null)
+                if(attack_socket == null){
                     attack_socket = new Socket("0.0.0.0", pt);
-                this.connected.setTextFill(Color.web("#800000"));
-                this.connected.setText("Connected");
+                    objis = new ObjectInputStream((InputStream) attack_socket.getInputStream());
+                    objos = new ObjectOutputStream((OutputStream) attack_socket.getOutputStream());
+                }
                 FXMLLoader loader = new FXMLLoader();
-
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
-                AttackerSetupController UI = loader.getController();
-
                 Parent root = loader.load();
+                AttackerSetupController UI = loader.getController();
                 Controller.newWindow(root);
-
+                UI.init();
                 Stage stage = (Stage) connect.getScene().getWindow();
-
                 stage.close();
             } catch (IOException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

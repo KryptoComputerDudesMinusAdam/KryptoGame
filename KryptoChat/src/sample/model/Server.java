@@ -73,6 +73,7 @@ class ServerThread extends Thread {
             System.out.println("Client name: "+this.clientName);
             System.out.println("\tClient port: "+this.clientPort);
 
+
             // "empty chat room" until client list is 2 or more
             while(Server.contacts.size() < 2){
                 objectOutputStream.writeObject(new Message("waiting for other clients ..."));
@@ -135,12 +136,12 @@ class ServerThread extends Thread {
                     System.out.println(this.clientName+" said: "+m.encryptedMessage);
                 }
             }
-
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
-    }
 }
+}
+
 
 
 /*

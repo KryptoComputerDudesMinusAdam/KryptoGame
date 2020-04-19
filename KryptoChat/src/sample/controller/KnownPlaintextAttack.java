@@ -26,14 +26,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
 
     private void getMessages() throws IOException, ClassNotFoundException
     {
-        objis = new ObjectInputStream((InputStream) attack_socket.getInputStream());
-        objos = new ObjectOutputStream((OutputStream) attack_socket.getOutputStream());
 
-        while(true)
-        {
-            Message receieve = (Message)objis.readObject();
-        
-        }
     }
 
     public void goBack(ActionEvent event)
@@ -44,7 +37,8 @@ public class KnownPlaintextAttack extends AttackerSetupController
             loader.setLocation(getClass().getResource("../view/AttackerSetup.fxml"));
             Parent root = loader.load();
             AttackerSetupController UI = loader.getController();
-            UI.init(Controller.newWindow(root));
+            Controller.newWindow(root);
+            UI.init();
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
         } catch (Exception e){

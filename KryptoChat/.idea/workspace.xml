@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
-    <ignored path="$PROJECT_DIR$/out/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/AttackerController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/AttackerSetupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/AttackerSetupController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/ClientSetupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/ClientSetupController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/Controller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/MenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/MenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/ServerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/controller/ServerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/model/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/model/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/model/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/model/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/model/ServerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/model/ServerThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/KryptoChat/sample/view/CiphertextOnlyAttack.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/KryptoChat/sample/view/CiphertextOnlyAttack.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/AttackerSetupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/AttackerSetupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/ChosenCiphertextAttack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/ChosenCiphertextAttack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/ChosenPlaintextAttack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/ChosenPlaintextAttack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/CiphertextOnlyAttack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/CiphertextOnlyAttack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/KnownPlaintextAttack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/KnownPlaintextAttack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/controller/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/controller/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/model/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/model/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/view/CiphertextOnlyAttack.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/view/CiphertextOnlyAttack.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,115 +70,6 @@
     <ui_properties converted="true" />
     <breakpoint_rules converted="true" />
   </component>
-  <component name="FavoritesManager">
-    <favorites_list name="JavaFxApplication" />
-  </component>
-  <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.58840793">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="300">
-                  <caret line="25" selection-start-line="25" selection-end-line="25" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/controller/MenuController.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="675">
-                  <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/view/AttackerSetup.fxml">
-              <provider editor-type-id="JavaFX-Scene-Builder" />
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/view/ClientSetup.fxml">
-              <provider editor-type-id="JavaFX-Scene-Builder" />
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="150">
-                  <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/sample/controller/ServerController.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="778">
-                  <caret line="79" column="40" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1057#1454#0" expanded="true" />
-                    <element signature="e#1453#1454#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/model/Client.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="645">
-                  <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/view/ClientChatRoom.fxml">
-              <provider editor-type-id="JavaFX-Scene-Builder" />
-              <provider selected="true" editor-type-id="text-editor" />
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/sample/model/Server.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="254">
-                  <caret line="23" column="37" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="72" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/model/Message.java">
-              <provider selected="true" editor-type-id="text-editor" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/sample/view/Server.fxml">
-              <provider editor-type-id="JavaFX-Scene-Builder" />
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="120">
-                  <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -173,99 +84,16 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$USER_HOME$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/sample/view/AttackerSetup.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/model/Server.java" />
-        <option value="$PROJECT_DIR$/src/sample/view/Server.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/controller/ServerController.java" />
-      </list>
-    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
-  </component>
   <component name="ProjectId" id="1a5KbPwg4YaDPZlWZ6ya0k4L1Y2" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="Client.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="Server.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
-            <path>
-              <item name="KryptoChat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KryptoChat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -295,19 +123,13 @@
       <recent name="$PROJECT_DIR$/src/sample/view" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -319,12 +141,6 @@
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
       <Port>5050</Port>
-    </configuration>
-    <configuration default="true" type="Applet">
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="sample.Main" />
@@ -349,6 +165,7 @@
       </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="moduleWithDependencies" />
@@ -358,6 +175,7 @@
       </method>
     </configuration>
     <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="moduleWithDependencies" />
@@ -400,42 +218,6 @@
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="15296000" />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10561661" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Capture Tool" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info id="Learn" order="7" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.08367347" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32959184" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32959184" />
-      <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Maven" order="3" />
-      <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
@@ -455,131 +237,98 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="104" y="62" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.800@0.0.1280.800" timestamp="1586032473884" />
-    <state width="1238" height="76" key="GridCell.Tab.0.bottom" timestamp="1586031530308">
+    <state width="1238" height="153" key="GridCell.Tab.0.bottom" timestamp="1587313501999">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="76" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1586031530308" />
-    <state width="1238" height="76" key="GridCell.Tab.0.center" timestamp="1586031530307">
+    <state width="694" height="154" key="GridCell.Tab.0.bottom/0.0.1280.752@0.0.1280.752" timestamp="1587312737354" />
+    <state width="1238" height="153" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1587313501999" />
+    <state width="1238" height="153" key="GridCell.Tab.0.center" timestamp="1587313501995">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="76" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1586031530307" />
-    <state width="1238" height="76" key="GridCell.Tab.0.left" timestamp="1586031530304">
+    <state width="694" height="154" key="GridCell.Tab.0.center/0.0.1280.752@0.0.1280.752" timestamp="1587312737353" />
+    <state width="1238" height="153" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1587313501995" />
+    <state width="1238" height="153" key="GridCell.Tab.0.left" timestamp="1587313501992">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="76" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1586031530304" />
-    <state width="1238" height="76" key="GridCell.Tab.0.right" timestamp="1586031530307">
+    <state width="694" height="154" key="GridCell.Tab.0.left/0.0.1280.752@0.0.1280.752" timestamp="1587312737353" />
+    <state width="1238" height="153" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1587313501992" />
+    <state width="1238" height="153" key="GridCell.Tab.0.right" timestamp="1587313501996">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="76" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1586031530307" />
+    <state width="694" height="154" key="GridCell.Tab.0.right/0.0.1280.752@0.0.1280.752" timestamp="1587312737354" />
+    <state width="1238" height="153" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1587313501996" />
+    <state width="1238" height="153" key="GridCell.Tab.1.bottom" timestamp="1587313510221">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="694" height="136" key="GridCell.Tab.1.bottom/0.0.1280.752@0.0.1280.752" timestamp="1587312523447" />
+    <state width="694" height="136" key="GridCell.Tab.1.bottom/0.0.1280.753@0.0.1280.753" timestamp="1587312068875" />
+    <state width="1238" height="153" key="GridCell.Tab.1.bottom/0.0.1280.800@0.0.1280.800" timestamp="1587313510221" />
+    <state width="1238" height="153" key="GridCell.Tab.1.center" timestamp="1587313510219">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="694" height="136" key="GridCell.Tab.1.center/0.0.1280.752@0.0.1280.752" timestamp="1587312523444" />
+    <state width="694" height="136" key="GridCell.Tab.1.center/0.0.1280.753@0.0.1280.753" timestamp="1587312068874" />
+    <state width="1238" height="153" key="GridCell.Tab.1.center/0.0.1280.800@0.0.1280.800" timestamp="1587313510219" />
+    <state width="1238" height="153" key="GridCell.Tab.1.left" timestamp="1587313510216">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="694" height="136" key="GridCell.Tab.1.left/0.0.1280.752@0.0.1280.752" timestamp="1587312523440" />
+    <state width="694" height="136" key="GridCell.Tab.1.left/0.0.1280.753@0.0.1280.753" timestamp="1587312068873" />
+    <state width="1238" height="153" key="GridCell.Tab.1.left/0.0.1280.800@0.0.1280.800" timestamp="1587313510216" />
+    <state width="1238" height="153" key="GridCell.Tab.1.right" timestamp="1587313510220">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="694" height="136" key="GridCell.Tab.1.right/0.0.1280.752@0.0.1280.752" timestamp="1587312523445" />
+    <state width="694" height="136" key="GridCell.Tab.1.right/0.0.1280.753@0.0.1280.753" timestamp="1587312068874" />
+    <state width="1238" height="153" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1587313510220" />
     <state x="317" y="232" key="com.intellij.ide.util.TipDialog" timestamp="1586029428086">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="317" y="232" key="com.intellij.ide.util.TipDialog/0.0.1280.800@0.0.1280.800" timestamp="1586029428086" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/sample/controller/CiphertextOnlyAttack.java</url>
+          <line>33</line>
+          <properties class="sample.controller.CiphertextOnlyAttack" method="init">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/sample/controller/ServerController.java</url>
+          <line>117</line>
+          <properties class="sample.controller.ServerClientThread" method="run">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/sample/controller/ServerController.java</url>
+          <line>25</line>
+          <properties class="sample.controller.ServerController" method="handleConnectButton">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/sample/controller/AttackerSetupController.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/sample/controller/ServerController.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/out/production/KryptoChat/sample/controller/ServerController.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#206#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/view/Menu.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/controller/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/controller/MenuController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/view/AttackerSetup.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/view/ClientSetup.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/view/ClientChatRoom.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/model/Message.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/view/Server.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/model/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/model/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="23" column="37" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="72" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/controller/ServerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="778">
-          <caret line="79" column="40" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1057#1454#0" expanded="true" />
-            <element signature="e#1453#1454#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
   </component>
   <component name="masterDetails">
     <states>

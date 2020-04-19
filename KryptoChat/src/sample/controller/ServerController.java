@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import sample.model.Conversation;
 import sample.model.Message;
 import sample.model.Server;
 
@@ -127,10 +128,13 @@ class ServerClientThread extends Thread {
             Message m = (Message) objectInputStream.readObject();
             String clientName = m.encryptedMessage;
             clientId = clientName +"#"+ clientPort;
-            serverController.displayNewMessage(new Message("Added "+clientId));
-            serverThread.broadcastContactsList();
 
-
+            // Attacker
+            if(clientName.startsWith("Attacker")){
+                handelAttacker(objectOutputStream, objectInputStream, clientName);
+            }else{
+                serverController.displayNewMessage(new Message("Added "+clientId));
+                serverThread.broadcastContactsList();
             // continuously check for messages coming from client
             new Thread(()->{
                 try {
@@ -157,9 +161,29 @@ class ServerClientThread extends Thread {
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-            }).start();
+            }).start();}
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
+        switch (clientName)
+        {
+            case "CiphertextOnly":
+                break;
+            case "KnownPlaintext":
+                break;
+            case "ChoseCiphertext":
+                break;
+            case "ChosePlaintext":
+                break;
+        }
+        Conversation cs = new Conversation();
+        cs.add(new Message("Message 1"));
+        cs.add(new Message("Message 2"));
+        cs.add(new Message("Message 3"));
+        cs.add(new Message("Message 4"));
+        objectOutputStream.writeObject(cs);
     }
 }
