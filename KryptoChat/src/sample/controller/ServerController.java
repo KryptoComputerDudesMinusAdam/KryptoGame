@@ -105,6 +105,7 @@ class ServerClientThread extends Thread {
     private int clientPort;
     String clientId;
     ObjectOutputStream objectOutputStream;
+    private boolean foundConversation = false;
     private ObjectInputStream objectInputStream;
 
     ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread){
@@ -137,28 +138,41 @@ class ServerClientThread extends Thread {
             // continuously check for messages coming from client
             new Thread(()->{
                 try {
+                    // try to get two clients to connect to each other
                     while(true){
                         Message message = (Message) objectInputStream.readObject();
-                        // client wants to send a message to another client
-                        for(ServerClientThread client : ServerThread.clients){
-                            if(client.clientId.equals(message.encryptedMessage)){
-                                Message messageToOtherClient = new Message(clientId);
-                                messageToOtherClient.typeOfMessage = message.typeOfMessage;
-                                client.objectOutputStream.writeObject(messageToOtherClient);
+                        // client still needs to connect to another client
+                        if(!foundConversation){
+                            for(ServerClientThread client : ServerThread.clients){
+                                if(client.clientId.equals(message.encryptedMessage)){
+                                    Message messageToOtherClient = new Message(clientId);
+                                    messageToOtherClient.typeOfMessage = message.typeOfMessage;
+                                    client.objectOutputStream.writeObject(messageToOtherClient);
 
-                                if(messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)){
                                     // connect the two clients together
-                                    String client2Id = message.encryptedMessage;
-                                    ServerThread.connections.put(clientId, client2Id);
-                                    ServerThread.connections.put(client2Id, clientId);
-                                    serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
+                                    if(messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)){
+                                        String client2Id = message.encryptedMessage;
+                                        ServerThread.connections.put(clientId, client2Id);
+                                        ServerThread.connections.put(client2Id, clientId);
+                                        serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
+                                        foundConversation = true;
+                                        client.foundConversation = true;
+                                    }
+                                    break;
                                 }
-                                break;
+                            }
+                        } else {
+                            for(ServerClientThread client : ServerThread.clients){
+                                if(client.clientId.equals(ServerThread.connections.get(clientId))){
+                                    System.out.println("Writing message: "+message.encryptedMessage+"\n\tFrom: "+clientId + " to " + ServerThread.connections.get(clientId));
+                                    client.objectOutputStream.writeObject(message);
+                                    break;
+                                }
                             }
                         }
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }).start();}
         } catch (IOException | ClassNotFoundException e) {
