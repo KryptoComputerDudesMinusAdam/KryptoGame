@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import sample.model.Message;
 
 import java.io.*;
@@ -16,17 +17,13 @@ public class ClientChatRoomController {
     @FXML
     Label titleLabel;
     @FXML
-    TextArea sendTextArea;
+    TextArea sendTextArea, receiveTextArea;
     @FXML
     Button sendButton, DecryptButton;
-    @FXML
-    TextField receiveTextField;
     @FXML
     ListView<Message> chatListView;
     List<Message> messages = new ArrayList<>();
     ClientThread client;
-//    ObjectOutputStream objectOutputStream;
-//    ObjectInputStream objectInputStream;
 
     void initializeThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
        client = new ClientThread(socket, clientName, receiverId, oos, ois);
@@ -38,15 +35,23 @@ public class ClientChatRoomController {
         Controller.initializeListView(messages, chatListView);
     }
 
+    public void handleListViewClick(MouseEvent event){
+        try{
+            Message m = chatListView.getSelectionModel().getSelectedItem();
+            receiveTextArea.setText(m.encryptedMessage);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void handleSendButton(ActionEvent event){
         client.sendMessage(sendTextArea.getText());
     }
 
     public void handleDecryptButton(ActionEvent event){
-        /*
-            TODO:
-                decrypt a selected message from listview and then update listview
-         */
+        if(receiveTextArea.getText() != null){
+            System.out.println("Decrypting message: "+receiveTextArea.getText());
+        }
     }
 }
 
