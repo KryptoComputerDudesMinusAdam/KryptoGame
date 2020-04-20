@@ -6,12 +6,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import sample.model.Message;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientSetupController {
 
@@ -55,13 +57,20 @@ public class ClientSetupController {
         });
     }
 
-    void displayChatRoom(){
+    void displayChatRoom(ClientServerThread cst){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
             Parent root;
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
+            UI.initializeThread(cst.socket, cst.clientName, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
+//            UI.socket = cst.socket;
+//            UI.clientName = cst.clientName;
+//            UI.receiverId = cst.receivingClient;
+//            UI.objectOutputStream = cst.objectOutputStream;
+//            UI.objectInputStream = cst.objectInputStream;
+            UI.listenIn();
             Controller.newWindow(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,8 +82,10 @@ class ClientServerThread extends Thread {
     String host;
     int port;
     String clientName;
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
+    Socket socket;
+    String receivingClient;
+    ObjectOutputStream objectOutputStream;
+    ObjectInputStream objectInputStream;
     private ClientSetupController clientSetupController;
 
     ClientServerThread(ClientSetupController clientSetupController){
@@ -84,7 +95,7 @@ class ClientServerThread extends Thread {
     public void run(){
         try {
             // Create a socket to connect to the server
-            Socket socket = new Socket(host, port);
+            socket = new Socket(host, port);
 
             // for writing and reading to sockets
             OutputStream outputStream = socket.getOutputStream();
@@ -94,12 +105,14 @@ class ClientServerThread extends Thread {
 
             // add your name into the server's contacts
             Message firstMessage = new Message(clientName);
+            clientName+="#"+socket.getPort();
             firstMessage.typeOfMessage = Message.clientName;
             objectOutputStream.writeObject(firstMessage);
 
             // listen in for incoming messages
             new Thread(()->{
-                while(true) {
+                boolean foundConversation = false;
+                while(!foundConversation) {
                     try {
                         Message m = (Message) objectInputStream.readObject();
                         switch (m.typeOfMessage) {
@@ -116,19 +129,21 @@ class ClientServerThread extends Thread {
                                     alert.showAndWait();
                                     if(alert.getResult() == ButtonType.YES) {
                                         sendMessage(m.encryptedMessage, Message.conversationAccept);
-                                        clientSetupController.displayChatRoom();
                                     } else if(alert.getResult() == ButtonType.NO){
                                         sendMessage(m.encryptedMessage, Message.conversationDecline);
                                     }
                                 });
+                                receivingClient = m.encryptedMessage;
+                                foundConversation = true;
                                 break;
                             case Message.conversationAccept:
                                 // another user accepted connection
                                 Platform.runLater(() -> {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!", ButtonType.OK);
                                     alert.showAndWait();
-                                    clientSetupController.displayChatRoom();
                                 });
+                                receivingClient = m.encryptedMessage;
+                                foundConversation = true;
                                 break;
                             case Message.conversationDecline:
                                 // another user declined connection
@@ -142,6 +157,13 @@ class ClientServerThread extends Thread {
                         e.printStackTrace();
                     }
                 }
+                System.out.println("No longer reading messages here");
+                Platform.runLater(() -> {
+                    clientSetupController.displayChatRoom(this);
+                    Stage stage = (Stage) clientSetupController.serverButton.getScene().getWindow();
+                    stage.close();
+                });
+
             }).start();
         } catch (IOException e) {
             System.out.println(e.getMessage());
