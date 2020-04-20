@@ -65,7 +65,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController
         counter++;
         if(counter < 3)
         {
-            Message m = new Message("Attacker");
+            Message m = new Message("AttackerCiphertextOnly");
             objos.writeObject(m);
             mess.add(((Message) objis.readObject()).encryptedMessage);
             cipherList.setItems(mess);

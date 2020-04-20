@@ -171,6 +171,12 @@ class ServerClientThread extends Thread {
         switch (clientName)
         {
             case "CiphertextOnly":
+                Conversation cs = new Conversation();
+                cs.add(new Message("Message 1"));
+                cs.add(new Message("Message 2"));
+                cs.add(new Message("Message 3"));
+                cs.add(new Message("Message 4"));
+                objectOutputStream.writeObject(cs);
                 break;
             case "KnownPlaintext":
                 break;
@@ -179,11 +185,5 @@ class ServerClientThread extends Thread {
             case "ChosePlaintext":
                 break;
         }
-        Conversation cs = new Conversation();
-        cs.add(new Message("Message 1"));
-        cs.add(new Message("Message 2"));
-        cs.add(new Message("Message 3"));
-        cs.add(new Message("Message 4"));
-        objectOutputStream.writeObject(cs);
     }
 }
