@@ -109,6 +109,8 @@ class ServerClientThread extends Thread {
     private boolean foundConversation = false;
     private ObjectInputStream objectInputStream;
 
+    Conversation conversation = new Conversation();
+
     ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread){
         this.socket = socket;
         this.serverController = serverController;
@@ -141,6 +143,7 @@ class ServerClientThread extends Thread {
                 try {
                     // try to get two clients to connect to each other
                     while(true){
+                        System.out.println("Updated conversation object: "+conversation.msgs.toString());
                         Message message = (Message) objectInputStream.readObject();
                         // client still needs to connect to another client
                         if(!foundConversation){
@@ -155,6 +158,8 @@ class ServerClientThread extends Thread {
                                         String client2Id = message.encryptedMessage;
                                         ServerThread.connections.put(clientId, client2Id);
                                         ServerThread.connections.put(client2Id, clientId);
+                                        conversation.setClient1id(clientId);
+                                        conversation.setClient2id(client2Id);
                                         serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
                                         foundConversation = true;
                                         client.foundConversation = true;
@@ -163,10 +168,12 @@ class ServerClientThread extends Thread {
                                 }
                             }
                         } else {
+                            conversation.msgs.add(message);
                             for(ServerClientThread client : ServerThread.clients){
                                 if(client.clientId.equals(ServerThread.connections.get(clientId))){
                                     System.out.println("Writing message: "+message.encryptedMessage+"\n\tFrom: "+clientId + " to " + ServerThread.connections.get(clientId));
                                     client.objectOutputStream.writeObject(message);
+                                    client.conversation.msgs.add(message);
                                     break;
                                 }
                             }
