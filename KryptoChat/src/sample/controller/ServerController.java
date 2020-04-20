@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 
 import sample.model.Conversation;
 import sample.model.Message;
-import sample.model.Server;
 
 import java.io.*;
 import java.net.ServerSocket;

@@ -2,13 +2,16 @@ package sample.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 
 public class ClientChatRoomController {
+    @FXML
+    Label titleLabel;
     @FXML
     TextArea sendTextArea;
     @FXML
@@ -17,6 +20,11 @@ public class ClientChatRoomController {
     TextField receiveTextField;
     @FXML
     ListView chatListView;
+    Socket socket;
+    String clientName;
+    String receiverId;
+    ObjectOutputStream objectOutputStream;
+    ObjectInputStream objectInputStream;
 
     public void handleSendButton(ActionEvent event){
         /*

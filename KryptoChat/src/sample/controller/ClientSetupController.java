@@ -55,13 +55,18 @@ public class ClientSetupController {
         });
     }
 
-    void displayChatRoom(){
+    void displayChatRoom(ClientServerThread cst){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../view/ClientChatRoom.fxml"));
             Parent root;
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
+            UI.socket = cst.socket;
+            UI.clientName = cst.clientName;
+            UI.receiverId = cst.receivingClient;
+            UI.objectOutputStream = cst.objectOutputStream;
+            UI.objectInputStream = cst.objectInputStream;
             Controller.newWindow(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,8 +78,10 @@ class ClientServerThread extends Thread {
     String host;
     int port;
     String clientName;
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
+    Socket socket;
+    String receivingClient;
+    ObjectOutputStream objectOutputStream;
+    ObjectInputStream objectInputStream;
     private ClientSetupController clientSetupController;
 
     ClientServerThread(ClientSetupController clientSetupController){
@@ -84,7 +91,7 @@ class ClientServerThread extends Thread {
     public void run(){
         try {
             // Create a socket to connect to the server
-            Socket socket = new Socket(host, port);
+            socket = new Socket(host, port);
 
             // for writing and reading to sockets
             OutputStream outputStream = socket.getOutputStream();
@@ -116,7 +123,8 @@ class ClientServerThread extends Thread {
                                     alert.showAndWait();
                                     if(alert.getResult() == ButtonType.YES) {
                                         sendMessage(m.encryptedMessage, Message.conversationAccept);
-                                        clientSetupController.displayChatRoom();
+                                        receivingClient = m.encryptedMessage;
+                                        clientSetupController.displayChatRoom(this);
                                     } else if(alert.getResult() == ButtonType.NO){
                                         sendMessage(m.encryptedMessage, Message.conversationDecline);
                                     }
@@ -127,7 +135,7 @@ class ClientServerThread extends Thread {
                                 Platform.runLater(() -> {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!", ButtonType.OK);
                                     alert.showAndWait();
-                                    clientSetupController.displayChatRoom();
+                                    clientSetupController.displayChatRoom(this);
                                 });
                                 break;
                             case Message.conversationDecline:
