@@ -7,9 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import sample.model.Message;
 
-import java.io.*;
+import java.io.IOException;
 
 public class KnownPlaintextAttack extends AttackerSetupController
 {

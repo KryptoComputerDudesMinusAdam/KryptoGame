@@ -1,19 +1,20 @@
 package sample.controller;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import sample.model.Conversation;
 import sample.model.Message;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ServerController {
 
@@ -184,6 +185,12 @@ class ServerClientThread extends Thread {
         switch (clientName)
         {
             case "CiphertextOnly":
+                Conversation cs = new Conversation();
+                cs.add(new Message("Message 1"));
+                cs.add(new Message("Message 2"));
+                cs.add(new Message("Message 3"));
+                cs.add(new Message("Message 4"));
+                objectOutputStream.writeObject(cs);
                 break;
             case "KnownPlaintext":
                 break;
@@ -192,11 +199,5 @@ class ServerClientThread extends Thread {
             case "ChosePlaintext":
                 break;
         }
-        Conversation cs = new Conversation();
-        cs.add(new Message("Message 1"));
-        cs.add(new Message("Message 2"));
-        cs.add(new Message("Message 3"));
-        cs.add(new Message("Message 4"));
-        objectOutputStream.writeObject(cs);
     }
 }

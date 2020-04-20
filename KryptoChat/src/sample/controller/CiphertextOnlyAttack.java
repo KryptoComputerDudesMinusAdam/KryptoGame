@@ -13,10 +13,6 @@ import javafx.stage.Stage;
 import sample.model.Message;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CiphertextOnlyAttack extends AttackerSetupController
 {
@@ -65,7 +61,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController
         counter++;
         if(counter < 3)
         {
-            Message m = new Message("Attacker");
+            Message m = new Message("AttackerCiphertextOnly");
             objos.writeObject(m);
             mess.add(((Message) objis.readObject()).encryptedMessage);
             cipherList.setItems(mess);
