@@ -1,0 +1,50 @@
+.button {
+    -fx-background-radius: 25px;
+    -fx-background-color: "#63d2ff";
+    -fx-text-fill: "#F7F9FF";
+}
+
+.logout {
+/*
+    -fx-background-image: url("./assets/icons8-logout-rounded-left-50.png");
+    -fx-background-size: 26px 26px;
+*/
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.send {
+    -fx-background-image: url("./assets/icons8-email-send-50.png");
+    -fx-background-size: 26px 26px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.decrypt {
+    -fx-background-image: url("./assets/icons8-unlock-50.png");
+    -fx-background-size: 26px 26px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: "#8db87a";
+}
+
+.server {
+
+}
+
+.client {
+    -fx-background-color: "#8db87a";
+
+}
+
+.attacker {
+    -fx-background-color: "#d33e43";
+}
+
+.list-cell:inactive {
+    -fx-text-fill: red ;
+}
+
+.pane {
+    -fx-background-color: "#F7F9FF";
+}

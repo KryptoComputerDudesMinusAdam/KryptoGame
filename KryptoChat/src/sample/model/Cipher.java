@@ -16,4 +16,15 @@ public class Cipher {
     public static void main(String[] args){
         //TODO: test your method here
     }
+
+
+    /*
+    TODO:
+        mono
+        alice and bob have the same key
+        nobody else knows the key
+        server generates a random dictionary of length 26
+        clients expect first message to be from server
+        message contains dictionary variable and stored as their key
+     */
 }
