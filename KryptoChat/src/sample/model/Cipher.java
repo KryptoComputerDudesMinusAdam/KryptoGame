@@ -84,6 +84,6 @@ public class Cipher {
         }
         System.out.print("Decrypted text: ");
         System.out.print(plaintext);
-        return plaintext.toString();
+        return Arrays.toString(plaintext);
     }
 }
