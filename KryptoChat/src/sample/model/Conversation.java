@@ -36,7 +36,7 @@ public class Conversation implements Serializable {
     public void add(Message m){
         this.msgs.add(m);
     }
-
+    public void addMessageList(List<Message> m){this.msgs.addAll(m);}
     // Returns client1id
     public String getClient1id() {
         return client1id;
