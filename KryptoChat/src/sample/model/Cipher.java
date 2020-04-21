@@ -50,6 +50,9 @@ public class Cipher {
         int a;
         char[] alphabets = {'a', 'b', 'c', 'd', 'e', 'f','g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x','y', 'z',};
         char[] ciphertext = plaintext.toCharArray();
+        System.out.println("TEST: "+key.length());
+        System.out.println("TEST: "+ciphertext.length);
+
         for(x = 0; x < ciphertext.length;x++)
         {
             for(a = 0; a < 26; a++)
@@ -63,7 +66,7 @@ public class Cipher {
         }
         System.out.println("Encrypted text: ");
         System.out.print(ciphertext);
-        return Arrays.toString(ciphertext);
+        return new String(ciphertext);
     }
 
     public static String monoalphabeticDec(String key, String ciphertext){
@@ -85,6 +88,6 @@ public class Cipher {
         }
         System.out.print("Decrypted text: ");
         System.out.print(plaintext);
-        return Arrays.toString(plaintext);
+        return new String(plaintext);
     }
 }

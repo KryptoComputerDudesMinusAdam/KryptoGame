@@ -10,21 +10,22 @@ public class Message implements Serializable {
     public final static String conversationInvite = "conversationInvite";
     public final static String conversationAccept = "conversationAccept";
     public final static String conversationDecline = "conversationDecline";
+    public final static String conversationKey = "key";
 
     public String encryptedMessage;
     public int cypherOption;
     public String typeOfMessage;
 
     public String typeOfCipher;
-    public static String cipherMonoAlphabetic = "monoalphabetic";
-    public static String cipherVigenere = "vigenere";
-    public static String cipherStream = "stream";
+    public final static String cipherMonoAlphabetic = "monoalphabetic";
+    public final static String cipherVigenere = "vigenere";
+    public final static String cipherStream = "stream";
 
 
 
-    public Message(String encryptedMessage, int cypherOption){ // meant for messages to be encrypted/decrypted
+    public Message(String encryptedMessage, String typeOfCipher){ // meant for messages to be encrypted/decrypted
         this.encryptedMessage = encryptedMessage;
-        this.cypherOption = cypherOption;
+        this.typeOfCipher = typeOfCipher;
     }
 
     public Message(String e){ // meant for messages sent straight to server for connection setup and instructions
