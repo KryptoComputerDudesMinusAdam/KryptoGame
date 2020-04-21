@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import sample.model.Cipher;
 import sample.model.Message;
 
 import java.io.*;
@@ -33,6 +34,7 @@ public class ClientChatRoomController {
 
     void listenIn(){
         Controller.initializeListView(messages, chatListView);
+        titleLabel.setText(client.receiverId);
     }
 
     public void handleListViewClick(MouseEvent event){
@@ -51,6 +53,10 @@ public class ClientChatRoomController {
     public void handleDecryptButton(ActionEvent event){
         if(receiveTextArea.getText() != null){
             System.out.println("Decrypting message: "+receiveTextArea.getText());
+            Message m = chatListView.getSelectionModel().getSelectedItem();
+            m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+            chatListView.getItems().setAll(messages);
+            chatListView.refresh();
         }
     }
 }
@@ -62,6 +68,7 @@ class ClientThread extends Thread{
     ObjectOutputStream objectOutputStream;
     ObjectInputStream objectInputStream;
     ClientChatRoomController clientChatRoomController;
+    String key;
 
     public ClientThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
         this.socket = socket;
@@ -76,6 +83,10 @@ class ClientThread extends Thread{
         new Thread(()->{
             try {
                 System.out.println("Listening!!");
+                Message keyFromServer = (Message) objectInputStream.readObject();
+                System.out.println("Received key: "+keyFromServer.encryptedMessage);
+                key = keyFromServer.encryptedMessage;
+
                 while(true){
                     System.out.println("In while loop!");
                     Message m = (Message) objectInputStream.readObject();
@@ -96,7 +107,7 @@ class ClientThread extends Thread{
     void sendMessage(String str){
         try {
             System.out.println("Trying to send a message!");
-            Message m = new Message(str);
+            Message m = new Message(Cipher.monoalphabeticEnc(key, str));
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
                 m.encryptedMessage = "["+clientName+"]: "+m.encryptedMessage;

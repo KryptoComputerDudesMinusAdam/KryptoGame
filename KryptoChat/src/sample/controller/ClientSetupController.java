@@ -38,11 +38,17 @@ public class ClientSetupController {
             clientServerThread.clientName = clientNameTextField.getText();
             clientServerThread.start();
         }
+
+        encryptionComboBox.getItems().setAll(Message.cipherMonoAlphabetic, Message.cipherVigenere, Message.cipherStream);
+        encryptionComboBox.getSelectionModel().selectFirst();
     }
 
     public void handleReceiverButton(ActionEvent event){
         try{
-            clientServerThread.sendMessage(contactsListView.getSelectionModel().getSelectedItem().encryptedMessage, Message.conversationInvite);
+            String receiver = contactsListView.getSelectionModel().getSelectedItem().encryptedMessage;
+            String typeOfMesasge = Message.conversationInvite;
+            String typeOfCipher = encryptionComboBox.getSelectionModel().getSelectedItem();
+            clientServerThread.sendMessage(receiver, typeOfMesasge, typeOfCipher);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -70,11 +76,6 @@ public class ClientSetupController {
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
             UI.initializeThread(cst.socket, cst.clientName, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
-//            UI.socket = cst.socket;
-//            UI.clientName = cst.clientName;
-//            UI.receiverId = cst.receivingClient;
-//            UI.objectOutputStream = cst.objectOutputStream;
-//            UI.objectInputStream = cst.objectInputStream;
             UI.listenIn();
             Controller.newWindow(root);
         } catch (IOException e) {
@@ -130,12 +131,12 @@ class ClientServerThread extends Thread {
                             case Message.conversationInvite:
                                 // another user wants to connect
                                 Platform.runLater(() -> {
-                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " invited you to chat.\nWould you like to connect?", ButtonType.YES, ButtonType.NO);
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " invited you to chat with encryption type: "+m.typeOfCipher+"\nWould you like to connect?", ButtonType.YES, ButtonType.NO);
                                     alert.showAndWait();
                                     if(alert.getResult() == ButtonType.YES) {
-                                        sendMessage(m.encryptedMessage, Message.conversationAccept);
+                                        sendMessage(m.encryptedMessage, Message.conversationAccept, m.typeOfCipher);
                                     } else if(alert.getResult() == ButtonType.NO){
-                                        sendMessage(m.encryptedMessage, Message.conversationDecline);
+                                        sendMessage(m.encryptedMessage, Message.conversationDecline, m.typeOfCipher);
                                     }
                                 });
                                 receivingClient = m.encryptedMessage;
@@ -144,7 +145,7 @@ class ClientServerThread extends Thread {
                             case Message.conversationAccept:
                                 // another user accepted connection
                                 Platform.runLater(() -> {
-                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!", ButtonType.OK);
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " accepted the invite!\nYou two will be talking with encryption type: "+m.typeOfCipher, ButtonType.OK);
                                     alert.showAndWait();
                                 });
                                 receivingClient = m.encryptedMessage;
@@ -178,10 +179,12 @@ class ClientServerThread extends Thread {
         }
     }
 
-    void sendMessage(String receiver, String typeOfMessage){
+    void sendMessage(String receiver, String typeOfMessage, String typeOfCipher){
         try {
-            Message m = new Message(receiver);
+            System.out.println("MESSAGE INPUT: "+typeOfCipher);
+            Message m = new Message(receiver, typeOfCipher);
             m.typeOfMessage = typeOfMessage;
+            System.out.println("MESSAGE TEST: "+m.typeOfCipher);
             objectOutputStream.writeObject(m);
         } catch (IOException e) {
             e.printStackTrace();

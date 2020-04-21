@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import sample.model.Cipher;
 import sample.model.Conversation;
 import sample.model.Message;
 
@@ -111,6 +112,9 @@ class ServerClientThread extends Thread {
 
     Conversation conversation = new Conversation();
 
+    // *
+    public String typeOfCipher;
+
     ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread){
         this.socket = socket;
         this.serverController = serverController;
@@ -149,7 +153,8 @@ class ServerClientThread extends Thread {
                         if(!foundConversation){
                             for(ServerClientThread client : ServerThread.clients){
                                 if(client.clientId.equals(message.encryptedMessage)){
-                                    Message messageToOtherClient = new Message(clientId);
+                                    // *
+                                    Message messageToOtherClient = new Message(clientId, message.typeOfCipher);
                                     messageToOtherClient.typeOfMessage = message.typeOfMessage;
                                     client.objectOutputStream.writeObject(messageToOtherClient);
 
@@ -163,6 +168,15 @@ class ServerClientThread extends Thread {
                                         serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
                                         foundConversation = true;
                                         client.foundConversation = true;
+
+                                        // *
+                                        typeOfCipher = message.typeOfCipher;
+                                        client.typeOfCipher = message.typeOfCipher;
+                                        Message key = new Message(Cipher.generateMonoKey());
+                                        key.typeOfCipher = this.typeOfCipher;
+                                        key.typeOfMessage = Message.conversationKey;
+                                        objectOutputStream.writeObject(key);
+                                        client.objectOutputStream.writeObject(key);
                                     }
                                     break;
                                 }
