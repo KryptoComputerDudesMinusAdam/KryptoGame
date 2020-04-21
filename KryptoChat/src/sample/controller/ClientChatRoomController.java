@@ -53,6 +53,10 @@ public class ClientChatRoomController {
     public void handleDecryptButton(ActionEvent event){
         if(receiveTextArea.getText() != null){
             System.out.println("Decrypting message: "+receiveTextArea.getText());
+            Message m = chatListView.getSelectionModel().getSelectedItem();
+            m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+            chatListView.getItems().setAll(messages);
+            chatListView.refresh();
         }
     }
 }
@@ -64,7 +68,7 @@ class ClientThread extends Thread{
     ObjectOutputStream objectOutputStream;
     ObjectInputStream objectInputStream;
     ClientChatRoomController clientChatRoomController;
-    private String key;
+    String key;
 
     public ClientThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
         this.socket = socket;
