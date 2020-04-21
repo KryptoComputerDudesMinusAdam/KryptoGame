@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Conversation implements Serializable {
     private static final long serialVersionUID = 1L;
-    protected List<Message> msgs;
-    protected String client1id;
-    protected String client2id;
-    protected String typeOfEncryption;
+    public List<Message> msgs;
+    public String client1id;
+    public String client2id;
+    public String typeOfEncryption;
 
     // No-Arg Constructor
     public Conversation()

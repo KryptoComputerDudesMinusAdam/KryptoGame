@@ -57,6 +57,11 @@ public class ClientSetupController {
         });
     }
 
+    void displayAlert(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
+        alert.showAndWait();
+    }
+
     void displayChatRoom(ClientServerThread cst){
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -167,6 +172,9 @@ class ClientServerThread extends Thread {
             }).start();
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            Platform.runLater(() -> {
+                clientSetupController.displayAlert("Failure: Port is either busy or does not exist.");
+            });
         }
     }
 
