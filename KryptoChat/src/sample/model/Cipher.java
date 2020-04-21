@@ -65,6 +65,7 @@ public class Cipher {
         System.out.print(ciphertext);
         return Arrays.toString(ciphertext);
     }
+
     public static String monoalphabeticDec(String key, String ciphertext){
         int x;
         int a;
