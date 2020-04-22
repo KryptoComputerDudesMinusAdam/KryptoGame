@@ -57,9 +57,11 @@ public class ClientSetupController {
     void updateContacts(Message m){
         Platform.runLater(() -> {
             Controller.initializeListView(contacts, contactsListView);
-            contacts.add(m);
-            contactsListView.getItems().setAll(contacts);
-            contactsListView.refresh();
+            if(!m.encryptedMessage.equalsIgnoreCase(clientServerThread.clientId)){
+                contacts.add(m);
+                contactsListView.getItems().setAll(contacts);
+                contactsListView.refresh();
+            }
         });
     }
 
