@@ -19,7 +19,7 @@
       <Button fx:id="DecryptButton" layoutX="438.0" layoutY="434.0" mnemonicParsing="false" onAction="#handleDecryptButton" prefHeight="50.0" prefWidth="50.0" styleClass="decrypt" />
       <TextArea fx:id="sendTextArea" layoutX="15.0" layoutY="368.0" prefHeight="52.0" prefWidth="409.0" promptText="New Message" />
       <TextArea fx:id="receiveTextArea" layoutX="15.0" layoutY="434.0" prefHeight="52.0" prefWidth="409.0" promptText="Message from receiver" />
-      <Button layoutX="13.0" layoutY="10.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" styleClass="logout" text="Logout">
+      <Button fx:id="leaveButton" onAction="#handleLeaveButton" layoutX="13.0" layoutY="10.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" styleClass="logout" text="Logout">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

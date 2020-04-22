@@ -3,8 +3,11 @@ package sample.controller;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import sample.model.Cipher;
 import sample.model.Message;
 
@@ -20,7 +23,7 @@ public class ClientChatRoomController {
     @FXML
     TextArea sendTextArea, receiveTextArea;
     @FXML
-    Button sendButton, DecryptButton;
+    Button sendButton, DecryptButton, leaveButton;
     @FXML
     ListView<Message> chatListView;
     List<Message> messages = new ArrayList<>();
@@ -52,6 +55,26 @@ public class ClientChatRoomController {
             Message m = chatListView.getSelectionModel().getSelectedItem();
             receiveTextArea.setText(m.encryptedMessage);
         } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void handleLeaveButton(ActionEvent event){
+        try {
+            Message terminate = new Message("terminate");
+            terminate.typeOfMessage = Message.terminate;
+            client.objectOutputStream.writeObject(terminate);
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../view/ClientSetup.fxml"));
+            Parent root;
+            root = loader.load();
+            ClientSetupController UI = loader.getController();
+            Controller.newWindow(root);
+
+            Stage stage = (Stage) this.leaveButton.getScene().getWindow();
+            stage.close();
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -129,13 +152,34 @@ class ClientThread extends Thread{
                 while(true){
                     System.out.println("In while loop!");
                     Message m = (Message) objectInputStream.readObject();
-                    System.out.println("Got a message! "+m.encryptedMessage);
-                    m.encryptedMessage = "["+receiverId+"]: "+m.encryptedMessage;
-                    Platform.runLater(() -> {
-                        clientChatRoomController.messages.add(m);
-                        clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
-                        clientChatRoomController.chatListView.refresh();
-                    });
+                    if(m.typeOfMessage.equals(Message.terminate)) {
+                        Platform.runLater(() -> {
+                            try {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION, receiverId + " has left the chat session.");
+                                alert.showAndWait();
+
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(getClass().getResource("../view/ClientSetup.fxml"));
+                                Parent root;
+                                root = loader.load();
+                                ClientSetupController UI = loader.getController();
+                                Controller.newWindow(root);
+
+                                Stage stage = (Stage) clientChatRoomController.leaveButton.getScene().getWindow();
+                                stage.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } else{
+                        System.out.println("Got a message! "+m.encryptedMessage);
+                        m.encryptedMessage = "["+receiverId+"]: "+m.encryptedMessage;
+                        Platform.runLater(() -> {
+                            clientChatRoomController.messages.add(m);
+                            clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
+                            clientChatRoomController.chatListView.refresh();
+                        });
+                    }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
@@ -162,6 +206,7 @@ class ClientThread extends Thread{
                     break;
             }
             Message m = new Message(e);
+            m.typeOfMessage = Message.message;
             m.isEncrypted = true;
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();

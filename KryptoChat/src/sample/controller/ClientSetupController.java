@@ -13,7 +13,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientSetupController {
 
@@ -166,7 +165,7 @@ class ClientServerThread extends Thread {
                                     alert.showAndWait();
                                 });
                                 break;
-                            case Message.conversationUniqueID:
+                            case Message.uniqueID:
                                 // another user declined connection
                                 this.clientId = m.encryptedMessage;
                                 break;
