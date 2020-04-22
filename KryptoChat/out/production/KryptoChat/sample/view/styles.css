@@ -4,6 +4,10 @@
     -fx-text-fill: "#F7F9FF";
 }
 
+.disconnect {
+    -fx-background-color: "#8db87a";
+}
+
 .logout {
 /*
     -fx-background-image: url("./assets/icons8-logout-rounded-left-50.png");

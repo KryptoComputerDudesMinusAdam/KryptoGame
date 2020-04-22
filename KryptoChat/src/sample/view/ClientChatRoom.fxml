@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="pane" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.ClientChatRoomController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="pane" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="sample.controller.ClientChatRoomController">
    <children>
       <Label fx:id="titleLabel" layoutX="215.0" layoutY="21.0" text="Chat Room" textAlignment="CENTER">
          <font>
@@ -21,7 +21,7 @@
       <TextArea fx:id="receiveTextArea" layoutX="15.0" layoutY="434.0" prefHeight="52.0" prefWidth="409.0" promptText="Message from receiver" />
       <Button layoutX="13.0" layoutY="10.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" styleClass="logout" text="Logout">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Button>
    </children>

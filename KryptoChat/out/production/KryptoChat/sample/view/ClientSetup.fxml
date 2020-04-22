@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="sample.controller.ClientSetupController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="pane" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.ClientSetupController">
    <children>
       <Label layoutX="196.0" layoutY="20.0" text="Connection Setup" textAlignment="CENTER">
          <font>
@@ -18,9 +18,15 @@
       <TextField fx:id="hostnameTextField" layoutX="135.0" layoutY="70.0" prefHeight="27.0" prefWidth="118.0" promptText="Server Hostname (IP address or &quot;localhost&quot;)" text="0.0.0.0" />
       <TextField fx:id="portTextField" layoutX="280.0" layoutY="70.0" prefHeight="27.0" prefWidth="118.0" promptText="Server Port" />
       <TextField fx:id="clientNameTextField" layoutX="136.0" layoutY="108.0" prefHeight="27.0" prefWidth="262.0" promptText="Client Name" />
-      <Button fx:id="serverButton" layoutX="194.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleServerButton" prefHeight="37.0" prefWidth="150.0" text="Connect to Server" />
+      <Button fx:id="serverButton" layoutX="177.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleServerButton" prefHeight="37.0" prefWidth="174.0" text="Connect to Server">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
       <ListView fx:id="contactsListView" layoutY="194.0" prefHeight="182.0" prefWidth="500.0" />
       <ComboBox fx:id="encryptionComboBox" layoutX="189.0" layoutY="398.0" prefWidth="150.0" promptText="Encryption Type" />
-      <Button fx:id="receiverButton" layoutX="190.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleReceiverButton" prefHeight="37.0" prefWidth="150.0" text="Connect to Receiver" />
+      <Button fx:id="receiverButton" layoutX="177.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleReceiverButton" prefHeight="37.0" prefWidth="174.0" text="Connect to Receiver">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
    </children>
 </Pane>
