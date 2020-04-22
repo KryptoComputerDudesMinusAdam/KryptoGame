@@ -174,9 +174,15 @@ public class Cipher {
         {
             for(a = 0; a < 26; a++)
             {
-                if(alphabets[a] == ciphertext[x])
+                if(Character.toLowerCase(alphabets[a]) == Character.toLowerCase(ciphertext[x]))
                 {
-                    ciphertext[x] = key.charAt(a);
+                    if(Character.isUpperCase(ciphertext[x])){
+                        ciphertext[x] = Character.toUpperCase(key.charAt(a));
+                    } else if(Character.isLowerCase(ciphertext[x])){
+                        ciphertext[x] = Character.toLowerCase(key.charAt(a));
+                    } else{
+                        ciphertext[x] = key.charAt(a);
+                    }
                     break;
                 }
             }
@@ -196,9 +202,15 @@ public class Cipher {
         {
             for(a = 0; a < 26; a++)
             {
-                if(plaintext[x] == key.charAt(a))
+                if(Character.toLowerCase(plaintext[x]) == Character.toLowerCase(key.charAt(a)))
                 {
-                    plaintext[x] = alphabets[a];
+                    if(Character.isUpperCase(plaintext[x])){
+                        plaintext[x] = Character.toUpperCase(alphabets[a]);
+                    } else if(Character.isLowerCase(plaintext[x])){
+                        plaintext[x] = Character.toLowerCase(alphabets[a]);
+                    } else{
+                        plaintext[x] = alphabets[a];
+                    }
                     break;
                 }
             }
