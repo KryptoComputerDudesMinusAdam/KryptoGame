@@ -30,6 +30,16 @@ public class ClientChatRoomController {
        client = new ClientThread(socket, clientName, receiverId, oos, ois);
        client.clientChatRoomController = this;
        client.start();
+
+       new Thread(()->{
+           while(true){
+               if(chatListView.getSelectionModel().getSelectedItem() != null){
+                   DecryptButton.setDisable(false);
+               }  else {
+                   DecryptButton.setDisable(true);
+               }
+           }
+       });
     }
 
     void listenIn(){
@@ -51,10 +61,12 @@ public class ClientChatRoomController {
     }
 
     public void handleDecryptButton(ActionEvent event){
-        if(receiveTextArea.getText() != null){
+        if(chatListView.getSelectionModel().getSelectedItem() != null
+                && receiveTextArea.getText().equals(chatListView.getSelectionModel().getSelectedItem().encryptedMessage)
+                    && chatListView.getSelectionModel().getSelectedItem().isEncrypted){
             System.out.println("Decrypting message: "+receiveTextArea.getText());
             Message m = chatListView.getSelectionModel().getSelectedItem();
-            String e;
+
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
                     m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
@@ -69,6 +81,7 @@ public class ClientChatRoomController {
                     m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
                     break;
             }
+            m.isEncrypted = false;
             chatListView.getItems().setAll(messages);
             chatListView.refresh();
         }
@@ -139,6 +152,7 @@ class ClientThread extends Thread{
                     break;
             }
             Message m = new Message(e);
+            m.isEncrypted = true;
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
                 m.encryptedMessage = "["+clientName+"]: "+m.encryptedMessage;

@@ -99,8 +99,7 @@ public class Cipher {
                 }
             }  //end of if-else
         } //end of for loop
-        return new String[]{message, mapping};
-    }
+        return new String[]{message, mapping};    }
 
     private static int[][] vigenereTable() {
         //creating table that contains the alphabet

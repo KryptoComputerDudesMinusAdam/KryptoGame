@@ -8,19 +8,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.ClientSetupController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="sample.controller.ClientSetupController">
    <children>
       <Label layoutX="196.0" layoutY="20.0" text="Connection Setup" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="hostnameTextField" layoutX="136.0" layoutY="52.0" prefHeight="27.0" prefWidth="262.0" promptText="Server Hostname (IP address or &quot;localhost&quot;)" text="0.0.0.0"/>
-      <TextField fx:id="portTextField" layoutX="135.0" layoutY="85.0" prefHeight="27.0" prefWidth="262.0" promptText="Server Port" />
-      <TextField fx:id="clientNameTextField" layoutX="136.0" layoutY="117.0" prefHeight="27.0" prefWidth="262.0" promptText="Client Name" />
-      <Button fx:id="serverButton" layoutX="207.0" layoutY="152.0" mnemonicParsing="false" onAction="#handleServerButton" text="Connect to Server" />
-      <ListView fx:id="contactsListView" layoutX="106.0" layoutY="194.0" prefHeight="168.0" prefWidth="317.0" />
-      <ComboBox fx:id="encryptionComboBox" layoutX="189.0" layoutY="391.0" prefWidth="150.0" promptText="Encryption Type" />
-      <Button fx:id="receiverButton" layoutX="203.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleReceiverButton" text="Connect to Receiver" />
+      <TextField fx:id="hostnameTextField" layoutX="135.0" layoutY="70.0" prefHeight="27.0" prefWidth="118.0" promptText="Server Hostname (IP address or &quot;localhost&quot;)" text="0.0.0.0" />
+      <TextField fx:id="portTextField" layoutX="280.0" layoutY="70.0" prefHeight="27.0" prefWidth="118.0" promptText="Server Port" />
+      <TextField fx:id="clientNameTextField" layoutX="136.0" layoutY="108.0" prefHeight="27.0" prefWidth="262.0" promptText="Client Name" />
+      <Button fx:id="serverButton" layoutX="194.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleServerButton" prefHeight="37.0" prefWidth="150.0" text="Connect to Server" />
+      <ListView fx:id="contactsListView" layoutY="194.0" prefHeight="182.0" prefWidth="500.0" />
+      <ComboBox fx:id="encryptionComboBox" layoutX="189.0" layoutY="398.0" prefWidth="150.0" promptText="Encryption Type" />
+      <Button fx:id="receiverButton" layoutX="190.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleReceiverButton" prefHeight="37.0" prefWidth="150.0" text="Connect to Receiver" />
    </children>
 </Pane>
