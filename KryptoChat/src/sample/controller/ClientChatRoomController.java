@@ -63,28 +63,38 @@ public class ClientChatRoomController {
     public void handleDecryptButton(ActionEvent event){
         if(chatListView.getSelectionModel().getSelectedItem() != null
                 && receiveTextArea.getText().equals(chatListView.getSelectionModel().getSelectedItem().encryptedMessage)
-                    && chatListView.getSelectionModel().getSelectedItem().isEncrypted){
+                    && chatListView.getSelectionModel().getSelectedItem().isEncrypted) {
             System.out.println("Decrypting message: "+receiveTextArea.getText());
             Message m = chatListView.getSelectionModel().getSelectedItem();
-
+            String[] headAndTail = getHeadAndTail(receiveTextArea.getText());
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
-                    m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
                     break;
                 case Message.cipherVigenere:
-                    m.encryptedMessage = Cipher.vigenereDec(client.key, receiveTextArea.getText());
+                    m.encryptedMessage = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]);
                     break;
                 case Message.cipherStream:
-                    m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
                     break;
                 default:
-                    m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
                     break;
             }
             m.isEncrypted = false;
             chatListView.getItems().setAll(messages);
             chatListView.refresh();
         }
+    }
+
+    public String[] getHeadAndTail(String str){
+        char[] testChar = str.toCharArray();
+        int i = 0;
+        while(testChar[i] != ':'){
+            i++;
+        }
+
+        return new String[]{str.substring(0, i+2), str.substring(i+2)};
     }
 }
 
