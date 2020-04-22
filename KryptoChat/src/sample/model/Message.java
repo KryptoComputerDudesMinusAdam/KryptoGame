@@ -11,6 +11,7 @@ public class Message implements Serializable {
     public final static String conversationAccept = "conversationAccept";
     public final static String conversationDecline = "conversationDecline";
     public final static String conversationKey = "key";
+    public final static String conversationUniqueID = "conversationUniqueID";
 
     public String encryptedMessage;
     public int cypherOption;

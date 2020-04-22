@@ -138,6 +138,9 @@ class ServerClientThread extends Thread {
             Message m = (Message) objectInputStream.readObject();
             String clientName = m.encryptedMessage;
             clientId = clientName +"#"+ clientPort;
+            Message uniqueIDMessage = new Message(clientId);
+            uniqueIDMessage.typeOfMessage = Message.conversationUniqueID;
+            objectOutputStream.writeObject(uniqueIDMessage);
 
             // Attacker
             if(clientName.startsWith("Attacker")){

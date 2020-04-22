@@ -75,7 +75,7 @@ public class ClientSetupController {
             Parent root;
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
-            UI.initializeThread(cst.socket, cst.clientName, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
+            UI.initializeThread(cst.socket, cst.clientId, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
             UI.listenIn();
             Controller.newWindow(root);
         } catch (IOException e) {
@@ -88,6 +88,7 @@ class ClientServerThread extends Thread {
     String host;
     int port;
     String clientName;
+    String clientId;
     Socket socket;
     String receivingClient;
     ObjectOutputStream objectOutputStream;
@@ -157,6 +158,10 @@ class ClientServerThread extends Thread {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " declined the invite.", ButtonType.OK);
                                     alert.showAndWait();
                                 });
+                                break;
+                            case Message.conversationUniqueID:
+                                // another user declined connection
+                                this.clientId = m.encryptedMessage;
                                 break;
                         }
                     } catch (IOException | ClassNotFoundException e) {
