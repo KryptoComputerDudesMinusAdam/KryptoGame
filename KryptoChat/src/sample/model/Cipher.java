@@ -97,7 +97,7 @@ public class Cipher {
                     mapping += key.charAt(j);
                     j++;
                 }
-            } //end of if-else
+            }  //end of if-else
         } //end of for loop
         return new String[]{message, mapping};
     }

@@ -54,7 +54,21 @@ public class ClientChatRoomController {
         if(receiveTextArea.getText() != null){
             System.out.println("Decrypting message: "+receiveTextArea.getText());
             Message m = chatListView.getSelectionModel().getSelectedItem();
-            m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+            String e;
+            switch(client.typeOfCipher){
+                case Message.cipherMonoAlphabetic:
+                    m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+                    break;
+                case Message.cipherVigenere:
+                    m.encryptedMessage = Cipher.vigenereDec(client.key, receiveTextArea.getText());
+                    break;
+                case Message.cipherStream:
+                    m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+                    break;
+                default:
+                    m.encryptedMessage = Cipher.monoalphabeticDec(client.key, receiveTextArea.getText());
+                    break;
+            }
             chatListView.getItems().setAll(messages);
             chatListView.refresh();
         }
@@ -69,6 +83,7 @@ class ClientThread extends Thread{
     ObjectInputStream objectInputStream;
     ClientChatRoomController clientChatRoomController;
     String key;
+    String typeOfCipher;
 
     public ClientThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
         this.socket = socket;
@@ -86,6 +101,7 @@ class ClientThread extends Thread{
                 Message keyFromServer = (Message) objectInputStream.readObject();
                 System.out.println("Received key: "+keyFromServer.encryptedMessage);
                 key = keyFromServer.encryptedMessage;
+                typeOfCipher = keyFromServer.typeOfCipher;
 
                 while(true){
                     System.out.println("In while loop!");
@@ -107,7 +123,22 @@ class ClientThread extends Thread{
     void sendMessage(String str){
         try {
             System.out.println("Trying to send a message!");
-            Message m = new Message(Cipher.monoalphabeticEnc(key, str));
+            String e;
+            switch(typeOfCipher){
+                case Message.cipherMonoAlphabetic:
+                    e = Cipher.monoalphabeticEnc(key, str);
+                    break;
+                case Message.cipherVigenere:
+                    e = Cipher.vigenereEnc(key, str);
+                    break;
+                case Message.cipherStream:
+                    e = Cipher.monoalphabeticEnc(key, str);
+                    break;
+                default:
+                    e = Cipher.monoalphabeticEnc(key, str);
+                    break;
+            }
+            Message m = new Message(e);
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
                 m.encryptedMessage = "["+clientName+"]: "+m.encryptedMessage;
