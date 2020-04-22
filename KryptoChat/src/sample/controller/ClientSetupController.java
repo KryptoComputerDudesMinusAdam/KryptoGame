@@ -46,9 +46,9 @@ public class ClientSetupController {
     public void handleReceiverButton(ActionEvent event){
         try{
             String receiver = contactsListView.getSelectionModel().getSelectedItem().encryptedMessage;
-            String typeOfMesasge = Message.conversationInvite;
+            String typeOfMessage = Message.conversationInvite;
             String typeOfCipher = encryptionComboBox.getSelectionModel().getSelectedItem();
-            clientServerThread.sendMessage(receiver, typeOfMesasge, typeOfCipher);
+            clientServerThread.sendMessage(receiver, typeOfMessage, typeOfCipher);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -103,6 +103,11 @@ class ClientServerThread extends Thread {
         try {
             // Create a socket to connect to the server
             socket = new Socket(host, port);
+
+            Platform.runLater(()->{
+                clientSetupController.serverButton.setDisable(true);
+                clientSetupController.receiverButton.setDisable(false);
+            });
 
             // for writing and reading to sockets
             OutputStream outputStream = socket.getOutputStream();

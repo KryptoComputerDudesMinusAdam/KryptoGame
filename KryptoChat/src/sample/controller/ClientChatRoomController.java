@@ -39,7 +39,7 @@ public class ClientChatRoomController {
                    DecryptButton.setDisable(true);
                }
            }
-       });
+       }).start();
     }
 
     void listenIn(){
