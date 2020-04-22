@@ -15,6 +15,7 @@ public class Message implements Serializable {
     public String encryptedMessage;
     public int cypherOption;
     public String typeOfMessage;
+    public boolean isEncrypted;
 
     public String typeOfCipher;
     public final static String cipherMonoAlphabetic = "monoalphabetic";

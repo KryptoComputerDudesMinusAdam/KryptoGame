@@ -172,11 +172,26 @@ class ServerClientThread extends Thread {
                                         // *
                                         typeOfCipher = message.typeOfCipher;
                                         client.typeOfCipher = message.typeOfCipher;
-                                        Message key = new Message(Cipher.generateMonoKey());
-                                        key.typeOfCipher = this.typeOfCipher;
-                                        key.typeOfMessage = Message.conversationKey;
-                                        objectOutputStream.writeObject(key);
-                                        client.objectOutputStream.writeObject(key);
+                                        String key;
+                                        switch(this.typeOfCipher) {
+                                            case Message.cipherMonoAlphabetic:
+                                                key = Cipher.generateMonoKey();
+                                                break;
+                                            case Message.cipherVigenere:
+                                                key = Cipher.generateVigenereKey();
+                                                break;
+                                            case Message.cipherStream:
+                                                key = Cipher.generateMonoKey();
+                                                break;
+                                            default:
+                                                key = Cipher.generateMonoKey();
+                                                break;
+                                        }
+                                        Message keyMessage = new Message(key);
+                                        keyMessage.typeOfCipher = this.typeOfCipher;
+                                        keyMessage.typeOfMessage = Message.conversationKey;
+                                        objectOutputStream.writeObject(keyMessage);
+                                        client.objectOutputStream.writeObject(keyMessage);
                                     }
                                     break;
                                 }
