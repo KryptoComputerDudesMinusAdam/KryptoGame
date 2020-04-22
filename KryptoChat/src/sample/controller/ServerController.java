@@ -23,6 +23,7 @@ public class ServerController {
     @FXML TextField portTextField;
     @FXML ListView<Message> listView;
     private List<Message> messages = new ArrayList<>();
+    public static List<Conversation> allCon = new ArrayList<>();
 
     public void handleConnectButton(ActionEvent event){
         // initialize the list view
@@ -103,14 +104,14 @@ class ServerClientThread extends Thread {
     private ServerController serverController;
     private ServerThread serverThread;
     private Socket socket;
-
+    Conversation conversation;
     private int clientPort;
     String clientId;
     ObjectOutputStream objectOutputStream;
     private boolean foundConversation = false;
     private ObjectInputStream objectInputStream;
 
-    Conversation conversation = new Conversation();
+
 
     // *
     public String typeOfCipher;
@@ -120,6 +121,8 @@ class ServerClientThread extends Thread {
         this.serverController = serverController;
         this.serverThread = serverThread;
         this.clientPort = socket.getPort();
+        this.conversation = new Conversation();
+        ServerController.allCon.add(this.conversation);
     }
 
     public void run(){
@@ -138,7 +141,7 @@ class ServerClientThread extends Thread {
 
             // Attacker
             if(clientName.startsWith("Attacker")){
-                handelAttacker(objectOutputStream, objectInputStream, clientName);
+                handelAttacker(objectOutputStream, objectInputStream, clientName.substring(8));
             }else{
                 serverController.displayNewMessage(new Message("Added "+clientId));
                 serverThread.broadcastContactsList();
@@ -217,15 +220,13 @@ class ServerClientThread extends Thread {
         }
     }
 
-    private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
+    private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException
+    {
+        System.out.println("In Switch: " + clientName);
         switch (clientName)
         {
             case "CiphertextOnly":
-                Conversation cs = new Conversation();
-                cs.add(new Message("Message 1"));
-                cs.add(new Message("Message 2"));
-                cs.add(new Message("Message 3"));
-                cs.add(new Message("Message 4"));
+                Conversation cs = ServerController.allCon.get(findCurrentCon());
                 objectOutputStream.writeObject(cs);
                 break;
             case "KnownPlaintext":
@@ -235,5 +236,19 @@ class ServerClientThread extends Thread {
             case "ChosePlaintext":
                 break;
         }
+    }
+
+    private int findCurrentCon()
+    {
+        int pos = 0;
+        for(int i = 0; i < ServerController.allCon.size(); i++)
+        {
+            if(ServerController.allCon.get(i).getClient1id() == conversation.getClient1id()
+            && ServerController.allCon.get(i).getClient2id() == conversation.getClient2id()){
+                pos= i;
+                break;
+            }
+        }
+        return pos;
     }
 }
