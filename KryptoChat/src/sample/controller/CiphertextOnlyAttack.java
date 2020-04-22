@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.stage.Stage;
+import sample.model.Conversation;
 import sample.model.Message;
 
 import java.io.IOException;
@@ -58,15 +59,17 @@ public class CiphertextOnlyAttack extends AttackerSetupController
     //Query the server for ciphertext
     public void query(ActionEvent actionEvent) throws IOException, ClassNotFoundException
     {
-        counter++;
-        if(counter < 3)
+        if(counter < 1)
         {
             Message m = new Message("AttackerCiphertextOnly");
             objos.writeObject(m);
-            mess.add(((Message) objis.readObject()).encryptedMessage);
+            Conversation con = (Conversation) objis.readObject();
+            for(int i = 0; i < con.msgs.size();i++ )
+                mess.add(con.msgs.get(i).encryptedMessage);
             cipherList.setItems(mess);
+            counter++;
         }
-        if(counter>2)
-            queryCipheretext.setVisible(false);
+        if(counter>=1)
+            queryCipheretext.setDisable(true);
     }
 }
