@@ -85,11 +85,12 @@ public class ClientChatRoomController {
 
     public void handleDecryptButton(ActionEvent event){
         if(chatListView.getSelectionModel().getSelectedItem() != null
-                && receiveTextArea.getText().equals(chatListView.getSelectionModel().getSelectedItem().encryptedMessage)
                     && chatListView.getSelectionModel().getSelectedItem().isEncrypted) {
             System.out.println("Decrypting message: "+receiveTextArea.getText());
             Message m = chatListView.getSelectionModel().getSelectedItem();
             String[] headAndTail = getHeadAndTail(receiveTextArea.getText());
+            System.out.println("HEAD: "+headAndTail[0]);
+            System.out.println("TAIL: "+headAndTail[1]);
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
                     m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
@@ -98,13 +99,14 @@ public class ClientChatRoomController {
                     m.encryptedMessage = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]);
                     break;
                 case Message.cipherStream:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
+                    m.encryptedMessage = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]);
                     break;
                 default:
                     m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
                     break;
             }
             m.isEncrypted = false;
+            System.out.println("Decrypted message: "+m.encryptedMessage);
             chatListView.getItems().setAll(messages);
             chatListView.refresh();
         }
@@ -199,7 +201,7 @@ class ClientThread extends Thread{
                     e = Cipher.vigenereEnc(key, str);
                     break;
                 case Message.cipherStream:
-                    e = Cipher.monoalphabeticEnc(key, str);
+                    e = Cipher.streamEnc(key, str);
                     break;
                 default:
                     e = Cipher.monoalphabeticEnc(key, str);

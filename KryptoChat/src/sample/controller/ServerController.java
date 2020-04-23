@@ -191,10 +191,10 @@ class ServerClientThread extends Thread {
                                                 key = Cipher.generateMonoKey();
                                                 break;
                                             case Message.cipherVigenere:
-                                                key = Cipher.generateVigenereKey();
+                                                key = Cipher.generateBasicKey();
                                                 break;
                                             case Message.cipherStream:
-                                                key = Cipher.generateMonoKey();
+                                                key = Cipher.generateBasicKey();
                                                 break;
                                             default:
                                                 key = Cipher.generateMonoKey();
