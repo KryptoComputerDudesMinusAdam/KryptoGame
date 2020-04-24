@@ -190,6 +190,7 @@ class ClientThread extends Thread{
     }
 
     void sendMessage(String str){
+
         try {
             System.out.println("Trying to send a message!");
             String e;
