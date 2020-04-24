@@ -205,6 +205,7 @@ class ServerClientThread extends Thread {
                                         keyMessage.typeOfMessage = Message.conversationKey;
                                         objectOutputStream.writeObject(keyMessage);
                                         client.objectOutputStream.writeObject(keyMessage);
+                                        serverController.displayNewMessage(new Message("Generated secret key "+keyMessage.encryptedMessage));
                                     }
                                     break;
                                 }
@@ -227,8 +228,10 @@ class ServerClientThread extends Thread {
                                 serverThread.removeClient(client2);
                                 ServerThread.connections.remove(clientId);
                                 ServerThread.connections.remove(client2.clientId);
+                                serverController.displayNewMessage(new Message("Closing socket "+socket.getPort()));
                                 socket.close();
                             }
+                            serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.encryptedMessage + "\n\tEncryption Type: "+message.typeOfCipher));
                         }
                     }
                 } catch (IOException | ClassNotFoundException e) {
