@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.CiphertextOnlyAttack">
     <children>
-        <Label layoutX="214.0" layoutY="14.0" text="Ciphertext Only Attack">
+        <Label layoutX="214.0" layoutY="14.0" prefWidth="164.0" stylesheets="@styles.css" text="Ciphertext Only Attack">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="disconnect" layoutX="39.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
-      <Button fx:id="queryCipheretext" layoutX="39.0" layoutY="77.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" prefHeight="200.0" prefWidth="80.0" text="Query &#10;Ciphertext" textAlignment="CENTER" />
-      <Label layoutX="317.0" layoutY="60.0" text="Ciphertext" />
-      <Button fx:id="runAnalysis" layoutX="471.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runAnalysis" text="Run Analysis" />
-      <HBox layoutX="130.0" layoutY="77.0" prefHeight="200.0" prefWidth="427.0">
-         <children>
-            <ListView fx:id="cipherList" prefHeight="200.0" prefWidth="427.0" />
-         </children>
-      </HBox>
+        <Button fx:id="disconnect" layoutX="19.0" layoutY="339.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Disconnect" />
+      <Button fx:id="queryCipheretext" layoutX="19.0" layoutY="228.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Query &#10;Ciphertext" textAlignment="CENTER" />
+      <Label layoutX="90.0" layoutY="52.0" stylesheets="@styles.css" text="Ciphertext" textAlignment="CENTER" />
+      <Button fx:id="runAnalysis" layoutX="19.0" layoutY="285.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runAnalysis" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Run Analysis" />
+      <ListView fx:id="cipherList" layoutX="19.0" layoutY="69.0" prefHeight="148.0" prefWidth="200.0" />
+      <Line endX="499.0" layoutX="101.0" layoutY="42.0" startX="-100.0" />
+      <Line endX="-116.0" endY="299.0" layoutX="358.0" layoutY="101.0" startX="-116.0" startY="-58.5" />
+      <Line endX="504.0" endY="47.5" layoutX="96.0" layoutY="118.0" startX="145.5" startY="47.5" />
+      <TextArea fx:id="fq" editable="false" layoutX="249.0" layoutY="63.0" prefHeight="17.0" prefWidth="344.0" promptText="Frequency of letters" wrapText="true" />
+      <TextArea fx:id="key" editable="false" layoutX="249.0" layoutY="122.0" prefHeight="17.0" prefWidth="344.0" promptText="Possible Key" />
+      <Label layoutX="330.0" layoutY="44.0" text="Frequency of Letters inCiphertext" />
+      <Label layoutX="322.0" layoutY="104.0" text="Possible Key: Ciphertext -&gt; Plaintext" />
     </children>
 </Pane>

@@ -1,5 +1,6 @@
 package sample.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,8 +10,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import sample.model.Conversation;
+import sample.model.FrequencyAnalysis;
 import sample.model.Message;
 
 import java.io.IOException;
@@ -18,6 +21,9 @@ import java.io.IOException;
 public class CiphertextOnlyAttack extends AttackerSetupController
 {
     int counter=0;
+    String[] result;
+    Conversation con;
+    AnalyzeThread at = new AnalyzeThread();
     @FXML
     Button disconnect, queryCipheretext, runAnalysis;
 
@@ -26,10 +32,12 @@ public class CiphertextOnlyAttack extends AttackerSetupController
 
     @FXML
     ObservableList<String> mess = FXCollections.observableArrayList();
-
+    @FXML
+    TextArea fq, key;
     @Override
     public void init() throws IOException
     {
+        runAnalysis.setDisable(true);
         this.cipherList.setItems(this.mess);
         this.cipherList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -52,8 +60,11 @@ public class CiphertextOnlyAttack extends AttackerSetupController
     }
 
     //Run analysis on ciphertext
-    public void runAnalysis(ActionEvent actionEvent) throws IOException {
-        init();
+    public void runAnalysis(ActionEvent actionEvent)
+    {
+        fq.setText(result[0]);
+        key.setText(result[1]);
+        this.runAnalysis.setDisable(true);
     }
 
     //Query the server for ciphertext
@@ -63,13 +74,52 @@ public class CiphertextOnlyAttack extends AttackerSetupController
         {
             Message m = new Message("AttackerCiphertextOnly");
             objos.writeObject(m);
-            Conversation con = (Conversation) objis.readObject();
-            for(int i = 0; i < con.msgs.size();i++ )
-                mess.add(con.msgs.get(i).encryptedMessage);
-            cipherList.setItems(mess);
-            counter++;
+            con = (Conversation) objis.readObject();
+            if(con != null){
+                for(int i = 0; i < con.msgs.size();i++ )
+                    mess.add(con.msgs.get(i).encryptedMessage);
+                cipherList.setItems(mess);
+                at.start();
+                counter++;
+            }
         }
+
         if(counter>=1)
             queryCipheretext.setDisable(true);
+
     }
+
+    class AnalyzeThread extends Thread
+    {
+        @Override
+        public void run()
+        {
+            new Thread(()->{
+                if(!mess.isEmpty() && !con.isEmpty())
+                {
+                    StringBuffer bf = new StringBuffer();
+                    for(int i = 0; i < cipherList.getItems().size(); i++)
+                        bf.append(". "+cipherList.getItems().get(i));
+                    switch (con.typeOfEncryption.toLowerCase())
+                    {
+                        case "monoalphabetic":
+                            FrequencyAnalysis f = new FrequencyAnalysis();
+                            f.analyze(((bf.toString()).replaceAll("[^a-zA-Z]]","")).toUpperCase());
+                            result = f.printMaps().split("#");
+                            runAnalysis.setDisable(false);
+                            break;
+                        case "stream":
+                            break;
+                        case "vigenere":
+                            break;
+                        default:
+                            break;
+                    }
+                }else {
+
+                }
+            }).start();
+        }
+    }
+
 }

@@ -32,6 +32,14 @@ public class Conversation implements Serializable {
         this.typeOfEncryption = typeOfEncryption;
     }
 
+    public boolean isEmpty()
+    {
+        if(this.msgs == null
+                && this.client1id.isEmpty()
+                && this.client2id.isEmpty())
+            return true;
+        return false;
+    }
     // Add a new message to the list
     public void add(Message m){
         this.msgs.add(m);

@@ -166,8 +166,8 @@ class ServerClientThread extends Thread {
                                         String client2Id = message.encryptedMessage;
                                         ServerThread.connections.put(clientId, client2Id);
                                         ServerThread.connections.put(client2Id, clientId);
-                                        conversation.setClient1id(clientId);
-                                        conversation.setClient2id(client2Id);
+                                        this.conversation.setClient1id(clientId);
+                                        this.conversation.setClient2id(client2Id);
                                         serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
                                         foundConversation = true;
                                         client.foundConversation = true;
@@ -200,7 +200,8 @@ class ServerClientThread extends Thread {
                                 }
                             }
                         } else {
-                            conversation.msgs.add(message);
+                            this.conversation.msgs.add(message);
+                            this.conversation.setTypeOfEncryption(this.typeOfCipher);
                             for(ServerClientThread client : ServerThread.clients){
                                 if(client.clientId.equals(ServerThread.connections.get(clientId))){
                                     System.out.println("Writing message: "+message.encryptedMessage+"\n\tFrom: "+clientId + " to " + ServerThread.connections.get(clientId));
@@ -226,7 +227,7 @@ class ServerClientThread extends Thread {
         switch (clientName)
         {
             case "CiphertextOnly":
-                Conversation cs = ServerController.allCon.get(findCurrentCon());
+                Conversation cs = findCurrentCon();
                 objectOutputStream.writeObject(cs);
                 break;
             case "KnownPlaintext":
@@ -238,7 +239,7 @@ class ServerClientThread extends Thread {
         }
     }
 
-    private int findCurrentCon()
+    private Conversation findCurrentCon()
     {
         int pos = 0;
         for(int i = 0; i < ServerController.allCon.size(); i++)
@@ -249,6 +250,11 @@ class ServerClientThread extends Thread {
                 break;
             }
         }
-        return pos;
+        Conversation s = new Conversation();
+        s.setClient1id(ServerController.allCon.get(pos).getClient1id());
+        s.setClient2id(ServerController.allCon.get(pos).getClient2id());
+        s.setTypeOfEncryption(ServerController.allCon.get(pos).getTypeOfEncryption());
+        s.addMessageList(ServerController.allCon.get(pos).msgs);
+        return s;
     }
 }
