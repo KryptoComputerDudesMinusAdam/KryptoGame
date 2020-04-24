@@ -10,7 +10,10 @@ public class Message implements Serializable {
     public final static String conversationInvite = "conversationInvite";
     public final static String conversationAccept = "conversationAccept";
     public final static String conversationDecline = "conversationDecline";
+    public final static String terminate = "terminate";
     public final static String conversationKey = "key";
+    public final static String uniqueID = "conversationUniqueID";
+    public final static String message = "message";
 
     public String encryptedMessage;
     public int cypherOption;

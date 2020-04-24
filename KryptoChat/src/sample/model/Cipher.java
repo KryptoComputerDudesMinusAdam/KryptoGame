@@ -4,35 +4,35 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cipher {
-    /*
-    TODO:
-        Add Mono-Alphabetic Cypher
-        in this format
-        public static String method_name_Encrypt(your arguments){
-            // return a string variable
-        }
-        public static String method_name_decrypt(your arguments){
-            // return a string variable
-        }
-     */
 
-    public static void main(String[] args){
-        //TODO: test your method here
+    //STREAM CIPHER
+    public static String streamEnc( String key, String plainText){
+        return new String(xorOperation(plainText.getBytes(), key.getBytes()));
     }
 
+    public static String streamDec( String key, String cipherText)
+    {
+        return new String(xorOperation(cipherText.getBytes(), key.getBytes()));
+    }
 
-    /*
-    TODO:
-        mono
-        alice and bob have the same key
-        nobody else knows the key
-        server generates a random dictionary of length 26
-        clients expect first message to be from server
-        message contains dictionary variable and stored as their key
-     */
+    public static byte[] xorOperation(byte[] arr1, byte[] arr2)
+    {
+        if(arr2.length > arr1.length)
+        {
+            byte[] temp;
+            temp = arr2;
+            arr2 = arr1;
+            arr1 = temp;
+        }
+        byte[] outputByteArr = new byte[arr1.length];
+        for (int i = 0; i < arr1.length; i++) {
+            outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
+        }
+        return outputByteArr;
+    }
 
-
-    public static String generateVigenereKey() {
+    // VIGENERE CIPHER
+    public static String generateBasicKey() {
         String strAlphabet = "abcdefghijklmnopqrstuvwxyz";
         int count = ThreadLocalRandom.current().nextInt(4, 10);
         Random rand = new Random();
@@ -147,6 +147,8 @@ public class Cipher {
         return count;
     }
 
+
+    // MONOALPHABETIC CIPHER
     public static String generateMonoKey(){
         String strAlphabet = "abcdefghijklmnopqrstuvwxyz";
         List<Character> alphabet = new ArrayList<>();

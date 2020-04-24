@@ -84,6 +84,10 @@ class ServerThread extends Thread {
         }
     }
 
+    void removeClient(ServerClientThread sct){
+        ServerThread.clients.remove(sct);
+    }
+
     void broadcastContactsList() {
         // send message to client: contacts list
         ServerThread.clients.forEach(cl -> {
@@ -107,6 +111,8 @@ class ServerClientThread extends Thread {
     Conversation conversation;
     private int clientPort;
     String clientId;
+    String client2Id;
+    ServerClientThread client2;
     ObjectOutputStream objectOutputStream;
     private boolean foundConversation = false;
     private ObjectInputStream objectInputStream;
@@ -138,6 +144,9 @@ class ServerClientThread extends Thread {
             Message m = (Message) objectInputStream.readObject();
             String clientName = m.encryptedMessage;
             clientId = clientName +"#"+ clientPort;
+            Message uniqueIDMessage = new Message(clientId);
+            uniqueIDMessage.typeOfMessage = Message.uniqueID;
+            objectOutputStream.writeObject(uniqueIDMessage);
 
             // Attacker
             if(clientName.startsWith("Attacker")){
@@ -163,7 +172,8 @@ class ServerClientThread extends Thread {
 
                                     // connect the two clients together
                                     if(messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)){
-                                        String client2Id = message.encryptedMessage;
+                                        client2 = client;
+                                        client2Id = message.encryptedMessage;
                                         ServerThread.connections.put(clientId, client2Id);
                                         ServerThread.connections.put(client2Id, clientId);
                                         this.conversation.setClient1id(clientId);
@@ -181,10 +191,10 @@ class ServerClientThread extends Thread {
                                                 key = Cipher.generateMonoKey();
                                                 break;
                                             case Message.cipherVigenere:
-                                                key = Cipher.generateVigenereKey();
+                                                key = Cipher.generateBasicKey();
                                                 break;
                                             case Message.cipherStream:
-                                                key = Cipher.generateMonoKey();
+                                                key = Cipher.generateBasicKey();
                                                 break;
                                             default:
                                                 key = Cipher.generateMonoKey();
@@ -204,11 +214,20 @@ class ServerClientThread extends Thread {
                             this.conversation.setTypeOfEncryption(this.typeOfCipher);
                             for(ServerClientThread client : ServerThread.clients){
                                 if(client.clientId.equals(ServerThread.connections.get(clientId))){
-                                    System.out.println("Writing message: "+message.encryptedMessage+"\n\tFrom: "+clientId + " to " + ServerThread.connections.get(clientId));
-                                    client.objectOutputStream.writeObject(message);
-                                    client.conversation.msgs.add(message);
+                                    client2 = client;
                                     break;
                                 }
+                            }
+                            System.out.println("Writing message: "+message.encryptedMessage+"\n\tFrom: "+clientId + " to " + ServerThread.connections.get(clientId));
+                            client2.objectOutputStream.writeObject(message);
+                            client2.conversation.msgs.add(message);
+                            if(message.typeOfMessage.equals(Message.terminate)){
+                                serverController.displayNewMessage(new Message(clientId + " and " + client2.clientId + " ended their conversation."));
+                                serverThread.removeClient(this);
+                                serverThread.removeClient(client2);
+                                ServerThread.connections.remove(clientId);
+                                ServerThread.connections.remove(client2.clientId);
+                                socket.close();
                             }
                         }
                     }

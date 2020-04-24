@@ -13,7 +13,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientSetupController {
 
@@ -46,9 +45,9 @@ public class ClientSetupController {
     public void handleReceiverButton(ActionEvent event){
         try{
             String receiver = contactsListView.getSelectionModel().getSelectedItem().encryptedMessage;
-            String typeOfMesasge = Message.conversationInvite;
+            String typeOfMessage = Message.conversationInvite;
             String typeOfCipher = encryptionComboBox.getSelectionModel().getSelectedItem();
-            clientServerThread.sendMessage(receiver, typeOfMesasge, typeOfCipher);
+            clientServerThread.sendMessage(receiver, typeOfMessage, typeOfCipher);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -57,9 +56,11 @@ public class ClientSetupController {
     void updateContacts(Message m){
         Platform.runLater(() -> {
             Controller.initializeListView(contacts, contactsListView);
-            contacts.add(m);
-            contactsListView.getItems().setAll(contacts);
-            contactsListView.refresh();
+            if(!m.encryptedMessage.equalsIgnoreCase(clientServerThread.clientId)){
+                contacts.add(m);
+                contactsListView.getItems().setAll(contacts);
+                contactsListView.refresh();
+            }
         });
     }
 
@@ -75,7 +76,7 @@ public class ClientSetupController {
             Parent root;
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
-            UI.initializeThread(cst.socket, cst.clientName, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
+            UI.initializeThread(cst.socket, cst.clientId, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
             UI.listenIn();
             Controller.newWindow(root);
         } catch (IOException e) {
@@ -88,6 +89,7 @@ class ClientServerThread extends Thread {
     String host;
     int port;
     String clientName;
+    String clientId;
     Socket socket;
     String receivingClient;
     ObjectOutputStream objectOutputStream;
@@ -102,6 +104,11 @@ class ClientServerThread extends Thread {
         try {
             // Create a socket to connect to the server
             socket = new Socket(host, port);
+
+            Platform.runLater(()->{
+                clientSetupController.serverButton.setDisable(true);
+                clientSetupController.receiverButton.setDisable(false);
+            });
 
             // for writing and reading to sockets
             OutputStream outputStream = socket.getOutputStream();
@@ -157,6 +164,10 @@ class ClientServerThread extends Thread {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, m.encryptedMessage + " declined the invite.", ButtonType.OK);
                                     alert.showAndWait();
                                 });
+                                break;
+                            case Message.uniqueID:
+                                // another user declined connection
+                                this.clientId = m.encryptedMessage;
                                 break;
                         }
                     } catch (IOException | ClassNotFoundException e) {

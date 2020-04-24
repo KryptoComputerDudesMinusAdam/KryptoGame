@@ -24,7 +24,7 @@
          </font></Button>
       <ListView fx:id="contactsListView" layoutY="194.0" prefHeight="182.0" prefWidth="500.0" />
       <ComboBox fx:id="encryptionComboBox" layoutX="189.0" layoutY="398.0" prefWidth="150.0" promptText="Encryption Type" />
-      <Button fx:id="receiverButton" layoutX="177.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleReceiverButton" prefHeight="37.0" prefWidth="174.0" text="Connect to Receiver">
+      <Button fx:id="receiverButton" disable="true" layoutX="177.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleReceiverButton" prefHeight="37.0" prefWidth="174.0" text="Connect to Receiver">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
