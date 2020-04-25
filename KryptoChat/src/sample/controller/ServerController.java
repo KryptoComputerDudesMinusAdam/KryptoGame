@@ -19,18 +19,21 @@ import java.util.List;
 
 public class ServerController {
 
-    @FXML Button connectButton, disconnectButton;
-    @FXML TextField portTextField;
-    @FXML ListView<Message> listView;
-    private List<Message> messages = new ArrayList<>();
+    @FXML
+    Button connectButton, disconnectButton;
+    @FXML
+    TextField portTextField;
+    @FXML
+    ListView<Message> listView;
+    private final List<Message> messages = new ArrayList<>();
     public static List<Conversation> allCon = new ArrayList<>();
 
-    public void handleConnectButton(ActionEvent event){
+    public void handleConnectButton(ActionEvent event) {
         // initialize the list view
         Controller.initializeListView(messages, listView);
 
         // start up the server thread
-        if(portTextField.getText() != null){
+        if (portTextField.getText() != null) {
             int port = Integer.parseInt(portTextField.getText());
             ServerThread serverThread = new ServerThread(this);
             serverThread.port = port;
@@ -38,13 +41,12 @@ public class ServerController {
         }
     }
 
-    public void handleDisconnectButton(ActionEvent event){
+    public void handleDisconnectButton(ActionEvent event) {
         displayNewMessage(new Message("Closing server down"));
     }
 
 
-
-    public void displayNewMessage(Message m){
+    public void displayNewMessage(Message m) {
         Platform.runLater(() -> {
             messages.add(m);
             listView.getItems().setAll(messages);
@@ -56,15 +58,15 @@ public class ServerController {
 // represents the server
 class ServerThread extends Thread {
     int port;
-    private ServerController serverController;
+    private final ServerController serverController;
     static List<ServerClientThread> clients = new ArrayList<>();
     static HashMap<String, String> connections = new HashMap<>();
 
-    ServerThread(ServerController serverController){
+    ServerThread(ServerController serverController) {
         this.serverController = serverController;
     }
 
-    public void run(){
+    public void run() {
         try {
             // create a server socket
             ServerSocket serverSocket = new ServerSocket(port);
@@ -84,14 +86,14 @@ class ServerThread extends Thread {
         }
     }
 
-    void removeClient(ServerClientThread sct){
+    void removeClient(ServerClientThread sct) {
         ServerThread.clients.remove(sct);
     }
 
     void broadcastContactsList() {
         // send message to client: contacts list
         ServerThread.clients.forEach(cl -> {
-            for (ServerClientThread sct: ServerThread.clients) {
+            for (ServerClientThread sct : ServerThread.clients) {
                 try {
                     Message contact = new Message(sct.clientId);
                     contact.typeOfMessage = Message.contacts;
@@ -99,17 +101,18 @@ class ServerThread extends Thread {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-        }});
+            }
+        });
     }
 }
 
 // represents a single connection to a client
 class ServerClientThread extends Thread {
-    private ServerController serverController;
-    private ServerThread serverThread;
-    private Socket socket;
+    private final ServerController serverController;
+    private final ServerThread serverThread;
+    private final Socket socket;
     Conversation conversation;
-    private int clientPort;
+    private final int clientPort;
     String clientId;
     String client2Id;
     ServerClientThread client2;
@@ -118,11 +121,10 @@ class ServerClientThread extends Thread {
     private ObjectInputStream objectInputStream;
 
 
-
     // *
     public String typeOfCipher;
 
-    ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread){
+    ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread) {
         this.socket = socket;
         this.serverController = serverController;
         this.serverThread = serverThread;
@@ -131,7 +133,7 @@ class ServerClientThread extends Thread {
         ServerController.allCon.add(this.conversation);
     }
 
-    public void run(){
+    public void run() {
 
         try {
             // for writing and reading to sockets
@@ -143,110 +145,109 @@ class ServerClientThread extends Thread {
             // read message from client: client name and add to contacts list
             Message m = (Message) objectInputStream.readObject();
             String clientName = m.encryptedMessage;
-            if(clientName.startsWith("Attacker")){
+            if (clientName.startsWith("Attacker")) {
                 handelAttacker(objectOutputStream, objectInputStream, clientName.substring(8));
-            } else{
-            clientId = clientName +"#"+ clientPort;
-            Message uniqueIDMessage = new Message(clientId);
-            uniqueIDMessage.typeOfMessage = Message.uniqueID;
-            objectOutputStream.writeObject(uniqueIDMessage);
+            } else {
+                clientId = clientName + "#" + clientPort;
+                Message uniqueIDMessage = new Message(clientId);
+                uniqueIDMessage.typeOfMessage = Message.uniqueID;
+                objectOutputStream.writeObject(uniqueIDMessage);
 
-                serverController.displayNewMessage(new Message("Added "+clientId));
+                serverController.displayNewMessage(new Message("Added " + clientId));
                 serverThread.broadcastContactsList();
-            // continuously check for messages coming from client
-            new Thread(()->{
-                try {
-                    // try to get two clients to connect to each other
-                    while(true){
-                        System.out.println("Updated conversation object: "+conversation.msgs.toString());
-                        Message message = (Message) objectInputStream.readObject();
-                        // client still needs to connect to another client
-                        if(!foundConversation){
-                            for(ServerClientThread client : ServerThread.clients){
-                                if(client.clientId.equals(message.encryptedMessage)){
-                                    // *
-                                    Message messageToOtherClient = new Message(clientId, message.typeOfCipher);
-                                    messageToOtherClient.typeOfMessage = message.typeOfMessage;
-                                    client.objectOutputStream.writeObject(messageToOtherClient);
-
-                                    // connect the two clients together
-                                    if(messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)){
-                                        client2 = client;
-                                        client2Id = message.encryptedMessage;
-                                        ServerThread.connections.put(clientId, client2Id);
-                                        ServerThread.connections.put(client2Id, clientId);
-                                        this.conversation.setClient1id(clientId);
-                                        this.conversation.setClient2id(client2Id);
-                                        serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
-                                        foundConversation = true;
-                                        client.foundConversation = true;
-
+                // continuously check for messages coming from client
+                new Thread(() -> {
+                    try {
+                        // try to get two clients to connect to each other
+                        while (true) {
+                            System.out.println("Updated conversation object: " + conversation.msgs.toString());
+                            Message message = (Message) objectInputStream.readObject();
+                            // client still needs to connect to another client
+                            if (!foundConversation) {
+                                for (ServerClientThread client : ServerThread.clients) {
+                                    if (client.clientId.equals(message.encryptedMessage)) {
                                         // *
-                                        typeOfCipher = message.typeOfCipher;
-                                        client.typeOfCipher = message.typeOfCipher;
-                                        String key;
-                                        switch(this.typeOfCipher) {
-                                            case Message.cipherMonoAlphabetic:
-                                                key = Cipher.generateMonoKey();
-                                                break;
-                                            case Message.cipherVigenere:
-                                                key = Cipher.generateBasicKey();
-                                                break;
-                                            case Message.cipherStream:
-                                                key = Cipher.generateBasicKey();
-                                                break;
-                                            default:
-                                                key = Cipher.generateMonoKey();
-                                                break;
+                                        Message messageToOtherClient = new Message(clientId, message.typeOfCipher);
+                                        messageToOtherClient.typeOfMessage = message.typeOfMessage;
+                                        client.objectOutputStream.writeObject(messageToOtherClient);
+
+                                        // connect the two clients together
+                                        if (messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)) {
+                                            client2 = client;
+                                            client2Id = message.encryptedMessage;
+                                            ServerThread.connections.put(clientId, client2Id);
+                                            ServerThread.connections.put(client2Id, clientId);
+                                            this.conversation.setClient1id(clientId);
+                                            this.conversation.setClient2id(client2Id);
+                                            serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
+                                            foundConversation = true;
+                                            client.foundConversation = true;
+
+                                            // *
+                                            typeOfCipher = message.typeOfCipher;
+                                            client.typeOfCipher = message.typeOfCipher;
+                                            String key;
+                                            switch (this.typeOfCipher) {
+                                                case Message.cipherMonoAlphabetic:
+                                                    key = Cipher.generateMonoKey();
+                                                    break;
+                                                case Message.cipherVigenere:
+                                                    key = Cipher.generateBasicKey();
+                                                    break;
+                                                case Message.cipherStream:
+                                                    key = Cipher.generateBasicKey();
+                                                    break;
+                                                default:
+                                                    key = Cipher.generateMonoKey();
+                                                    break;
+                                            }
+                                            Message keyMessage = new Message(key);
+                                            keyMessage.typeOfCipher = this.typeOfCipher;
+                                            keyMessage.typeOfMessage = Message.conversationKey;
+                                            objectOutputStream.writeObject(keyMessage);
+                                            client.objectOutputStream.writeObject(keyMessage);
+                                            serverController.displayNewMessage(new Message("Generated secret key " + keyMessage.encryptedMessage));
                                         }
-                                        Message keyMessage = new Message(key);
-                                        keyMessage.typeOfCipher = this.typeOfCipher;
-                                        keyMessage.typeOfMessage = Message.conversationKey;
-                                        objectOutputStream.writeObject(keyMessage);
-                                        client.objectOutputStream.writeObject(keyMessage);
-                                        serverController.displayNewMessage(new Message("Generated secret key "+keyMessage.encryptedMessage));
+                                        break;
                                     }
-                                    break;
                                 }
-                            }
-                        } else {
-                            this.conversation.msgs.add(message);
-                            this.conversation.setTypeOfEncryption(this.typeOfCipher);
-                            for(ServerClientThread client : ServerThread.clients){
-                                if(client.clientId.equals(ServerThread.connections.get(clientId))){
-                                    client2 = client;
-                                    break;
+                            } else {
+                                this.conversation.msgs.add(message);
+                                this.conversation.setTypeOfEncryption(this.typeOfCipher);
+                                for (ServerClientThread client : ServerThread.clients) {
+                                    if (client.clientId.equals(ServerThread.connections.get(clientId))) {
+                                        client2 = client;
+                                        break;
+                                    }
                                 }
+                                System.out.println("Writing message: " + message.encryptedMessage + "\n\tFrom: " + clientId + " to " + ServerThread.connections.get(clientId));
+                                client2.objectOutputStream.writeObject(message);
+                                client2.conversation.msgs.add(message);
+                                if (message.typeOfMessage.equals(Message.terminate)) {
+                                    serverController.displayNewMessage(new Message(clientId + " and " + client2.clientId + " ended their conversation."));
+                                    serverThread.removeClient(this);
+                                    serverThread.removeClient(client2);
+                                    ServerThread.connections.remove(clientId);
+                                    ServerThread.connections.remove(client2.clientId);
+                                    serverController.displayNewMessage(new Message("Closing socket " + socket.getPort()));
+                                    socket.close();
+                                }
+                                serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.encryptedMessage + "\n\tEncryption Type: " + message.typeOfCipher));
                             }
-                            System.out.println("Writing message: "+message.encryptedMessage+"\n\tFrom: "+clientId + " to " + ServerThread.connections.get(clientId));
-                            client2.objectOutputStream.writeObject(message);
-                            client2.conversation.msgs.add(message);
-                            if(message.typeOfMessage.equals(Message.terminate)){
-                                serverController.displayNewMessage(new Message(clientId + " and " + client2.clientId + " ended their conversation."));
-                                serverThread.removeClient(this);
-                                serverThread.removeClient(client2);
-                                ServerThread.connections.remove(clientId);
-                                ServerThread.connections.remove(client2.clientId);
-                                serverController.displayNewMessage(new Message("Closing socket "+socket.getPort()));
-                                socket.close();
-                            }
-                            serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.encryptedMessage + "\n\tEncryption Type: "+message.typeOfCipher));
                         }
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println(e.getMessage());
                     }
-                } catch (IOException | ClassNotFoundException e) {
-                    System.out.println(e.getMessage());
-                }
-            }).start();}
+                }).start();
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException
-    {
+    private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
         System.out.println("In Switch: " + clientName);
-        switch (clientName)
-        {
+        switch (clientName) {
             case "CiphertextOnly":
                 Conversation cs = findCurrentCon();
                 objectOutputStream.writeObject(cs);
@@ -260,14 +261,12 @@ class ServerClientThread extends Thread {
         }
     }
 
-    private Conversation findCurrentCon()
-    {
+    private Conversation findCurrentCon() {
         int pos = 0;
-        for(int i = 0; i < ServerController.allCon.size(); i++)
-        {
-            if(ServerController.allCon.get(i).getClient1id() == conversation.getClient1id()
-            && ServerController.allCon.get(i).getClient2id() == conversation.getClient2id()){
-                pos= i;
+        for (int i = 0; i < ServerController.allCon.size(); i++) {
+            if (ServerController.allCon.get(i).getClient1id() == conversation.getClient1id()
+                    && ServerController.allCon.get(i).getClient2id() == conversation.getClient2id()) {
+                pos = i;
                 break;
             }
         }
