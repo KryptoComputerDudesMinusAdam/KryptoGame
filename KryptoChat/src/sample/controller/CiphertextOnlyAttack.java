@@ -12,10 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import sample.model.Conversation;
-import sample.model.FrequencyAnalysis;
-import sample.model.Message;
-
+import sample.model.*;
 import java.io.IOException;
 
 public class CiphertextOnlyAttack extends AttackerSetupController
@@ -23,7 +20,6 @@ public class CiphertextOnlyAttack extends AttackerSetupController
     int counter=0;
     String[] result;
     Conversation con;
-    AnalyzeThread at = new AnalyzeThread();
     @FXML
     Button disconnect, queryCipheretext, runAnalysis;
 
@@ -70,18 +66,21 @@ public class CiphertextOnlyAttack extends AttackerSetupController
     //Query the server for ciphertext
     public void query(ActionEvent actionEvent) throws IOException, ClassNotFoundException
     {
+        AnalyzeThread at = new AnalyzeThread();
         if(counter < 1)
         {
             Message m = new Message("AttackerCiphertextOnly");
             objos.writeObject(m);
-            con = (Conversation) objis.readObject();
-            if(con != null){
+            Object o = objis.readObject();
+            if(o instanceof Conversation){
+                con = (Conversation)o;
+            if(con.msgs.size()!=0){
                 for(int i = 0; i < con.msgs.size();i++ )
                     mess.add(con.msgs.get(i).encryptedMessage);
                 cipherList.setItems(mess);
                 at.start();
                 counter++;
-            }
+            }}
         }
 
         if(counter>=1)

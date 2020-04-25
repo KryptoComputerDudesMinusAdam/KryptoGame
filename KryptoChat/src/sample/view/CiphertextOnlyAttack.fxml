@@ -16,7 +16,7 @@
             </font>
         </Label>
         <Button fx:id="disconnect" layoutX="19.0" layoutY="339.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Disconnect" />
-      <Button fx:id="queryCipheretext" layoutX="19.0" layoutY="228.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Query &#10;Ciphertext" textAlignment="CENTER" />
+      <Button fx:id="queryCipheretext" layoutX="19.0" layoutY="228.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Query Ciphertext" textAlignment="CENTER" />
       <Label layoutX="90.0" layoutY="52.0" stylesheets="@styles.css" text="Ciphertext" textAlignment="CENTER" />
       <Button fx:id="runAnalysis" layoutX="19.0" layoutY="285.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runAnalysis" prefHeight="47.0" prefWidth="200.0" stylesheets="@styles.css" text="Run Analysis" />
       <ListView fx:id="cipherList" layoutX="19.0" layoutY="69.0" prefHeight="148.0" prefWidth="200.0" />

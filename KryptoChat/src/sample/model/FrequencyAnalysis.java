@@ -30,14 +30,19 @@ public class FrequencyAnalysis
         {
             /* Reset */
             charArray = s.toCharArray();
-            count = 1;
+            count = 1.0;
             for(int i = 1; i < charArray.length; i++)
                 if(charArray[0] == charArray[i])
                     count++;
             if(charArray[0] != ' ')
-                freq.put(Character.toUpperCase(charArray[0]), ((double)(count/spaces) * 100));
+                freq.put(Character.toUpperCase(charArray[0]), ((count/spaces) * 100));
             s = s.replace("" +charArray[0], "");
         }
+
+        for (int i = 0; i < arrl.length; i++)
+            if (freq.get(arrl[i]) == null)
+                freq.put(arrl[i], 0.0);
+
     }
     /*Initialize hashmap*/
     public void init()

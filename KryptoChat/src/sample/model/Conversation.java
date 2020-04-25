@@ -20,18 +20,6 @@ public class Conversation implements Serializable {
         this.typeOfEncryption = "";
     }
 
-    // Arg Constructor
-    public Conversation(List<Message> msgs,
-                        String client1id,
-                        String client2id,
-                        String typeOfEncryption)
-    {
-        this.msgs = msgs;
-        this.client1id = client1id;
-        this.client2id = client2id;
-        this.typeOfEncryption = typeOfEncryption;
-    }
-
     public boolean isEmpty()
     {
         if(this.msgs == null

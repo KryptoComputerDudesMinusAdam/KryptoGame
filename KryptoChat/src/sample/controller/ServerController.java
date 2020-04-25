@@ -143,15 +143,14 @@ class ServerClientThread extends Thread {
             // read message from client: client name and add to contacts list
             Message m = (Message) objectInputStream.readObject();
             String clientName = m.encryptedMessage;
+            if(clientName.startsWith("Attacker")){
+                handelAttacker(objectOutputStream, objectInputStream, clientName.substring(8));
+            } else{
             clientId = clientName +"#"+ clientPort;
             Message uniqueIDMessage = new Message(clientId);
             uniqueIDMessage.typeOfMessage = Message.uniqueID;
             objectOutputStream.writeObject(uniqueIDMessage);
 
-            // Attacker
-            if(clientName.startsWith("Attacker")){
-                handelAttacker(objectOutputStream, objectInputStream, clientName.substring(8));
-            }else{
                 serverController.displayNewMessage(new Message("Added "+clientId));
                 serverThread.broadcastContactsList();
             // continuously check for messages coming from client
