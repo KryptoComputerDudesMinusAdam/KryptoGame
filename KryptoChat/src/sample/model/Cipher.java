@@ -7,15 +7,19 @@ public class Cipher {
 
     //STREAM CIPHER
     public static String streamEnc( String key, String plainText){
-        return new String(xorOperation(plainText.getBytes(), key.getBytes()));
+
+        return xorOperation(plainText.getBytes(), key.getBytes());
     }
 
     public static String streamDec( String key, String cipherText)
     {
-        return new String(xorOperation(cipherText.getBytes(), key.getBytes()));
+        String x = new String(xorOperation2(cipherText, key.getBytes()));
+        System.out.println("dec "+x);
+
+        return x;
     }
 
-    public static byte[] xorOperation(byte[] arr1, byte[] arr2)
+    public static String xorOperation(byte[] arr1, byte[] arr2)
     {
         if(arr2.length > arr1.length)
         {
@@ -25,9 +29,41 @@ public class Cipher {
             arr1 = temp;
         }
         byte[] outputByteArr = new byte[arr1.length];
+        String returnArr = "";
         for (int i = 0; i < arr1.length; i++) {
             outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
+            returnArr += outputByteArr[i] + ",";
         }
+        System.out.println("returnArr"+returnArr);
+        return returnArr;
+    }
+
+    public static byte[] xorOperation2(String arrx, byte[] arr2)
+    {
+        StringTokenizer st = new StringTokenizer(arrx, " \t\n\r\f,");
+        int length = arrx.length() - arrx.replace(",", "").length();
+        System.out.println("tokens");
+        byte[] arr1 = new byte[length];
+        int y = 0;
+        while(st.hasMoreTokens())
+        {
+            arr1[y] = (byte)Integer.parseInt(st.nextToken());
+            y++;
+        }
+        if(arr2.length > arr1.length)
+        {
+            byte[] temp;
+            temp = arr2;
+            arr2 = arr1;
+            arr1 = temp;
+        }
+        byte[] outputByteArr = new byte[arr1.length];
+        String returnArr = "";
+        for (int i = 0; i < arr1.length; i++) {
+            outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
+            returnArr += outputByteArr[i] + "";
+        }
+        System.out.println("returnArr2"+returnArr);
         return outputByteArr;
     }
 
