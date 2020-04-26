@@ -263,7 +263,18 @@ class ServerClientThread extends Thread {
                 cs = findCurrentCon();
                 objectOutputStream.writeObject(cs);
                 break;
-            case "KnownPlaintext":
+            case "Known-Plaintext":
+                cs = findCurrentCon();
+                int max;
+                if(cs.msgs.size() >= 5){
+                    max = 5;
+                } else{
+                    max = cs.msgs.size();
+                }
+                System.out.println("index: "+max);
+                for(int i = 0; i<max; i++){
+                    objectOutputStream.writeObject(cs.msgs.get(i));
+                }
                 break;
             case "ChoseCiphertext":
                 System.out.println("Chosen Ciphertext");

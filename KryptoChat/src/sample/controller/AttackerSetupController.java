@@ -57,6 +57,8 @@ public class AttackerSetupController implements Serializable
                 {
                     case "Known-Plaintext Attack":
                         KnownPlaintextAttack kp = loader.getController();
+                        m = new Message("AttackerKnown-Plaintext");
+                        objos.writeObject(m);
                         break;
                     case "Ciphertext Only Attack":
                         CiphertextOnlyAttack cto = loader.getController();
