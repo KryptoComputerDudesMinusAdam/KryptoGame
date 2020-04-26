@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import sample.model.Message;
 
 import java.io.*;
 import java.net.Socket;
@@ -62,6 +63,8 @@ public class AttackerSetupController implements Serializable
                         break;
                     case "Chosen Plaintext Attack":
                         ChosenPlaintextAttack cp = loader.getController();
+                        Message m = new Message("AttackerChosePlaintext");
+                        objos.writeObject(m);
                         break;
                     case "Chosen Ciphertext Attack":
                         ChosenCiphertextAttack cc = loader.getController();

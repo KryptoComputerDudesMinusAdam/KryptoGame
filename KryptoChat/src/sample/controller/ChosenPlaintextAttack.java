@@ -1,5 +1,6 @@
 package sample.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,26 +42,27 @@ public class ChosenPlaintextAttack extends AttackerSetupController
     public void queryDecryption(ActionEvent actionEvent)
     {
         try {
-            Message m = new Message("AttackerChosePlaintext");
-            objos.writeObject(m);
             Message p = new Message(plaintext.getText());
             objos.writeObject(p);
-
-            new Thread(()->{
-                System.out.println("*** in thread");
-                while(true){
-                    try {
-                        Message e = (Message) objis.readObject();
-                        System.out.println("found messg: "+e.encryptedMessage);
-                        ciphertext.setText(e.encryptedMessage);
-                    } catch (IOException | ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }).start();
+            System.out.println("*** in thread");
+            listenIn();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void listenIn(){
+        new Thread(()->{
+            try {
+                Message e = (Message) objis.readObject();
+                System.out.println("found messg: "+e.encryptedMessage);
+                Platform.runLater(() -> {
+                    ciphertext.setText(e.encryptedMessage);
+                });
+            } catch (IOException | ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }).start();
     }
 
     public void save(ActionEvent actionEvent)

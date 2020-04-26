@@ -186,7 +186,6 @@ class ServerClientThread extends Thread {
 
                                             // *
                                             typeOfCipher = message.typeOfCipher;
-                                            this.conversation.setPublicKey(typeOfCipher);
                                             System.out.println("Setting conversation: "+conversation.getClient1id()+conversation.getClient2id()+"\n\twith: "+conversation.getPublicKey());
                                             int index = ServerController.allCon.indexOf(conversation);
                                             System.out.println("Checking static: "+ index + " here: "+ServerController.allCon.get(index).getPublicKey());
@@ -206,6 +205,8 @@ class ServerClientThread extends Thread {
                                                     key = Cipher.generateMonoKey();
                                                     break;
                                             }
+                                            this.conversation.setPublicKey(key);
+                                            client2.conversation.setPublicKey(key);
                                             conversation.setTypeOfEncryption(this.typeOfCipher);
                                             Message keyMessage = new Message(key);
                                             keyMessage.typeOfCipher = this.typeOfCipher;
@@ -229,6 +230,9 @@ class ServerClientThread extends Thread {
                                 System.out.println("Writing message: " + message.encryptedMessage + "\n\tFrom: " + clientId + " to " + ServerThread.connections.get(clientId));
                                 client2.objectOutputStream.writeObject(message);
                                 client2.conversation.msgs.add(message);
+                                client2.conversation.setTypeOfEncryption(this.typeOfCipher);
+                                client2.conversation.setClient1id(client2.clientId);
+                                client2.conversation.setClient2id(clientId);
                                 if (message.typeOfMessage.equals(Message.terminate)) {
                                     serverController.displayNewMessage(new Message(clientId + " and " + client2.clientId + " ended their conversation."));
                                     serverThread.removeClient(this);
@@ -266,37 +270,42 @@ class ServerClientThread extends Thread {
             case "ChosePlaintext":
                 System.out.println("Chosen Plaintext");
                 cs = findCurrentCon();
-                try {
-                    // check for incoming plain texts to encrypt and send back
-                    Message m = (Message) objectInputStream.readObject();
-                    String str = null;
-                    Message output;
-                    switch(cs.typeOfEncryption){
-                        case Message.cipherMonoAlphabetic:
-                            str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
-                            break;
-                        case Message.cipherVigenere:
-                            str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
-                            break;
-                        case Message.cipherStream:
-                            str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
-                            break;
+                System.out.println("Key: "+cs.getPublicKey());
+                while(true) {
+                    try {
+                        // check for incoming plain texts to encrypt and send back
+                        Message m = (Message) objectInputStream.readObject();
+                        String str = null;
+                        Message output;
+                        switch(cs.typeOfEncryption){
+                            case Message.cipherMonoAlphabetic:
+                                str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
+                                break;
+                            case Message.cipherVigenere:
+                                str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
+                                break;
+                            case Message.cipherStream:
+                                str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
+                                break;
+                        }
+                        //send message enc out
+                        output = new Message(str);
+                        output.isEncrypted = true;
+                        output.typeOfCipher = cs.typeOfEncryption;
+                        objectOutputStream.writeObject(output);
+                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
-                    //send message enc out
-                    output = new Message(str);
-                    output.isEncrypted = true;
-                    output.typeOfCipher = cs.typeOfEncryption;
-                    objectOutputStream.writeObject(output);
-                    serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
         }
     }
 
     private Conversation findCurrentCon() {
-        int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerController.allCon.size());
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerController.allCon.size()-1);
+        System.out.println("returning index: "+randomIndex);
         Conversation conv = ServerController.allCon.get(randomIndex);
+        System.out.println("Returning key: " + conv.getPublicKey() + conv.getClient1id() + conv.getClient2id());
         return conv;
     }
 }
