@@ -93,16 +93,16 @@ public class ClientChatRoomController {
             System.out.println("TAIL: "+headAndTail[1]);
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
+                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherVigenere:
-                    m.encryptedMessage = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]);
+                    m.encryptedMessage = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherStream:
-                    m.encryptedMessage = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]);
+                    m.encryptedMessage = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 default:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]);
+                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
                     break;
             }
             m.isEncrypted = false;
