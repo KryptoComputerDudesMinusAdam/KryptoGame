@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import sample.model.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KnownPlaintextAttack extends AttackerSetupController
 {
@@ -20,13 +22,17 @@ public class KnownPlaintextAttack extends AttackerSetupController
 
     @FXML
     ListView<Message> ciphertext, plaintext;
+    List<Message> obsvE = new ArrayList<>();
+    List<Message> obsvP = new ArrayList<>();
 
     @FXML
     ListView<String> response;
 
     public void init() throws IOException
     {
-        //getMessages();
+        System.out.println("Initializing UI");
+        Controller.initializeListView(obsvE, ciphertext);
+        Controller.initializeListView(obsvP, plaintext);
     }
 
     private void getMessages() throws IOException, ClassNotFoundException
@@ -42,22 +48,24 @@ public class KnownPlaintextAttack extends AttackerSetupController
     public void listenIn(){
         new Thread(()->{
             try {
-                System.out.println("Waiting for read object");
-                Message e = (Message) objis.readObject();
-                System.out.println("found messg: "+e.encryptedMessage);
-                Platform.runLater(() -> {
-                    if(e.isEncrypted){
-                        System.out.println("enc m");
-                        ObservableList<Message> obsvE = ciphertext.getItems();
-                        obsvE.add(e);
-                        ciphertext.getItems().setAll(obsvE);
-                    } else{
-                        System.out.println("dec m");
-                        ObservableList<Message> obsvP = ciphertext.getItems();
-                        obsvP.add(e);
-                        plaintext.getItems().setAll(obsvP);
-                    }
-                });
+                for(int i = 0; i < 2; i++){
+                    System.out.println("Waiting for read object");
+                    Message e = (Message) objis.readObject();
+                    System.out.println("found messg: "+e.encryptedMessage);
+                    Platform.runLater(() -> {
+                        if(e.isEncrypted){
+                            System.out.println("enc m");
+                            obsvE.add(e);
+                            ciphertext.getItems().setAll(obsvE);
+                            ciphertext.refresh();
+                        } else{
+                            System.out.println("dec m");
+                            obsvP.add(e);
+                            plaintext.getItems().setAll(obsvP);
+                            ciphertext.refresh();
+                        }
+                    });
+                }
             } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }

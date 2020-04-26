@@ -258,6 +258,7 @@ class ServerClientThread extends Thread {
     private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
         System.out.println("In Switch: " + clientName);
         Conversation cs;
+        Message m;
         switch (clientName) {
             case "CiphertextOnly":
                 cs = findCurrentCon();
@@ -272,8 +273,26 @@ class ServerClientThread extends Thread {
                     max = cs.msgs.size();
                 }
                 System.out.println("index: "+max);
+
                 for(int i = 0; i<max; i++){
                     objectOutputStream.writeObject(cs.msgs.get(i));
+                    switch(cs.typeOfEncryption){
+                        case Message.cipherMonoAlphabetic:
+                            m = new Message(Cipher.monoalphabeticDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
+                            m.isEncrypted = false;
+                            objectOutputStream.writeObject(m);
+                            break;
+                        case Message.cipherVigenere:
+                            m = new Message(Cipher.vigenereDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
+                            m.isEncrypted = false;
+                            objectOutputStream.writeObject(m);
+                            break;
+                        case Message.cipherStream:
+                            m = new Message(Cipher.streamDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
+                            m.isEncrypted = false;
+                            objectOutputStream.writeObject(m);
+                            break;
+                    }
                 }
                 break;
             case "ChoseCiphertext":
@@ -283,7 +302,7 @@ class ServerClientThread extends Thread {
                 while(true) {
                     try {
                         // check for incoming plain texts to encrypt and send back
-                        Message m = (Message) objectInputStream.readObject();
+                        m = (Message) objectInputStream.readObject();
                         String str = null;
                         Message output;
                         switch(cs.typeOfEncryption){
@@ -314,7 +333,7 @@ class ServerClientThread extends Thread {
                 while(true) {
                     try {
                         // check for incoming plain texts to encrypt and send back
-                        Message m = (Message) objectInputStream.readObject();
+                        m = (Message) objectInputStream.readObject();
                         String str = null;
                         Message output;
                         switch(cs.typeOfEncryption){

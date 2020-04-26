@@ -57,6 +57,7 @@ public class AttackerSetupController implements Serializable
                 {
                     case "Known-Plaintext Attack":
                         KnownPlaintextAttack kp = loader.getController();
+                        kp.init();
                         m = new Message("AttackerKnown-Plaintext");
                         objos.writeObject(m);
                         break;
