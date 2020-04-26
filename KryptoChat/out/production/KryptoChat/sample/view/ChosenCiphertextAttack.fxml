@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.ChosenCiphertextAttack">
    <children>
       <Label layoutX="214.0" layoutY="14.0" text="Chosen Ciphertext Attack">
@@ -12,10 +15,10 @@
       </Label>
       <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
       <Button fx:id="query_decryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryDecryption" prefHeight="27.0" prefWidth="258.0" text="Query Decryption" />
-      <ListView fx:id="Ciphertext" layoutX="35.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" />
       <Button fx:id="save" layoutX="307.0" layoutY="314.0" mnemonicParsing="false" onAction="#save" prefHeight="27.0" prefWidth="258.0" text="Save Decryption" />
       <Label layoutX="108.0" layoutY="64.0" text="Unlnown Ciphertext" />
       <Label layoutX="375.0" layoutY="64.0" text="Decrypted Ciphertext" />
       <TextArea fx:id="decrypted" editable="false" layoutX="307.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" promptText="Decrypted Ciphertext will appear here..." />
+      <TextArea fx:id="encrypted" layoutX="36.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" promptText="Enter your ciphertext" />
    </children>
 </Pane>

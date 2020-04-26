@@ -52,6 +52,7 @@ public class AttackerSetupController implements Serializable
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
                 Parent root = loader.load();
+                Message m;
                 switch (comboBox.getValue())
                 {
                     case "Known-Plaintext Attack":
@@ -63,11 +64,13 @@ public class AttackerSetupController implements Serializable
                         break;
                     case "Chosen Plaintext Attack":
                         ChosenPlaintextAttack cp = loader.getController();
-                        Message m = new Message("AttackerChosePlaintext");
+                        m = new Message("AttackerChosePlaintext");
                         objos.writeObject(m);
                         break;
                     case "Chosen Ciphertext Attack":
                         ChosenCiphertextAttack cc = loader.getController();
+                        m = new Message("AttackerChoseCiphertext");
+                        objos.writeObject(m);
                         break;
                 }
                 Controller.newWindow(root);

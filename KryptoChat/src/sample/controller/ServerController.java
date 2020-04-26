@@ -266,7 +266,36 @@ class ServerClientThread extends Thread {
             case "KnownPlaintext":
                 break;
             case "ChoseCiphertext":
-                break;
+                System.out.println("Chosen Ciphertext");
+                cs = findCurrentCon();
+                System.out.println("Key: "+cs.getPublicKey());
+                while(true) {
+                    try {
+                        // check for incoming plain texts to encrypt and send back
+                        Message m = (Message) objectInputStream.readObject();
+                        String str = null;
+                        Message output;
+                        switch(cs.typeOfEncryption){
+                            case Message.cipherMonoAlphabetic:
+                                str = Cipher.monoalphabeticDec(cs.getPublicKey(), m.encryptedMessage);
+                                break;
+                            case Message.cipherVigenere:
+                                str = Cipher.vigenereDec(cs.getPublicKey(), m.encryptedMessage);
+                                break;
+                            case Message.cipherStream:
+                                str = Cipher.streamDec(cs.getPublicKey(), m.encryptedMessage);
+                                break;
+                        }
+                        //send message enc out
+                        output = new Message(str);
+                        output.isEncrypted = true;
+                        output.typeOfCipher = cs.typeOfEncryption;
+                        objectOutputStream.writeObject(output);
+                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
             case "ChosePlaintext":
                 System.out.println("Chosen Plaintext");
                 cs = findCurrentCon();
