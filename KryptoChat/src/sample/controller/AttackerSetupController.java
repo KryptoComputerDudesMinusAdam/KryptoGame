@@ -62,7 +62,6 @@ public class AttackerSetupController implements Serializable
                         break;
                     case "Chosen Plaintext Attack":
                         ChosenPlaintextAttack cp = loader.getController();
-                        cp.init();
                         break;
                     case "Chosen Ciphertext Attack":
                         ChosenCiphertextAttack cc = loader.getController();

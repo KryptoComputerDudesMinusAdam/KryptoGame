@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ServerController {
 
@@ -185,6 +186,10 @@ class ServerClientThread extends Thread {
 
                                             // *
                                             typeOfCipher = message.typeOfCipher;
+                                            this.conversation.setPublicKey(typeOfCipher);
+                                            System.out.println("Setting conversation: "+conversation.getClient1id()+conversation.getClient2id()+"\n\twith: "+conversation.getPublicKey());
+                                            int index = ServerController.allCon.indexOf(conversation);
+                                            System.out.println("Checking static: "+ index + " here: "+ServerController.allCon.get(index).getPublicKey());
                                             client.typeOfCipher = message.typeOfCipher;
                                             String key;
                                             switch (this.typeOfCipher) {
@@ -261,52 +266,37 @@ class ServerClientThread extends Thread {
             case "ChosePlaintext":
                 System.out.println("Chosen Plaintext");
                 cs = findCurrentCon();
-                new Thread(()->{
-                    while(true){
-                        try {
-                            // constantly check for incoming plain texts to encrypt and send back
-                            Message m = (Message) objectInputStream.readObject();
-                            String str = null;
-                            Message output;
-                            switch(cs.typeOfEncryption){
-                                case Message.cipherMonoAlphabetic:
-                                    str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
-                                    break;
-                                case Message.cipherVigenere:
-                                    str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
-                                    break;
-                                case Message.cipherStream:
-                                    str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
-                                    break;
-                            }
-                            //send message enc out
-                            output = new Message(str);
-                            output.isEncrypted = true;
-                            output.typeOfCipher = cs.typeOfEncryption;
-                            objectOutputStream.writeObject(output);
-                        } catch (IOException | ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    // check for incoming plain texts to encrypt and send back
+                    Message m = (Message) objectInputStream.readObject();
+                    String str = null;
+                    Message output;
+                    switch(cs.typeOfEncryption){
+                        case Message.cipherMonoAlphabetic:
+                            str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
+                            break;
+                        case Message.cipherVigenere:
+                            str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
+                            break;
+                        case Message.cipherStream:
+                            str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
+                            break;
                     }
-                }).start();
-                break;
+                    //send message enc out
+                    output = new Message(str);
+                    output.isEncrypted = true;
+                    output.typeOfCipher = cs.typeOfEncryption;
+                    objectOutputStream.writeObject(output);
+                    serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
     private Conversation findCurrentCon() {
-        int pos = 0;
-        for (int i = 0; i < ServerController.allCon.size(); i++) {
-            if (ServerController.allCon.get(i).getClient1id() == conversation.getClient1id()
-                    && ServerController.allCon.get(i).getClient2id() == conversation.getClient2id()) {
-                pos = i;
-                break;
-            }
-        }
-        Conversation s = new Conversation();
-        s.setClient1id(ServerController.allCon.get(pos).getClient1id());
-        s.setClient2id(ServerController.allCon.get(pos).getClient2id());
-        s.setTypeOfEncryption(ServerController.allCon.get(pos).getTypeOfEncryption());
-        s.addMessageList(ServerController.allCon.get(pos).msgs);
-        return s;
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerController.allCon.size());
+        Conversation conv = ServerController.allCon.get(randomIndex);
+        return conv;
     }
 }
