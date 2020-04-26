@@ -48,23 +48,25 @@ public class KnownPlaintextAttack extends AttackerSetupController
     public void listenIn(){
         new Thread(()->{
             try {
-                for(int i = 0; i < 2; i++){
-                    System.out.println("Waiting for read object");
-                    Message e = (Message) objis.readObject();
-                    System.out.println("found messg: "+e.encryptedMessage);
-                    Platform.runLater(() -> {
-                        if(e.isEncrypted){
-                            System.out.println("enc m");
-                            obsvE.add(e);
-                            ciphertext.getItems().setAll(obsvE);
-                            ciphertext.refresh();
-                        } else{
-                            System.out.println("dec m");
-                            obsvP.add(e);
-                            plaintext.getItems().setAll(obsvP);
-                            ciphertext.refresh();
-                        }
-                    });
+                if(!attack_socket.isClosed()){
+                    for(int i = 0; i < 2; i++){
+                        System.out.println("Waiting for read object");
+                        Message e = (Message) objis.readObject();
+                        System.out.println("found messg: "+e.encryptedMessage);
+                        Platform.runLater(() -> {
+                            if(e.isEncrypted){
+                                System.out.println("enc m");
+                                obsvE.add(e);
+                                ciphertext.getItems().setAll(obsvE);
+                                ciphertext.refresh();
+                            } else{
+                                System.out.println("dec m");
+                                obsvP.add(e);
+                                plaintext.getItems().setAll(obsvP);
+                                ciphertext.refresh();
+                            }
+                        });
+                    }
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
@@ -84,6 +86,10 @@ public class KnownPlaintextAttack extends AttackerSetupController
             UI.init();
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
+
+            objos.close();
+            objis.close();
+
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

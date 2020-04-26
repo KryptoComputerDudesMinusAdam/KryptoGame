@@ -50,6 +50,8 @@ public class CiphertextOnlyAttack extends AttackerSetupController
             Controller.newWindow(root);
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
+
+            attack_socket.close();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

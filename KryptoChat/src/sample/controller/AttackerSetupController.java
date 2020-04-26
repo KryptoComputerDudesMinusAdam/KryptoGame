@@ -16,8 +16,8 @@ import java.net.Socket;
 public class AttackerSetupController implements Serializable
 {
     protected static Socket attack_socket;
-    protected static ObjectInputStream objis;
-    protected static ObjectOutputStream objos;
+    protected ObjectInputStream objis;
+    protected ObjectOutputStream objos;
 
     private String selected;
     ObservableList<String> list = FXCollections.observableArrayList();
@@ -41,7 +41,6 @@ public class AttackerSetupController implements Serializable
     {
         if(port.getText().length() != 0 && comboBox.getValue() != null)
         {
-            setSelection();
             int pt = Integer.parseInt(port.getText());
             try {
                 if(attack_socket == null){
@@ -57,6 +56,8 @@ public class AttackerSetupController implements Serializable
                 {
                     case "Known-Plaintext Attack":
                         KnownPlaintextAttack kp = loader.getController();
+                        kp.objis = this.objis;
+                        kp.objos = this.objos;
                         kp.init();
                         m = new Message("AttackerKnown-Plaintext");
                         objos.writeObject(m);
@@ -80,6 +81,8 @@ public class AttackerSetupController implements Serializable
                 Stage stage = (Stage) connect.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Info Box");
                 alert.setHeaderText("Ooops!");

@@ -33,6 +33,9 @@ public class ChosenCiphertextAttack extends AttackerSetupController
 
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
+
+            attack_socket.close();
+
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -51,15 +54,18 @@ public class ChosenCiphertextAttack extends AttackerSetupController
 
     public void listenIn(){
         new Thread(()->{
-            try {
-                Message e = (Message) objis.readObject();
-                System.out.println("found messg: "+e.encryptedMessage);
-                Platform.runLater(() -> {
-                    decrypted.setText(e.encryptedMessage);
-                });
-            } catch (IOException | ClassNotFoundException ex) {
-                ex.printStackTrace();
+            while(!attack_socket.isClosed()) {
+                try {
+                    Message e = (Message) objis.readObject();
+                    System.out.println("found messg: "+e.encryptedMessage);
+                    Platform.runLater(() -> {
+                        decrypted.setText(e.encryptedMessage);
+                    });
+                } catch (IOException | ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }
+
         }).start();
     }
 

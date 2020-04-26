@@ -131,7 +131,6 @@ class ServerClientThread extends Thread {
         this.serverThread = serverThread;
         this.clientPort = socket.getPort();
         this.conversation = new Conversation();
-        ServerController.allCon.add(this.conversation);
     }
 
     public void run() {
@@ -174,6 +173,7 @@ class ServerClientThread extends Thread {
 
                                         // connect the two clients together
                                         if (messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)) {
+                                            ServerController.allCon.add(this.conversation);
                                             client2 = client;
                                             client2Id = message.encryptedMessage;
                                             ServerThread.connections.put(clientId, client2Id);
@@ -361,10 +361,16 @@ class ServerClientThread extends Thread {
     }
 
     private Conversation findCurrentCon() {
-        int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerController.allCon.size()-1);
-        System.out.println("returning index: "+randomIndex);
-        Conversation conv = ServerController.allCon.get(randomIndex);
-        System.out.println("Returning key: " + conv.getPublicKey() + conv.getClient1id() + conv.getClient2id());
-        return conv;
+        System.out.println("Size: "+serverController.allCon.size());
+        if(serverController.allCon.size() > 0){
+            int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerController.allCon.size());
+            System.out.println("returning index: "+randomIndex);
+            Conversation conv = ServerController.allCon.get(randomIndex);
+            System.out.println("Returning key: " + conv.getPublicKey() + conv.getClient1id() + conv.getClient2id());
+            return conv;
+        } else{
+            return null;
+        }
+
     }
 }
