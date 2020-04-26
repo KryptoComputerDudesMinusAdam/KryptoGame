@@ -10,6 +10,7 @@ public class Conversation implements Serializable {
     public String client1id;
     public String client2id;
     public String typeOfEncryption;
+    public String publicKey;
 
     // No-Arg Constructor
     public Conversation()
@@ -57,5 +58,11 @@ public class Conversation implements Serializable {
     // Set client1id
     public void setTypeOfEncryption(String typeOfEncryption) {
         this.typeOfEncryption = typeOfEncryption;
+    }
+    public String getPublicKey() {
+        return publicKey;
+    }
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 }

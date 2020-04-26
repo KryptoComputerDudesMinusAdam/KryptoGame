@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -28,7 +25,7 @@ public class AttackerSetupController implements Serializable
     @FXML
     private TextField port;
     @FXML
-    private ChoiceBox<String> choiceBox;
+    ComboBox<String> comboBox;
 
     // Initialize choice box
     public void init() throws IOException {
@@ -41,7 +38,7 @@ public class AttackerSetupController implements Serializable
     */
     public void handleConnectButton(ActionEvent event)
     {
-        if(port.getText().length() != 0 && choiceBox.getValue() != null)
+        if(port.getText().length() != 0 && comboBox.getValue() != null)
         {
             setSelection();
             int pt = Integer.parseInt(port.getText());
@@ -54,9 +51,24 @@ public class AttackerSetupController implements Serializable
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
                 Parent root = loader.load();
-                AttackerSetupController UI = loader.getController();
+                switch (comboBox.getValue())
+                {
+                    case "Known-Plaintext Attack":
+                        KnownPlaintextAttack kp = loader.getController();
+                        break;
+                    case "Ciphertext Only Attack":
+                        CiphertextOnlyAttack cto = loader.getController();
+                        cto.init();
+                        break;
+                    case "Chosen Plaintext Attack":
+                        ChosenPlaintextAttack cp = loader.getController();
+                        cp.init();
+                        break;
+                    case "Chosen Ciphertext Attack":
+                        ChosenCiphertextAttack cc = loader.getController();
+                        break;
+                }
                 Controller.newWindow(root);
-                UI.init();
                 Stage stage = (Stage) connect.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
@@ -70,7 +82,7 @@ public class AttackerSetupController implements Serializable
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("Ooops!");
-            if(choiceBox.getValue() == null)
+            if(comboBox.getValue() == null)
                 alert.setContentText("Please select a mode of Attack!");
             else
                 alert.setContentText("Please enter the server port number!");
@@ -81,16 +93,17 @@ public class AttackerSetupController implements Serializable
     //Add data to the choice box
     private void addData()
     {
-        list.addAll("Known-Plaintext Attack",
+        comboBox.getItems().setAll("Known-Plaintext Attack",
                 "Ciphertext Only Attack",
                 "Chosen Plaintext Attack",
                 "Chosen Ciphertext Attack");
-        choiceBox.getItems().addAll(list);
+        comboBox.getSelectionModel().selectFirst();
+
     }
 
     public void setSelection()
     {
-        switch (choiceBox.getValue())
+        switch (comboBox.getValue())
         {
             case "Known-Plaintext Attack":
                 this.selected = "KnownPlaintextAttack";

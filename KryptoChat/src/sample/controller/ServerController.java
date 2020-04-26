@@ -201,6 +201,7 @@ class ServerClientThread extends Thread {
                                                     key = Cipher.generateMonoKey();
                                                     break;
                                             }
+                                            conversation.setTypeOfEncryption(this.typeOfCipher);
                                             Message keyMessage = new Message(key);
                                             keyMessage.typeOfCipher = this.typeOfCipher;
                                             keyMessage.typeOfMessage = Message.conversationKey;
@@ -247,9 +248,10 @@ class ServerClientThread extends Thread {
 
     private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
         System.out.println("In Switch: " + clientName);
+        Conversation cs;
         switch (clientName) {
             case "CiphertextOnly":
-                Conversation cs = findCurrentCon();
+                cs = findCurrentCon();
                 objectOutputStream.writeObject(cs);
                 break;
             case "KnownPlaintext":
@@ -257,6 +259,36 @@ class ServerClientThread extends Thread {
             case "ChoseCiphertext":
                 break;
             case "ChosePlaintext":
+                System.out.println("Chosen Plaintext");
+                cs = findCurrentCon();
+                new Thread(()->{
+                    while(true){
+                        try {
+                            // constantly check for incoming plain texts to encrypt and send back
+                            Message m = (Message) objectInputStream.readObject();
+                            String str = null;
+                            Message output;
+                            switch(cs.typeOfEncryption){
+                                case Message.cipherMonoAlphabetic:
+                                    str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                                case Message.cipherVigenere:
+                                    str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                                case Message.cipherStream:
+                                    str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                            }
+                            //send message enc out
+                            output = new Message(str);
+                            output.isEncrypted = true;
+                            output.typeOfCipher = cs.typeOfEncryption;
+                            objectOutputStream.writeObject(output);
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
                 break;
         }
     }
