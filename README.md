@@ -30,6 +30,7 @@ encryptions in which the adversary will have to decrypt.
     - Chose Ciphertext Attack
   - The challenges are derived based upon what kind of information you want to be given as the adversary.
   - Once all inputs are filled, click connect
+- Note: there can be more than 2 messengers as well as more than 1 attacker per server.
   
 ## Main Features
 - Server
@@ -41,6 +42,14 @@ encryptions in which the adversary will have to decrypt.
   - There will be two text boxes displayed in the UI
     - TextBox 1: User can input their desired message and send to their recipeint by clicking the blue send button next to this box
     - TextBox 2: When a message is sent or recieved, click it followed by the green button next to this box. The decrypted message will appear within the original display of messages and its encyrption will be displayed here in TextBox 2.
+ - Attacker (Chuck)
+  - Known Plaintext
+    - This settings allows the attacker to see both the plaintext and the ciphertext.
+    - In order to view what messages have been set, simply click the "Query Server" button.
+    - Once visible both plaintext and ciphertext will be accessible to analyze. 
+  - Chosen Plaintext
+    - 
+    
 
 ## Technologies Used
 - Intellij
