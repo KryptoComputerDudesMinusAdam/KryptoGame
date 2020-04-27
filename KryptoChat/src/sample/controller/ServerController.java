@@ -257,110 +257,107 @@ class ServerClientThread extends Thread {
 
     private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
         System.out.println("In Switch: " + clientName);
-        Conversation cs;
-        Message m;
-        switch (clientName) {
-            case "CiphertextOnly":
-                cs = findCurrentCon();
-                objectOutputStream.writeObject(cs);
-                break;
-            case "Known-Plaintext":
-                cs = findCurrentCon();
-                int max;
-                if(cs.msgs.size() >= 5){
-                    max = 5;
-                } else{
-                    max = cs.msgs.size();
-                }
-                System.out.println("index: "+max);
-
-                for(int i = 0; i<max; i++){
-                    objectOutputStream.writeObject(cs.msgs.get(i));
-                    switch(cs.typeOfEncryption){
-                        case Message.cipherMonoAlphabetic:
-                            m = new Message(Cipher.monoalphabeticDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
-                            m.isEncrypted = false;
-                            objectOutputStream.writeObject(m);
-                            break;
-                        case Message.cipherVigenere:
-                            m = new Message(Cipher.vigenereDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
-                            m.isEncrypted = false;
-                            objectOutputStream.writeObject(m);
-                            break;
-                        case Message.cipherStream:
-                            m = new Message(Cipher.streamDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
-                            m.isEncrypted = false;
-                            objectOutputStream.writeObject(m);
-                            break;
+        Conversation cs = findCurrentCon();
+        if(cs != null){
+            Message m;
+            switch (clientName) {
+                case "CiphertextOnly":
+                    objectOutputStream.writeObject(cs);
+                    break;
+                case "Known-Plaintext":
+                    int max;
+                    if(cs.msgs.size() >= 5){
+                        max = 5;
+                    } else{
+                        max = cs.msgs.size();
                     }
-                }
-                break;
-            case "ChoseCiphertext":
-                System.out.println("Chosen Ciphertext");
-                cs = findCurrentCon();
-                System.out.println("Key: "+cs.getPublicKey());
+                    System.out.println("index: "+max);
 
-                try {
-                    while(true) {
-                        // check for incoming plain texts to encrypt and send back
-                        m = (Message) objectInputStream.readObject();
-                        String str = null;
-                        Message output;
-                        switch (cs.typeOfEncryption) {
+                    for(int i = 0; i<max; i++){
+                        objectOutputStream.writeObject(cs.msgs.get(i));
+                        switch(cs.typeOfEncryption){
                             case Message.cipherMonoAlphabetic:
-                                str = Cipher.monoalphabeticDec(cs.getPublicKey(), m.encryptedMessage);
+                                m = new Message(Cipher.monoalphabeticDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
+                                m.isEncrypted = false;
+                                objectOutputStream.writeObject(m);
                                 break;
                             case Message.cipherVigenere:
-                                str = Cipher.vigenereDec(cs.getPublicKey(), m.encryptedMessage);
+                                m = new Message(Cipher.vigenereDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
+                                m.isEncrypted = false;
+                                objectOutputStream.writeObject(m);
                                 break;
                             case Message.cipherStream:
-                                str = Cipher.streamDec(cs.getPublicKey(), m.encryptedMessage);
+                                m = new Message(Cipher.streamDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
+                                m.isEncrypted = false;
+                                objectOutputStream.writeObject(m);
                                 break;
                         }
-                        //send message enc out
-                        output = new Message(str);
-                        output.isEncrypted = true;
-                        output.typeOfCipher = cs.typeOfEncryption;
-                        objectOutputStream.writeObject(output);
-                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.encryptedMessage));
                     }
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                    break;
+                case "ChoseCiphertext":
+                    System.out.println("Chosen Ciphertext");
+                    System.out.println("Key: "+cs.getPublicKey());
 
-            case "ChosePlaintext":
-                System.out.println("Chosen Plaintext");
-                cs = findCurrentCon();
-                System.out.println("Key: "+cs.getPublicKey());
-
-                try {
-                    while(true) {
-                        // check for incoming plain texts to encrypt and send back
-                        m = (Message) objectInputStream.readObject();
-                        String str = null;
-                        Message output;
-                        switch (cs.typeOfEncryption) {
-                            case Message.cipherMonoAlphabetic:
-                                str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
-                                break;
-                            case Message.cipherVigenere:
-                                str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
-                                break;
-                            case Message.cipherStream:
-                                str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
-                                break;
+                    try {
+                        while(true) {
+                            // check for incoming plain texts to encrypt and send back
+                            m = (Message) objectInputStream.readObject();
+                            String str = null;
+                            Message output;
+                            switch (cs.typeOfEncryption) {
+                                case Message.cipherMonoAlphabetic:
+                                    str = Cipher.monoalphabeticDec(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                                case Message.cipherVigenere:
+                                    str = Cipher.vigenereDec(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                                case Message.cipherStream:
+                                    str = Cipher.streamDec(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                            }
+                            //send message enc out
+                            output = new Message(str);
+                            output.isEncrypted = true;
+                            output.typeOfCipher = cs.typeOfEncryption;
+                            objectOutputStream.writeObject(output);
+                            serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.encryptedMessage));
                         }
-                        //send message enc out
-                        output = new Message(str);
-                        output.isEncrypted = true;
-                        output.typeOfCipher = cs.typeOfEncryption;
-                        objectOutputStream.writeObject(output);
-                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.encryptedMessage));
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
 
+                case "ChosePlaintext":
+                    System.out.println("Chosen Plaintext");
+                    System.out.println("Key: "+cs.getPublicKey());
+
+                    try {
+                        while(true) {
+                            // check for incoming plain texts to encrypt and send back
+                            m = (Message) objectInputStream.readObject();
+                            String str = null;
+                            Message output;
+                            switch (cs.typeOfEncryption) {
+                                case Message.cipherMonoAlphabetic:
+                                    str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                                case Message.cipherVigenere:
+                                    str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                                case Message.cipherStream:
+                                    str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
+                                    break;
+                            }
+                            //send message enc out
+                            output = new Message(str);
+                            output.isEncrypted = true;
+                            output.typeOfCipher = cs.typeOfEncryption;
+                            objectOutputStream.writeObject(output);
+                            serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.encryptedMessage));
+                        }
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+            }
         }
     }
 
