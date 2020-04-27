@@ -1,15 +1,11 @@
 package sample.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import sample.model.Message;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -36,42 +32,44 @@ public class AttackerSetupController implements Serializable
     {
         if(port.getText() != null)
         {
-            int pt = Integer.parseInt(port.getText());
             try {
+                // initialize socket
                 if(attack_socket == null) {
-                    attack_socket = new Socket("0.0.0.0", pt);
+                    attack_socket = new Socket("0.0.0.0", Integer.parseInt(port.getText()));
                     objis = new ObjectInputStream(attack_socket.getInputStream());
                     objos = new ObjectOutputStream(attack_socket.getOutputStream());
                 }
+
+                // load proper attack window
                 FXMLLoader loader = new FXMLLoader();
                 String selected = comboBox.getValue().replaceAll(" ","").replaceAll("-","");
                 System.out.println("Selected: "+selected);
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
                 Parent root = loader.load();
+
+                // initialize specific attacker controller
                 AttackerSetupController UI = loader.getController();
                 UI.objis = this.objis;
                 UI.objos = this.objos;
                 UI.init();
+
+                // show specific attacker window and close current window
                 Controller.newWindow(root);
                 Stage stage = (Stage) connect.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Info Box");
-                alert.setHeaderText("Ooops!");
-                alert.setContentText("Unable to connect,\ninput correct credentials");
+                Alert alert = new Alert(Alert.AlertType.ERROR,e.getMessage()+"\nOops! Unable to connect.", ButtonType.OK);
                 alert.showAndWait();
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Ooops!");
+            // display potential errors
+            String content;
             if(comboBox.getValue() == null)
-                alert.setContentText("Please select a mode of Attack!");
+                content = "Please select a mode of Attack!";
             else
-                alert.setContentText("Please enter the server port number!");
+                content = "Please enter the server port number!";
+            Alert alert = new Alert(Alert.AlertType.ERROR,content, ButtonType.OK);
+            alert.showAndWait();
             alert.showAndWait();
         }
     }
