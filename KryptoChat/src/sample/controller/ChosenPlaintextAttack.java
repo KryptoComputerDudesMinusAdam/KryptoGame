@@ -6,23 +6,38 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import sample.model.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChosenPlaintextAttack extends AttackerSetupController
 {
     @FXML
-    Button disconnect, query_encryption, save;
+    Button disconnect, queryEncryption;
 
     @FXML
-    TextArea plaintext, ciphertext;
+    TextArea plaintext;
 
-    public void goBack(ActionEvent event)
+    @FXML
+    ListView<Message> ciphertext;
+    List<Message> list = new ArrayList<>();
+
+    public void init() throws IOException
     {
+        System.out.println("Initializing UI");
+        Controller.initializeListView( list, ciphertext);
+        Message m = new Message();
+        m.from = "AttackerChosePlaintext";
+        objos.writeObject(m);
+        listenIn();
+    }
+
+    public void goBack(ActionEvent event) {
         try{
             // display user interface
             FXMLLoader loader = new FXMLLoader();
@@ -35,6 +50,7 @@ public class ChosenPlaintextAttack extends AttackerSetupController
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
 
+            socketClosed = true;
             objos.close();
             objis.close();
             attack_socket.close();
@@ -44,36 +60,33 @@ public class ChosenPlaintextAttack extends AttackerSetupController
         }
     }
 
-    public void queryDecryption(ActionEvent actionEvent)
-    {
+    public void queryEncryption(ActionEvent actionEvent) {
         try {
             Message p = new Message(plaintext.getText());
+            System.out.println("Sending: "+plaintext.getText());
             objos.writeObject(p);
             System.out.println("*** in thread");
-            listenIn();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void listenIn(){
+    private void listenIn() {
         new Thread(()->{
-            while(!attack_socket.isClosed()) {
+            while(!socketClosed) {
+                System.out.println("CHECK: "+socketClosed);
                 try {
                     Message e = (Message) objis.readObject();
-                    System.out.println("found messg: "+e.encryptedMessage);
+                    System.out.println("found messg: "+e.message);
                     Platform.runLater(() -> {
-                        ciphertext.setText(e.encryptedMessage);
+                        list.add(e);
+                        ciphertext.getItems().setAll(list);
+                        ciphertext.refresh();
                     });
                 } catch (IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }
             }
         }).start();
-    }
-
-    public void save(ActionEvent actionEvent)
-    {
-
     }
 }

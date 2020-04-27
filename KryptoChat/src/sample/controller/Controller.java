@@ -32,10 +32,10 @@ public class Controller {
             @Override
             protected void updateItem(Message message, boolean empty) {
                 super.updateItem(message, empty);
-                if (empty || message == null || message.encryptedMessage == null) {
+                if (empty || message == null || message.message == null) {
                     setText(null);
                 } else {
-                    setText(message.encryptedMessage);
+                    setText(message.message);
                 }
             }
         });

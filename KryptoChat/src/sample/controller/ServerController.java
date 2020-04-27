@@ -27,7 +27,6 @@ public class ServerController {
     @FXML
     ListView<Message> listView;
     private final List<Message> messages = new ArrayList<>();
-    public static List<Conversation> allCon = new ArrayList<>();
 
     public void handleConnectButton(ActionEvent event) {
         // initialize the list view
@@ -62,6 +61,8 @@ class ServerThread extends Thread {
     private final ServerController serverController;
     static List<ServerClientThread> clients = new ArrayList<>();
     static HashMap<String, String> connections = new HashMap<>();
+    public static List<Conversation> conversations = new ArrayList<>();
+
 
     ServerThread(ServerController serverController) {
         this.serverController = serverController;
@@ -96,7 +97,7 @@ class ServerThread extends Thread {
         ServerThread.clients.forEach(cl -> {
             for (ServerClientThread sct : ServerThread.clients) {
                 try {
-                    Message contact = new Message(sct.clientId);
+                    Message contact = new Message(sct.id);
                     contact.typeOfMessage = Message.contacts;
                     cl.objectOutputStream.writeObject(contact);
                 } catch (IOException e) {
@@ -109,263 +110,288 @@ class ServerThread extends Thread {
 
 // represents a single connection to a client
 class ServerClientThread extends Thread {
-    private final ServerController serverController;
-    private final ServerThread serverThread;
-    private final Socket socket;
-    Conversation conversation;
-    private final int clientPort;
-    String clientId;
-    String client2Id;
-    ServerClientThread client2;
+    private ServerController serverController;
+    private ServerThread serverThread;
+    private Socket socket;
     ObjectOutputStream objectOutputStream;
-    private boolean foundConversation = false;
     private ObjectInputStream objectInputStream;
 
-
-    // *
-    public String typeOfCipher;
+    String id;
+    private String name;
+    private int port;
+    private String typeOfCipher;
+    private boolean foundConversation = false;
+    private Conversation conversation;
+    private ServerClientThread client2;
 
     ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread) {
         this.socket = socket;
         this.serverController = serverController;
         this.serverThread = serverThread;
-        this.clientPort = socket.getPort();
+        this.port = socket.getPort();
         this.conversation = new Conversation();
     }
 
     public void run() {
-
         try {
             // for writing and reading to sockets
-            OutputStream outputStream = socket.getOutputStream();
-            objectOutputStream = new ObjectOutputStream(outputStream);
-            InputStream inputStream = socket.getInputStream();
-            objectInputStream = new ObjectInputStream(inputStream);
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
 
-            // read message from client: client name and add to contacts list
+            // get first message from client: detect client vs attacker
             Message m = (Message) objectInputStream.readObject();
-            String clientName = m.encryptedMessage;
-            if (clientName.startsWith("Attacker")) {
-                handelAttacker(objectOutputStream, objectInputStream, clientName.substring(8));
+            name = m.from;
+
+            // start attacker or client logic
+            if (name.startsWith("Attacker")) {
+                handleAttacker(name.substring(8));
             } else {
-                clientId = clientName + "#" + clientPort;
-                Message uniqueIDMessage = new Message(clientId);
-                uniqueIDMessage.typeOfMessage = Message.uniqueID;
-                objectOutputStream.writeObject(uniqueIDMessage);
-
-                serverController.displayNewMessage(new Message("Added " + clientId));
-                serverThread.broadcastContactsList();
-                // continuously check for messages coming from client
-                new Thread(() -> {
-                    try {
-                        // try to get two clients to connect to each other
-                        while (true) {
-                            System.out.println("Updated conversation object: " + conversation.msgs.toString());
-                            Message message = (Message) objectInputStream.readObject();
-                            // client still needs to connect to another client
-                            if (!foundConversation) {
-                                for (ServerClientThread client : ServerThread.clients) {
-                                    if (client.clientId.equals(message.encryptedMessage)) {
-                                        // *
-                                        Message messageToOtherClient = new Message(clientId, message.typeOfCipher);
-                                        messageToOtherClient.typeOfMessage = message.typeOfMessage;
-                                        client.objectOutputStream.writeObject(messageToOtherClient);
-
-                                        // connect the two clients together
-                                        if (messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)) {
-                                            ServerController.allCon.add(this.conversation);
-                                            client2 = client;
-                                            client2Id = message.encryptedMessage;
-                                            ServerThread.connections.put(clientId, client2Id);
-                                            ServerThread.connections.put(client2Id, clientId);
-                                            this.conversation.setClient1id(clientId);
-                                            this.conversation.setClient2id(client2Id);
-                                            serverController.displayNewMessage(new Message("New conversation: " + clientId + " and " + ServerThread.connections.get(clientId)));
-                                            foundConversation = true;
-                                            client.foundConversation = true;
-
-                                            // *
-                                            typeOfCipher = message.typeOfCipher;
-                                            System.out.println("Setting conversation: "+conversation.getClient1id()+conversation.getClient2id()+"\n\twith: "+conversation.getPublicKey());
-                                            int index = ServerController.allCon.indexOf(conversation);
-                                            System.out.println("Checking static: "+ index + " here: "+ServerController.allCon.get(index).getPublicKey());
-                                            client.typeOfCipher = message.typeOfCipher;
-                                            String key;
-                                            switch (this.typeOfCipher) {
-                                                case Message.cipherMonoAlphabetic:
-                                                    key = Cipher.generateMonoKey();
-                                                    break;
-                                                case Message.cipherVigenere:
-                                                    key = Cipher.generateBasicKey();
-                                                    break;
-                                                case Message.cipherStream:
-                                                    key = Cipher.generateBasicKey();
-                                                    break;
-                                                default:
-                                                    key = Cipher.generateMonoKey();
-                                                    break;
-                                            }
-                                            this.conversation.setPublicKey(key);
-                                            client2.conversation.setPublicKey(key);
-                                            conversation.setTypeOfEncryption(this.typeOfCipher);
-                                            Message keyMessage = new Message(key);
-                                            keyMessage.typeOfCipher = this.typeOfCipher;
-                                            keyMessage.typeOfMessage = Message.conversationKey;
-                                            objectOutputStream.writeObject(keyMessage);
-                                            client.objectOutputStream.writeObject(keyMessage);
-                                            serverController.displayNewMessage(new Message("Generated secret key " + keyMessage.encryptedMessage));
-                                        }
-                                        break;
-                                    }
-                                }
-                            } else {
-                                this.conversation.msgs.add(message);
-                                this.conversation.setTypeOfEncryption(this.typeOfCipher);
-                                for (ServerClientThread client : ServerThread.clients) {
-                                    if (client.clientId.equals(ServerThread.connections.get(clientId))) {
-                                        client2 = client;
-                                        break;
-                                    }
-                                }
-                                System.out.println("Writing message: " + message.encryptedMessage + "\n\tFrom: " + clientId + " to " + ServerThread.connections.get(clientId));
-                                client2.objectOutputStream.writeObject(message);
-                                client2.conversation.msgs.add(message);
-                                client2.conversation.setTypeOfEncryption(this.typeOfCipher);
-                                client2.conversation.setClient1id(client2.clientId);
-                                client2.conversation.setClient2id(clientId);
-                                if (message.typeOfMessage.equals(Message.terminate)) {
-                                    serverController.displayNewMessage(new Message(clientId + " and " + client2.clientId + " ended their conversation."));
-                                    serverThread.removeClient(this);
-                                    serverThread.removeClient(client2);
-                                    ServerThread.connections.remove(clientId);
-                                    ServerThread.connections.remove(client2.clientId);
-                                    serverController.displayNewMessage(new Message("Closing socket " + socket.getPort()));
-                                    socket.close();
-                                }
-                                serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.encryptedMessage + "\n\tEncryption Type: " + message.typeOfCipher));
-                            }
-                        }
-                    } catch (IOException | ClassNotFoundException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }).start();
+                handleClient();
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void handelAttacker(ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream, String clientName) throws IOException {
-        System.out.println("In Switch: " + clientName);
-        Conversation cs;
-        Message m;
-        switch (clientName) {
-            case "CiphertextOnly":
-                cs = findCurrentCon();
-                objectOutputStream.writeObject(cs);
-                break;
-            case "Known-Plaintext":
-                cs = findCurrentCon();
-                int max;
-                if(cs.msgs.size() >= 5){
-                    max = 5;
-                } else{
-                    max = cs.msgs.size();
-                }
-                System.out.println("index: "+max);
+    private void handleClient(){
+        try {
+            // give client their unique ID and broadcast new contacts list
+            Message uniqueIDMessage = new Message(id = name + "#" + port);
+            uniqueIDMessage.typeOfMessage = Message.uniqueID;
+            objectOutputStream.writeObject(uniqueIDMessage);
+            serverController.displayNewMessage(new Message("Added " + id));
+            serverThread.broadcastContactsList();
 
-                for(int i = 0; i<max; i++){
-                    objectOutputStream.writeObject(cs.msgs.get(i));
-                    switch(cs.typeOfEncryption){
-                        case Message.cipherMonoAlphabetic:
-                            m = new Message(Cipher.monoalphabeticDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
-                            m.isEncrypted = false;
-                            objectOutputStream.writeObject(m);
-                            break;
-                        case Message.cipherVigenere:
-                            m = new Message(Cipher.vigenereDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
-                            m.isEncrypted = false;
-                            objectOutputStream.writeObject(m);
-                            break;
-                        case Message.cipherStream:
-                            m = new Message(Cipher.streamDec(cs.getPublicKey(), cs.msgs.get(i).encryptedMessage));
-                            m.isEncrypted = false;
-                            objectOutputStream.writeObject(m);
-                            break;
+            // continuously check for messages coming from client
+            new Thread(() -> {
+                try {
+                    // try to get two clients to connect to each other
+                    while (true) {
+                        System.out.println("Updated conversation object: " + conversation.msgs.toString());
+                        Message message = (Message) objectInputStream.readObject();
+                        // client still needs to connect to another client
+                        if (!foundConversation) {
+                            waitForConversation(message);
+                        } else {
+                            handleConversation(message);
+                        }
                     }
+                } catch (IOException | ClassNotFoundException e) {
+                    System.out.println(e.getMessage());
                 }
-                break;
-            case "ChoseCiphertext":
-                System.out.println("Chosen Ciphertext");
-                cs = findCurrentCon();
-                System.out.println("Key: "+cs.getPublicKey());
-                while(true) {
-                    try {
-                        // check for incoming plain texts to encrypt and send back
-                        m = (Message) objectInputStream.readObject();
-                        String str = null;
-                        Message output;
-                        switch(cs.typeOfEncryption){
+            }).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void waitForConversation(Message message){
+        try {
+            for (ServerClientThread client : ServerThread.clients) {
+                if (client.id.equals(message.to)) {
+                    // initialize message to pass over to other clients
+                    System.out.println("found match");
+                    Message messageToOtherClient = new Message();
+                    messageToOtherClient.from = id;
+                    messageToOtherClient.typeOfCipher = message.typeOfCipher;
+                    messageToOtherClient.typeOfMessage = message.typeOfMessage;
+                    client.objectOutputStream.writeObject(messageToOtherClient);
+
+                    // connect the two clients together
+                    if (messageToOtherClient.typeOfMessage.equals(Message.conversationAccept)) {
+                        ServerThread.conversations.add(conversation);
+                        client2 = client;
+                        client2.id = message.to;
+                        ServerThread.connections.put(id, client2.id);
+                        ServerThread.connections.put(client2.id, id);
+                        conversation.setClient1id(id);
+                        conversation.setClient2id(client2.id);
+                        serverController.displayNewMessage(new Message("New conversation: " + id + " and " + ServerThread.connections.get(id)));
+                        foundConversation = true;
+                        client.foundConversation = true;
+
+                        // *
+                        typeOfCipher = message.typeOfCipher;
+                        System.out.println("Setting conversation: " + conversation.getClient1id() + conversation.getClient2id() + "\n\twith: " + conversation.getPublicKey());
+                        int index = ServerThread.conversations.indexOf(conversation);
+                        System.out.println("Checking static: "+ index + " here: "+ServerThread.conversations.get(index).getPublicKey());
+                        client.typeOfCipher = message.typeOfCipher;
+                        String key;
+                        switch (typeOfCipher) {
                             case Message.cipherMonoAlphabetic:
-                                str = Cipher.monoalphabeticDec(cs.getPublicKey(), m.encryptedMessage);
+                                key = Cipher.generateMonoKey();
                                 break;
                             case Message.cipherVigenere:
-                                str = Cipher.vigenereDec(cs.getPublicKey(), m.encryptedMessage);
+                                key = Cipher.generateBasicKey();
                                 break;
                             case Message.cipherStream:
-                                str = Cipher.streamDec(cs.getPublicKey(), m.encryptedMessage);
+                                key = Cipher.generateBasicKey();
+                                break;
+                            default:
+                                key = Cipher.generateMonoKey();
                                 break;
                         }
-                        //send message enc out
-                        output = new Message(str);
-                        output.isEncrypted = true;
-                        output.typeOfCipher = cs.typeOfEncryption;
-                        objectOutputStream.writeObject(output);
-                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
+                        conversation.setPublicKey(key);
+                        client2.conversation.setPublicKey(key);
+                        conversation.setTypeOfEncryption(typeOfCipher);
+                        Message keyMessage = new Message(key);
+                        keyMessage.typeOfCipher = typeOfCipher;
+                        keyMessage.typeOfMessage = Message.conversationKey;
+                        objectOutputStream.writeObject(keyMessage);
+                        client.objectOutputStream.writeObject(keyMessage);
+                        serverController.displayNewMessage(new Message("Generated secret key " + keyMessage.message));
+                    }
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleConversation(Message message){
+        try {
+            conversation.msgs.add(message);
+            conversation.setTypeOfEncryption(typeOfCipher);
+            for (ServerClientThread client : ServerThread.clients) {
+                if (client.id.equals(ServerThread.connections.get(id))) {
+                    System.out.println("Writing message: " + message.message + "\n\tFrom: " + id + " to " + ServerThread.connections.get(id));
+                    client2 = client;
+                    client2.objectOutputStream.writeObject(message);
+                    client2.conversation.msgs.add(message);
+                    client2.conversation.setTypeOfEncryption(typeOfCipher);
+                    client2.conversation.setClient1id(client2.id);
+                    client2.conversation.setClient2id(id);
+                    if (message.typeOfMessage.equals(Message.terminate)) {
+                        serverController.displayNewMessage(new Message(id + " and " + client2.id + " ended their conversation."));
+                        serverThread.removeClient(this);
+                        serverThread.removeClient(client2);
+                        ServerThread.connections.remove(id);
+                        ServerThread.connections.remove(client2.id);
+                        serverController.displayNewMessage(new Message("Closing socket " + socket.getPort()));
+                        socket.close();
+                    }
+                    serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.message + "\n\tEncryption Type: " + message.typeOfCipher));
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleAttacker(String clientName) throws IOException {
+        System.out.println("In Switch: " + clientName);
+        Conversation cs = findCurrentCon();
+        if(cs != null){
+            Message m;
+            switch (clientName) {
+                case "CiphertextOnly":
+                    objectOutputStream.writeObject(cs);
+                    break;
+                case "Known-Plaintext":
+                    int max;
+                    if(cs.msgs.size() >= 5){
+                        max = 5;
+                    } else{
+                        max = cs.msgs.size();
+                    }
+                    System.out.println("index: "+max);
+
+                    for(int i = 0; i<max; i++){
+                        objectOutputStream.writeObject(cs.msgs.get(i));
+                        switch(cs.typeOfEncryption){
+                            case Message.cipherMonoAlphabetic:
+                                m = new Message(Cipher.monoalphabeticDec(cs.getPublicKey(), cs.msgs.get(i).message));
+                                break;
+                            case Message.cipherVigenere:
+                                m = new Message(Cipher.vigenereDec(cs.getPublicKey(), cs.msgs.get(i).message));
+                                break;
+                            case Message.cipherStream:
+                                m = new Message(Cipher.streamDec(cs.getPublicKey(), cs.msgs.get(i).message));
+                                break;
+                            default:
+                                m = new Message();
+                                break;
+                        }
+                        m.isEncrypted = false;
+                        objectOutputStream.writeObject(m);
+                    }
+                    break;
+                case "ChoseCiphertext":
+                    System.out.println("Chosen Ciphertext");
+                    System.out.println("Key: "+cs.getPublicKey());
+
+                    try {
+                        while(true) {
+                            // check for incoming plain texts to encrypt and send back
+                            m = (Message) objectInputStream.readObject();
+                            String str = null;
+                            Message output;
+                            switch (cs.typeOfEncryption) {
+                                case Message.cipherMonoAlphabetic:
+                                    str = Cipher.monoalphabeticDec(cs.getPublicKey(), m.message);
+                                    break;
+                                case Message.cipherVigenere:
+                                    str = Cipher.vigenereDec(cs.getPublicKey(), m.message);
+                                    break;
+                                case Message.cipherStream:
+                                    str = Cipher.streamDec(cs.getPublicKey(), m.message);
+                                    break;
+                            }
+                            //send message enc out
+                            output = new Message(str);
+                            output.isEncrypted = true;
+                            output.typeOfCipher = cs.typeOfEncryption;
+                            objectOutputStream.writeObject(output);
+                            serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.message));
+                        }
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                }
-            case "ChosePlaintext":
-                System.out.println("Chosen Plaintext");
-                cs = findCurrentCon();
-                System.out.println("Key: "+cs.getPublicKey());
-                while(true) {
+
+                case "ChosePlaintext":
+                    System.out.println("Chosen Plaintext");
+                    System.out.println("Key: "+cs.getPublicKey());
+
                     try {
-                        // check for incoming plain texts to encrypt and send back
-                        m = (Message) objectInputStream.readObject();
-                        String str = null;
-                        Message output;
-                        switch(cs.typeOfEncryption){
-                            case Message.cipherMonoAlphabetic:
-                                str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
-                                break;
-                            case Message.cipherVigenere:
-                                str = Cipher.vigenereEnc(cs.getPublicKey(), m.encryptedMessage);
-                                break;
-                            case Message.cipherStream:
-                                str = Cipher.streamEnc(cs.getPublicKey(), m.encryptedMessage);
-                                break;
+                        while(true) {
+                            // check for incoming plain texts to encrypt and send back
+                            m = (Message) objectInputStream.readObject();
+                            System.out.println("MESSAGE: "+m.isEncrypted + m.message + m.typeOfCipher + m.from + m.to);
+                            String str = null;
+                            Message output;
+                            switch (cs.typeOfEncryption) {
+                                case Message.cipherMonoAlphabetic:
+                                    str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.message);
+                                    break;
+                                case Message.cipherVigenere:
+                                    str = Cipher.vigenereEnc(cs.getPublicKey(), m.message);
+                                    break;
+                                case Message.cipherStream:
+                                    str = Cipher.streamEnc(cs.getPublicKey(), m.message);
+                                    break;
+                            }
+                            //send message enc out
+                            output = new Message(str);
+                            output.isEncrypted = true;
+                            output.typeOfCipher = cs.typeOfEncryption;
+                            objectOutputStream.writeObject(output);
+                            serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.message));
                         }
-                        //send message enc out
-                        output = new Message(str);
-                        output.isEncrypted = true;
-                        output.typeOfCipher = cs.typeOfEncryption;
-                        objectOutputStream.writeObject(output);
-                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                }
+            }
         }
     }
 
     private Conversation findCurrentCon() {
-        System.out.println("Size: "+serverController.allCon.size());
-        if(serverController.allCon.size() > 0){
-            int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerController.allCon.size());
+        System.out.println("Size: "+ServerThread.conversations.size());
+        if(ServerThread.conversations.size() > 0){
+            int randomIndex = ThreadLocalRandom.current().nextInt(0, ServerThread.conversations.size());
             System.out.println("returning index: "+randomIndex);
-            Conversation conv = ServerController.allCon.get(randomIndex);
+            Conversation conv = ServerThread.conversations.get(randomIndex);
             System.out.println("Returning key: " + conv.getPublicKey() + conv.getClient1id() + conv.getClient2id());
             return conv;
         } else{

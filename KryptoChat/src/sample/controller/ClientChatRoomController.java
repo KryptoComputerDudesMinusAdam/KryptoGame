@@ -27,14 +27,15 @@ public class ClientChatRoomController {
     @FXML
     ListView<Message> chatListView;
     List<Message> messages = new ArrayList<>();
-    ClientThread client;
+    private ClientThread client;
 
     void initializeThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
        client = new ClientThread(socket, clientName, receiverId, oos, ois);
        client.clientChatRoomController = this;
        client.start();
 
-       new Thread(()->{
+       // UI refresher thread
+       new Thread(()-> {
            while(true){
                if(chatListView.getSelectionModel().getSelectedItem() != null){
                    DecryptButton.setDisable(false);
@@ -45,7 +46,7 @@ public class ClientChatRoomController {
        }).start();
     }
 
-    void listenIn(){
+    void init() {
         Controller.initializeListView(messages, chatListView);
         titleLabel.setText(client.receiverId);
     }
@@ -53,7 +54,7 @@ public class ClientChatRoomController {
     public void handleListViewClick(MouseEvent event){
         try{
             Message m = chatListView.getSelectionModel().getSelectedItem();
-            receiveTextArea.setText(m.encryptedMessage);
+            receiveTextArea.setText(m.message);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -86,27 +87,20 @@ public class ClientChatRoomController {
     public void handleDecryptButton(ActionEvent event){
         if(chatListView.getSelectionModel().getSelectedItem() != null
                     && chatListView.getSelectionModel().getSelectedItem().isEncrypted) {
-            System.out.println("Decrypting message: "+receiveTextArea.getText());
             Message m = chatListView.getSelectionModel().getSelectedItem();
             String[] headAndTail = getHeadAndTail(receiveTextArea.getText());
-            System.out.println("HEAD: "+headAndTail[0]);
-            System.out.println("TAIL: "+headAndTail[1]);
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherVigenere:
-                    m.encryptedMessage = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherStream:
-                    m.encryptedMessage = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]).toLowerCase();
-                    break;
-                default:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]).toLowerCase();
                     break;
             }
             m.isEncrypted = false;
-            System.out.println("Decrypted message: "+m.encryptedMessage);
             chatListView.getItems().setAll(messages);
             chatListView.refresh();
         }
@@ -118,17 +112,16 @@ public class ClientChatRoomController {
         while(testChar[i] != ':'){
             i++;
         }
-
         return new String[]{str.substring(0, i+2), str.substring(i+2)};
     }
 }
 
 class ClientThread extends Thread{
     Socket socket;
-    String clientName;
+    private String clientName;
     String receiverId;
     ObjectOutputStream objectOutputStream;
-    ObjectInputStream objectInputStream;
+    private ObjectInputStream objectInputStream;
     ClientChatRoomController clientChatRoomController;
     String key;
     String typeOfCipher;
@@ -145,10 +138,9 @@ class ClientThread extends Thread{
         // constantly listen in for new messages
         new Thread(()->{
             try {
-                System.out.println("Listening!!");
                 Message keyFromServer = (Message) objectInputStream.readObject();
-                System.out.println("Received key: "+keyFromServer.encryptedMessage);
-                key = keyFromServer.encryptedMessage;
+                System.out.println("Received key: "+keyFromServer.message);
+                key = keyFromServer.message;
                 typeOfCipher = keyFromServer.typeOfCipher;
 
                 while(true){
@@ -174,8 +166,8 @@ class ClientThread extends Thread{
                             }
                         });
                     } else{
-                        System.out.println("Got a message! "+m.encryptedMessage);
-                        m.encryptedMessage = "["+receiverId+"]: "+m.encryptedMessage;
+                        System.out.println("Got a message! "+m.message);
+                        m.message = "["+receiverId+"]: "+m.message;
                         Platform.runLater(() -> {
                             clientChatRoomController.messages.add(m);
                             clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
@@ -209,11 +201,11 @@ class ClientThread extends Thread{
                     break;
             }
             Message m = new Message(e);
-            m.typeOfMessage = Message.message;
+            m.typeOfMessage = Message.simpleMessage;
             m.isEncrypted = true;
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
-                m.encryptedMessage = "["+clientName+"]: "+m.encryptedMessage;
+                m.message = "["+clientName+"]: "+m.message;
                 clientChatRoomController.messages.add(m);
                 clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
                 clientChatRoomController.chatListView.refresh();

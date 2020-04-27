@@ -13,28 +13,29 @@ public class Message implements Serializable {
     public final static String terminate = "terminate";
     public final static String conversationKey = "key";
     public final static String uniqueID = "conversationUniqueID";
-    public final static String message = "message";
-
-    public String encryptedMessage;
-    public int cypherOption;
-    public String typeOfMessage;
-    public boolean isEncrypted;
-    public String typeOfCipher;
-
+    public final static String simpleMessage = "simpleMessage";
     public final static String cipherMonoAlphabetic = "monoalphabetic";
     public final static String cipherVigenere = "vigenere";
     public final static String cipherStream = "stream";
 
+    public String from;
+    public String to;
+    public String message;
+    public String typeOfMessage;
+    public boolean isEncrypted;
+    public String typeOfCipher;
 
-
-    public Message(String encryptedMessage, String typeOfCipher){ // meant for messages to be encrypted/decrypted
-        this.encryptedMessage = encryptedMessage;
+    public Message(String message, String typeOfCipher){ // meant for messages to be encrypted/decrypted
+        this.message = message;
         this.typeOfCipher = typeOfCipher;
     }
 
+    public Message(){ // misc constructor
+
+    }
+
     public Message(String e){ // meant for messages sent straight to server for connection setup and instructions
-        this.encryptedMessage = e;
-        this.cypherOption = -1;
+        this.message = e;
     }
 }
 
