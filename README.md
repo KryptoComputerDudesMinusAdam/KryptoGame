@@ -40,7 +40,7 @@ encryptions in which the adversary will have to decrypt.
     - Messages received will be automatically encrypted and displayed as its encrypted message
     - There will be two text boxes displayed in the UI
       - TextBox 1: User can input their desired message and send to their recipeint by clicking the blue send button next to this box
-      - TextBox 2: When a message is recieved, click it followed by the green button next to this box. The decrypted message will appear here in TextBox 2.
+      - TextBox 2: When a message is recieved, click it followed by the green button next to this box. The decrypted message will appear within the original display of messages and its encyrption will be displayed here in TextBox 2.
   
   ## Technologies Used
   - Intellij
