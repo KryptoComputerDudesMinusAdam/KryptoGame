@@ -30,14 +30,12 @@ public class ClientSetupController {
     public void handleServerButton(ActionEvent event){
         if(hostnameTextField.getText() != null && portTextField.getText() != null && clientNameTextField.getText() != null){
             String host = hostnameTextField.getText();
-            int port = Integer.parseInt(portTextField.getText());
             clientServerThread = new ClientServerThread(this);
-            clientServerThread.port = port;
+            clientServerThread.port = Integer.parseInt(portTextField.getText());
             clientServerThread.host = host;
             clientServerThread.clientName = clientNameTextField.getText();
             clientServerThread.start();
         }
-
         encryptionComboBox.getItems().setAll(Message.cipherMonoAlphabetic, Message.cipherVigenere, Message.cipherStream);
         encryptionComboBox.getSelectionModel().selectFirst();
     }

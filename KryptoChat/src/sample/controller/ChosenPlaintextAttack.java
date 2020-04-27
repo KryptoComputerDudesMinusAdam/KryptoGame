@@ -31,6 +31,10 @@ public class ChosenPlaintextAttack extends AttackerSetupController
     {
         System.out.println("Initializing UI");
         Controller.initializeListView( list, ciphertext);
+        Message m = new Message();
+        m.from = "AttackerChosePlaintext";
+        objos.writeObject(m);
+        listenIn();
     }
 
     public void goBack(ActionEvent event) {
@@ -46,6 +50,7 @@ public class ChosenPlaintextAttack extends AttackerSetupController
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
 
+            socketClosed = true;
             objos.close();
             objis.close();
             attack_socket.close();
@@ -57,13 +62,10 @@ public class ChosenPlaintextAttack extends AttackerSetupController
 
     public void queryEncryption(ActionEvent actionEvent) {
         try {
-            Message m = new Message();
-            m.from = "AttackerChosePlaintext";
-            objos.writeObject(m);
             Message p = new Message(plaintext.getText());
+            System.out.println("Sending: "+plaintext.getText());
             objos.writeObject(p);
             System.out.println("*** in thread");
-            listenIn();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +73,8 @@ public class ChosenPlaintextAttack extends AttackerSetupController
 
     private void listenIn() {
         new Thread(()->{
-            while(!attack_socket.isClosed()) {
+            while(!socketClosed) {
+                System.out.println("CHECK: "+socketClosed);
                 try {
                     Message e = (Message) objis.readObject();
                     System.out.println("found messg: "+e.message);

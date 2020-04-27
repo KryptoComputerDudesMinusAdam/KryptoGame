@@ -50,6 +50,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
 
+            socketClosed = true;
             objos.close();
             objis.close();
             attack_socket.close();

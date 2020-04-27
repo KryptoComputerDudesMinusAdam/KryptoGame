@@ -18,6 +18,7 @@ public class AttackerSetupController implements Serializable
     static Socket attack_socket;
     ObjectInputStream objis;
     ObjectOutputStream objos;
+    volatile boolean socketClosed=false;
 
     private String selected;
     ObservableList<String> list = FXCollections.observableArrayList();

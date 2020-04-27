@@ -31,6 +31,10 @@ public class ChosenCiphertextAttack extends AttackerSetupController
     public void init() throws IOException {
         System.out.println("Initializing UI");
         Controller.initializeListView(list, plaintext);
+        Message m = new Message();
+        m.from = "AttackerChoseCiphertext";
+        objos.writeObject(m);
+        listenIn();
     }
 
     public void goBack(ActionEvent event) {
@@ -46,6 +50,7 @@ public class ChosenCiphertextAttack extends AttackerSetupController
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
 
+            socketClosed = true;
             objos.close();
             objis.close();
             attack_socket.close();
@@ -57,13 +62,10 @@ public class ChosenCiphertextAttack extends AttackerSetupController
 
     public void queryDecryption(ActionEvent actionEvent) {
         try {
-            Message m = new Message();
-            m.from = "AttackerChoseCiphertext";
-            objos.writeObject(m);
+            System.out.println("Sending: "+encrypted.getText());
             Message p = new Message(encrypted.getText());
             objos.writeObject(p);
             System.out.println("*** in thread");
-            listenIn();
         } catch (IOException e) {
             e.printStackTrace();
         }

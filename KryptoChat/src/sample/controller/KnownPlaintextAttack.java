@@ -45,7 +45,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
     public void listenIn(){
         new Thread(()->{
             try {
-                if(!attack_socket.isClosed()){
+                if(!socketClosed){
                     for(int i = 0; i < 2; i++){
                         System.out.println("Waiting for read object");
                         Message e = (Message) objis.readObject();
@@ -83,6 +83,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
 
+            socketClosed = true;
             objos.close();
             objis.close();
             attack_socket.close();
