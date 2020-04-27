@@ -89,7 +89,8 @@ public class KnownPlaintextAttack extends AttackerSetupController
 
             objos.close();
             objis.close();
-
+            attack_socket.close();
+            attack_socket = null;
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

@@ -36,7 +36,7 @@ public class ChosenPlaintextAttack extends AttackerSetupController
             stage.close();
 
             attack_socket.close();
-
+            attack_socket = null;
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

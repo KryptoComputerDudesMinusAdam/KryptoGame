@@ -39,6 +39,7 @@ public class AttackerSetupController implements Serializable
     */
     public void handleConnectButton(ActionEvent event)
     {
+        setSelection();
         if(port.getText().length() != 0 && comboBox.getValue() != null)
         {
             int pt = Integer.parseInt(port.getText());

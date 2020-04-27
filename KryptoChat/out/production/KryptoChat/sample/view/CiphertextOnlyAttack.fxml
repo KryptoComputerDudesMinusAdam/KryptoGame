@@ -22,10 +22,10 @@
       <ListView fx:id="cipherList" layoutX="19.0" layoutY="69.0" prefHeight="148.0" prefWidth="200.0" />
       <Line endX="499.0" layoutX="101.0" layoutY="42.0" startX="-100.0" />
       <Line endX="-116.0" endY="299.0" layoutX="358.0" layoutY="101.0" startX="-116.0" startY="-58.5" />
-      <Line endX="504.0" endY="47.5" layoutX="96.0" layoutY="118.0" startX="145.5" startY="47.5" />
+      <Line endX="504.0" endY="47.5" layoutX="96.0" layoutY="124.0" startX="145.5" startY="47.5" />
       <TextArea fx:id="fq" editable="false" layoutX="249.0" layoutY="63.0" prefHeight="17.0" prefWidth="344.0" promptText="Frequency of letters" wrapText="true" />
-      <TextArea fx:id="key" editable="false" layoutX="249.0" layoutY="122.0" prefHeight="17.0" prefWidth="344.0" promptText="Possible Key" />
-      <Label layoutX="330.0" layoutY="44.0" text="Frequency of Letters inCiphertext" />
+      <TextArea fx:id="key" editable="false" layoutX="249.0" layoutY="122.0" prefHeight="47.0" prefWidth="344.0" promptText="Possible Key" />
+      <Label layoutX="330.0" layoutY="44.0" text="Frequency of Letters in Ciphertext" />
       <Label layoutX="322.0" layoutY="104.0" text="Possible Key: Ciphertext -&gt; Plaintext" />
     </children>
 </Pane>
