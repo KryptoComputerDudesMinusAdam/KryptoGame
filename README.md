@@ -31,17 +31,17 @@ encryptions in which the adversary will have to decrypt.
   - The challenges are derived based upon what kind of information you want to be given as the adversary.
   - Once all inputs are filled, click connect
   
-  ## Main Features
-  - Server
-    - The server connects all parties towards once source and allows each user to interact with each other with their respective roles.
-    - You are able to connect and disconnect the server.
-  - Messengers (Alice and Bob)
-    - Once all prior set up has been completed, Alice and Bob are able to successfully send each other messages through the server
-    - Messages received will be automatically encrypted and displayed as its encrypted message
-    - There will be two text boxes displayed in the UI
-      - TextBox 1: User can input their desired message and send to their recipeint by clicking the blue send button next to this box
-      - TextBox 2: When a message is recieved, click it followed by the green button next to this box. The decrypted message will appear within the original display of messages and its encyrption will be displayed here in TextBox 2.
-  
+## Main Features
+- Server
+  - The server connects all parties towards once source and allows each user to interact with each other with their respective roles.
+  - You are able to connect and disconnect the server.
+- Messengers (Alice and Bob)
+  - Once all prior set up has been completed, Alice and Bob are able to successfully send each other messages through the server
+  - Messages received will be automatically encrypted and displayed as its encrypted message
+  - There will be two text boxes displayed in the UI
+    - TextBox 1: User can input their desired message and send to their recipeint by clicking the blue send button next to this box
+    - TextBox 2: When a message is recieved, click it followed by the green button next to this box. The decrypted message will appear within the original display of messages and its encyrption will be displayed here in TextBox 2.
+
   ## Technologies Used
   - Intellij
   - Scene Builder
