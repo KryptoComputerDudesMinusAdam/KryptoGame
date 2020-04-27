@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -18,7 +19,7 @@
       <Button fx:id="save" layoutX="307.0" layoutY="314.0" mnemonicParsing="false" onAction="#save" prefHeight="27.0" prefWidth="258.0" text="Save Decryption" />
       <Label layoutX="108.0" layoutY="64.0" text="Unlnown Ciphertext" />
       <Label layoutX="375.0" layoutY="64.0" text="Decrypted Ciphertext" />
-      <TextArea fx:id="decrypted" editable="false" layoutX="307.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" promptText="Decrypted Ciphertext will appear here..." />
       <TextArea fx:id="encrypted" layoutX="36.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" promptText="Enter your ciphertext" />
+      <ListView fx:id="plaintext" layoutX="307.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" />
    </children>
 </Pane>

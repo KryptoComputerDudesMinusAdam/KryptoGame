@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import sample.model.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChosenPlaintextAttack extends AttackerSetupController
 {
@@ -19,7 +22,17 @@ public class ChosenPlaintextAttack extends AttackerSetupController
     Button disconnect, query_encryption, save;
 
     @FXML
-    TextArea plaintext, ciphertext;
+    TextArea plaintext;
+
+    @FXML
+    ListView<Message> ciphertext;
+    List<Message> list = new ArrayList<>();
+
+    public void init() throws IOException
+    {
+        System.out.println("Initializing UI");
+        Controller.initializeListView( list, ciphertext);
+    }
 
     public void goBack(ActionEvent event)
     {
@@ -47,6 +60,8 @@ public class ChosenPlaintextAttack extends AttackerSetupController
     public void queryDecryption(ActionEvent actionEvent)
     {
         try {
+            Message m = new Message("AttackerChosePlaintext");
+            objos.writeObject(m);
             Message p = new Message(plaintext.getText());
             objos.writeObject(p);
             System.out.println("*** in thread");
@@ -63,7 +78,9 @@ public class ChosenPlaintextAttack extends AttackerSetupController
                     Message e = (Message) objis.readObject();
                     System.out.println("found messg: "+e.encryptedMessage);
                     Platform.runLater(() -> {
-                        ciphertext.setText(e.encryptedMessage);
+                        list.add(e);
+                        ciphertext.getItems().setAll(list);
+                        ciphertext.refresh();
                     });
                 } catch (IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();

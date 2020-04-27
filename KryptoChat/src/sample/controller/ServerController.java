@@ -299,13 +299,14 @@ class ServerClientThread extends Thread {
                 System.out.println("Chosen Ciphertext");
                 cs = findCurrentCon();
                 System.out.println("Key: "+cs.getPublicKey());
-                while(true) {
-                    try {
+
+                try {
+                    while(true) {
                         // check for incoming plain texts to encrypt and send back
                         m = (Message) objectInputStream.readObject();
                         String str = null;
                         Message output;
-                        switch(cs.typeOfEncryption){
+                        switch (cs.typeOfEncryption) {
                             case Message.cipherMonoAlphabetic:
                                 str = Cipher.monoalphabeticDec(cs.getPublicKey(), m.encryptedMessage);
                                 break;
@@ -321,22 +322,24 @@ class ServerClientThread extends Thread {
                         output.isEncrypted = true;
                         output.typeOfCipher = cs.typeOfEncryption;
                         objectOutputStream.writeObject(output);
-                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
-                    } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
+                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.encryptedMessage));
                     }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
+
             case "ChosePlaintext":
                 System.out.println("Chosen Plaintext");
                 cs = findCurrentCon();
                 System.out.println("Key: "+cs.getPublicKey());
-                while(true) {
-                    try {
+
+                try {
+                    while(true) {
                         // check for incoming plain texts to encrypt and send back
                         m = (Message) objectInputStream.readObject();
                         String str = null;
                         Message output;
-                        switch(cs.typeOfEncryption){
+                        switch (cs.typeOfEncryption) {
                             case Message.cipherMonoAlphabetic:
                                 str = Cipher.monoalphabeticEnc(cs.getPublicKey(), m.encryptedMessage);
                                 break;
@@ -352,11 +355,12 @@ class ServerClientThread extends Thread {
                         output.isEncrypted = true;
                         output.typeOfCipher = cs.typeOfEncryption;
                         objectOutputStream.writeObject(output);
-                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t"+output.encryptedMessage));
-                    } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
+                        serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.encryptedMessage));
                     }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
+
         }
     }
 

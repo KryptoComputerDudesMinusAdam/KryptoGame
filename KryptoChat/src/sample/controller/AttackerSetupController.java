@@ -73,15 +73,13 @@ public class AttackerSetupController implements Serializable
                         ChosenPlaintextAttack cp = loader.getController();
                         cp.objis = this.objis;
                         cp.objos = this.objos;
-                        m = new Message("AttackerChosePlaintext");
-                        objos.writeObject(m);
+                        cp.init();
                         break;
                     case "Chosen Ciphertext Attack":
                         ChosenCiphertextAttack cc = loader.getController();
                         cc.objis = this.objis;
                         cc.objos = this.objos;
-                        m = new Message("AttackerChoseCiphertext");
-                        objos.writeObject(m);
+                        cc.init();
                         break;
                 }
                 Controller.newWindow(root);
