@@ -18,10 +18,9 @@ public class AttackerSetupController implements Serializable
     static Socket attack_socket;
     ObjectInputStream objis;
     ObjectOutputStream objos;
-    volatile boolean socketClosed=false;
+    volatile boolean socketClosed = false;
 
     private String selected;
-    ObservableList<String> list = FXCollections.observableArrayList();
     @FXML
     private Button connect;
     @FXML
@@ -49,33 +48,10 @@ public class AttackerSetupController implements Serializable
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
                 Parent root = loader.load();
-                switch (comboBox.getValue())
-                {
-                    case "Known-Plaintext Attack":
-                        KnownPlaintextAttack kp = loader.getController();
-                        kp.objis = this.objis;
-                        kp.objos = this.objos;
-                        kp.init();
-                        break;
-                    case "Ciphertext Only Attack":
-                        CiphertextOnlyAttack cto = loader.getController();
-                        cto.objis = this.objis;
-                        cto.objos = this.objos;
-                        cto.init();
-                        break;
-                    case "Chosen Plaintext Attack":
-                        ChosenPlaintextAttack cp = loader.getController();
-                        cp.objis = this.objis;
-                        cp.objos = this.objos;
-                        cp.init();
-                        break;
-                    case "Chosen Ciphertext Attack":
-                        ChosenCiphertextAttack cc = loader.getController();
-                        cc.objis = this.objis;
-                        cc.objos = this.objos;
-                        cc.init();
-                        break;
-                }
+                AttackerSetupController UI = loader.getController();
+                UI.objis = this.objis;
+                UI.objos = this.objos;
+                UI.init();
                 Controller.newWindow(root);
                 Stage stage = (Stage) connect.getScene().getWindow();
                 stage.close();
