@@ -30,8 +30,7 @@ public class AttackerSetupController implements Serializable
 
     public void handleConnectButton(ActionEvent event)
     {
-        if(port.getText() != null)
-        {
+        if(port.getText() != null) {
             try {
                 // initialize socket
                 if(attack_socket == null) {
@@ -75,8 +74,7 @@ public class AttackerSetupController implements Serializable
     }
 
     // add data to the choice box
-    private void addData()
-    {
+    private void addData() {
         comboBox.getItems().setAll("Known-Plaintext Attack",
                 "Ciphertext Only Attack",
                 "Chosen Plaintext Attack",

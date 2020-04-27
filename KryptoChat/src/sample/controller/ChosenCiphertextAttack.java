@@ -19,13 +19,10 @@ public class ChosenCiphertextAttack extends AttackerSetupController
 {
     @FXML
     Button disconnect, queryDecryption;
-
     @FXML
     TextArea encrypted;
-
     @FXML
     ListView<Message> plaintext;
-
     private List<Message> list = new ArrayList<>();
 
     public void init() throws IOException {

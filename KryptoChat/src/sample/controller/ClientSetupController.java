@@ -75,7 +75,7 @@ public class ClientSetupController {
             root = loader.load();
             ClientChatRoomController UI = loader.getController();
             UI.initializeThread(cst.socket, cst.clientId, cst.receivingClient, cst.objectOutputStream, cst.objectInputStream);
-            UI.listenIn();
+            UI.init();
             Controller.newWindow(root);
         } catch (IOException e) {
             e.printStackTrace();
