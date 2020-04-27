@@ -48,7 +48,7 @@ public class ClientChatRoomController {
 
     void init() {
         Controller.initializeListView(messages, chatListView);
-        titleLabel.setText(client.receiverId);
+        titleLabel.setText((client.receiverId).replaceAll("[^a-zA-Z]",""));
     }
 
     public void handleListViewClick(MouseEvent event){
@@ -167,7 +167,7 @@ class ClientThread extends Thread{
                         });
                     } else{
                         System.out.println("Got a message! "+m.message);
-                        m.message = "["+receiverId+"]: "+m.message;
+                        m.message = "["+receiverId.replaceAll("[^a-zA-Z]","")+"]: "+m.message;
                         Platform.runLater(() -> {
                             clientChatRoomController.messages.add(m);
                             clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
@@ -205,7 +205,7 @@ class ClientThread extends Thread{
             m.isEncrypted = true;
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
-                m.message = "["+clientName+"]: "+m.message;
+                m.message = "["+clientName.replaceAll("[^a-zA-Z]","")+"]: "+m.message;
                 clientChatRoomController.messages.add(m);
                 clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
                 clientChatRoomController.chatListView.refresh();
