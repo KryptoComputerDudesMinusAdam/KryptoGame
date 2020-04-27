@@ -110,7 +110,9 @@ public class CiphertextOnlyAttack extends AttackerSetupController
                             FrequencyAnalysis f = new FrequencyAnalysis();
                             f.analyze(((bf.toString()).replaceAll("[^a-zA-Z]]","")).toUpperCase());
                             result = f.printMaps().split("#");
-                            runAnalysis.setDisable(false);
+                            Platform.runLater(() -> {
+                                runAnalysis.setDisable(false);
+                            });
                             break;
                         case "stream":
                             break;
