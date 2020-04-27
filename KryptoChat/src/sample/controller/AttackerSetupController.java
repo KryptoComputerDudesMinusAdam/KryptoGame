@@ -15,9 +15,9 @@ import java.net.Socket;
 
 public class AttackerSetupController implements Serializable
 {
-    protected static Socket attack_socket;
-    protected ObjectInputStream objis;
-    protected ObjectOutputStream objos;
+    static Socket attack_socket;
+    ObjectInputStream objis;
+    ObjectOutputStream objos;
 
     private String selected;
     ObservableList<String> list = FXCollections.observableArrayList();
@@ -33,10 +33,6 @@ public class AttackerSetupController implements Serializable
         addData();
     }
 
-
-    /*
-        TODO: try and connect to server
-    */
     public void handleConnectButton(ActionEvent event)
     {
         setSelection();
@@ -44,15 +40,14 @@ public class AttackerSetupController implements Serializable
         {
             int pt = Integer.parseInt(port.getText());
             try {
-                if(attack_socket == null){
+                if(attack_socket == null) {
                     attack_socket = new Socket("0.0.0.0", pt);
-                    objis = new ObjectInputStream((InputStream) attack_socket.getInputStream());
-                    objos = new ObjectOutputStream((OutputStream) attack_socket.getOutputStream());
+                    objis = new ObjectInputStream(attack_socket.getInputStream());
+                    objos = new ObjectOutputStream(attack_socket.getOutputStream());
                 }
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
                 Parent root = loader.load();
-                Message m;
                 switch (comboBox.getValue())
                 {
                     case "Known-Plaintext Attack":
@@ -60,8 +55,6 @@ public class AttackerSetupController implements Serializable
                         kp.objis = this.objis;
                         kp.objos = this.objos;
                         kp.init();
-                        m = new Message("AttackerKnown-Plaintext");
-                        objos.writeObject(m);
                         break;
                     case "Ciphertext Only Attack":
                         CiphertextOnlyAttack cto = loader.getController();
@@ -106,7 +99,7 @@ public class AttackerSetupController implements Serializable
         }
     }
 
-    //Add data to the choice box
+    // add data to the choice box
     private void addData()
     {
         comboBox.getItems().setAll("Known-Plaintext Attack",
@@ -114,10 +107,9 @@ public class AttackerSetupController implements Serializable
                 "Chosen Plaintext Attack",
                 "Chosen Ciphertext Attack");
         comboBox.getSelectionModel().selectFirst();
-
     }
 
-    public void setSelection()
+    private void setSelection()
     {
         switch (comboBox.getValue())
         {

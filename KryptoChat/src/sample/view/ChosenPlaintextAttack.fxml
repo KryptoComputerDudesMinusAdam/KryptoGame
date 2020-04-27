@@ -14,8 +14,7 @@
         </font>
     </Label>
     <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
-    <Button fx:id="query_encryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryDecryption" prefHeight="27.0" prefWidth="258.0" text="Query Encryption" />
-    <Button fx:id="save" layoutX="307.0" layoutY="314.0" mnemonicParsing="false" onAction="#save" prefHeight="27.0" prefWidth="258.0" text="Save " />
+    <Button fx:id="queryEncryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryEncryption" prefHeight="27.0" prefWidth="258.0" text="Query Encryption" />
     <Label layoutX="138.0" layoutY="73.0" text="Plaintext" />
     <Label layoutX="408.0" layoutY="73.0" text="Ciphertext" />
     <TextArea fx:id="plaintext" layoutX="32.0" layoutY="94.0" prefHeight="213.0" prefWidth="258.0" promptText="Enter plaintext to encrypt..." />

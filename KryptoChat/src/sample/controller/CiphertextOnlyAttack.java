@@ -1,6 +1,5 @@
 package sample.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -74,14 +73,15 @@ public class CiphertextOnlyAttack extends AttackerSetupController
         AnalyzeThread at = new AnalyzeThread();
         if(counter < 1)
         {
-            Message m = new Message("AttackerCiphertextOnly");
+            Message m = new Message("");
+            m.from = "AttackerCiphertextOnly";
             objos.writeObject(m);
             Object o = objis.readObject();
             if(o instanceof Conversation){
                 con = (Conversation)o;
             if(con.msgs.size()!=0){
                 for(int i = 0; i < con.msgs.size();i++ )
-                    mess.add(con.msgs.get(i).encryptedMessage);
+                    mess.add(con.msgs.get(i).message);
                 cipherList.setItems(mess);
                 at.start();
                 counter++;

@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import sample.model.Message;
@@ -19,7 +18,7 @@ import java.util.List;
 public class ChosenPlaintextAttack extends AttackerSetupController
 {
     @FXML
-    Button disconnect, query_encryption, save;
+    Button disconnect, queryEncryption;
 
     @FXML
     TextArea plaintext;
@@ -34,8 +33,7 @@ public class ChosenPlaintextAttack extends AttackerSetupController
         Controller.initializeListView( list, ciphertext);
     }
 
-    public void goBack(ActionEvent event)
-    {
+    public void goBack(ActionEvent event) {
         try{
             // display user interface
             FXMLLoader loader = new FXMLLoader();
@@ -57,10 +55,10 @@ public class ChosenPlaintextAttack extends AttackerSetupController
         }
     }
 
-    public void queryDecryption(ActionEvent actionEvent)
-    {
+    public void queryEncryption(ActionEvent actionEvent) {
         try {
-            Message m = new Message("AttackerChosePlaintext");
+            Message m = new Message();
+            m.from = "AttackerChosePlaintext";
             objos.writeObject(m);
             Message p = new Message(plaintext.getText());
             objos.writeObject(p);
@@ -71,12 +69,12 @@ public class ChosenPlaintextAttack extends AttackerSetupController
         }
     }
 
-    public void listenIn(){
+    private void listenIn() {
         new Thread(()->{
             while(!attack_socket.isClosed()) {
                 try {
                     Message e = (Message) objis.readObject();
-                    System.out.println("found messg: "+e.encryptedMessage);
+                    System.out.println("found messg: "+e.message);
                     Platform.runLater(() -> {
                         list.add(e);
                         ciphertext.getItems().setAll(list);
@@ -87,10 +85,5 @@ public class ChosenPlaintextAttack extends AttackerSetupController
                 }
             }
         }).start();
-    }
-
-    public void save(ActionEvent actionEvent)
-    {
-
     }
 }

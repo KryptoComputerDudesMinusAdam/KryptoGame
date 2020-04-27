@@ -1,7 +1,6 @@
 package sample.controller;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,31 +17,29 @@ import java.util.List;
 public class KnownPlaintextAttack extends AttackerSetupController
 {
     @FXML
-    Button disconnect, query_server, run_analysis, copy_message;
+    Button disconnect, queryServer, run_analysis;
+
+    @FXML
+    ListView<String> response;
 
     @FXML
     ListView<Message> ciphertext, plaintext;
     List<Message> obsvE = new ArrayList<>();
     List<Message> obsvP = new ArrayList<>();
 
-    @FXML
-    ListView<String> response;
-
     public void init() throws IOException
     {
         System.out.println("Initializing UI");
         Controller.initializeListView(obsvE, ciphertext);
         Controller.initializeListView(obsvP, plaintext);
-    }
-
-    private void getMessages() throws IOException, ClassNotFoundException
-    {
-
+        Message m = new Message();
+        m.from = "AttackerKnown-Plaintext";
+        objos.writeObject(m);
     }
 
     public void query(ActionEvent event){
-            System.out.println("after first write");
-            listenIn();
+        System.out.println("after first write");
+        listenIn();
     }
 
     public void listenIn(){
@@ -52,7 +49,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
                     for(int i = 0; i < 2; i++){
                         System.out.println("Waiting for read object");
                         Message e = (Message) objis.readObject();
-                        System.out.println("found messg: "+e.encryptedMessage);
+                        System.out.println("found messg: "+e.message);
                         Platform.runLater(() -> {
                             if(e.isEncrypted){
                                 System.out.println("enc m");
@@ -74,8 +71,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
         }).start();
     }
 
-    public void goBack(ActionEvent event)
-    {
+    public void goBack(ActionEvent event) {
         try{
             // display user interface
             FXMLLoader loader = new FXMLLoader();

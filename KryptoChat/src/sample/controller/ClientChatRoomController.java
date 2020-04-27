@@ -53,7 +53,7 @@ public class ClientChatRoomController {
     public void handleListViewClick(MouseEvent event){
         try{
             Message m = chatListView.getSelectionModel().getSelectedItem();
-            receiveTextArea.setText(m.encryptedMessage);
+            receiveTextArea.setText(m.message);
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -93,20 +93,20 @@ public class ClientChatRoomController {
             System.out.println("TAIL: "+headAndTail[1]);
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherVigenere:
-                    m.encryptedMessage = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherStream:
-                    m.encryptedMessage = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]).toLowerCase();
                     break;
                 default:
-                    m.encryptedMessage = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
                     break;
             }
             m.isEncrypted = false;
-            System.out.println("Decrypted message: "+m.encryptedMessage);
+            System.out.println("Decrypted message: "+m.message);
             chatListView.getItems().setAll(messages);
             chatListView.refresh();
         }
@@ -147,8 +147,8 @@ class ClientThread extends Thread{
             try {
                 System.out.println("Listening!!");
                 Message keyFromServer = (Message) objectInputStream.readObject();
-                System.out.println("Received key: "+keyFromServer.encryptedMessage);
-                key = keyFromServer.encryptedMessage;
+                System.out.println("Received key: "+keyFromServer.message);
+                key = keyFromServer.message;
                 typeOfCipher = keyFromServer.typeOfCipher;
 
                 while(true){
@@ -174,8 +174,8 @@ class ClientThread extends Thread{
                             }
                         });
                     } else{
-                        System.out.println("Got a message! "+m.encryptedMessage);
-                        m.encryptedMessage = "["+receiverId+"]: "+m.encryptedMessage;
+                        System.out.println("Got a message! "+m.message);
+                        m.message = "["+receiverId+"]: "+m.message;
                         Platform.runLater(() -> {
                             clientChatRoomController.messages.add(m);
                             clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
@@ -209,11 +209,11 @@ class ClientThread extends Thread{
                     break;
             }
             Message m = new Message(e);
-            m.typeOfMessage = Message.message;
+            m.typeOfMessage = Message.simpleMessage;
             m.isEncrypted = true;
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
-                m.encryptedMessage = "["+clientName+"]: "+m.encryptedMessage;
+                m.message = "["+clientName+"]: "+m.message;
                 clientChatRoomController.messages.add(m);
                 clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
                 clientChatRoomController.chatListView.refresh();

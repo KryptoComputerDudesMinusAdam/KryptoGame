@@ -18,7 +18,7 @@
       <Label layoutX="76.0" layoutY="59.0" prefHeight="17.0" prefWidth="56.0" text="Plaintext" textAlignment="CENTER" />
       <Label layoutX="236.0" layoutY="59.0" prefHeight="17.0" prefWidth="62.0" text="Ciphertext" textAlignment="CENTER" />
       <ListView fx:id="ciphertext" layoutX="182.0" layoutY="83.0" prefHeight="200.0" prefWidth="169.0" />
-      <Button fx:id="query_server" layoutX="14.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" stylesheets="@styles.css" text="Query Server" />
+      <Button fx:id="queryServer" layoutX="14.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" stylesheets="@styles.css" text="Query Server" />
       <ListView fx:id="response" layoutX="360.0" layoutY="83.0" prefHeight="200.0" prefWidth="227.0" />
       <Button fx:id="analysis" layoutX="497.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="89.0" stylesheets="@styles.css" text="Run Analysis" />
       <Label layoutX="429.0" layoutY="59.0" prefHeight="17.0" prefWidth="89.0" text="Analysis Results" textAlignment="CENTER" />

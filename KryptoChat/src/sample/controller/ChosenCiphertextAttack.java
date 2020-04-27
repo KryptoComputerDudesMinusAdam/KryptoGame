@@ -18,7 +18,7 @@ import java.util.List;
 public class ChosenCiphertextAttack extends AttackerSetupController
 {
     @FXML
-    Button disconnect, query_decryption, save;
+    Button disconnect, queryDecryption;
 
     @FXML
     TextArea encrypted;
@@ -26,16 +26,14 @@ public class ChosenCiphertextAttack extends AttackerSetupController
     @FXML
     ListView<Message> plaintext;
 
-    List<Message> list = new ArrayList<>();
+    private List<Message> list = new ArrayList<>();
 
-    public void init() throws IOException
-    {
+    public void init() throws IOException {
         System.out.println("Initializing UI");
         Controller.initializeListView(list, plaintext);
     }
 
-    public void goBack(ActionEvent event)
-    {
+    public void goBack(ActionEvent event) {
         try{
             // display user interface
             FXMLLoader loader = new FXMLLoader();
@@ -59,7 +57,8 @@ public class ChosenCiphertextAttack extends AttackerSetupController
 
     public void queryDecryption(ActionEvent actionEvent) {
         try {
-            Message m = new Message("AttackerChoseCiphertext");
+            Message m = new Message();
+            m.from = "AttackerChoseCiphertext";
             objos.writeObject(m);
             Message p = new Message(encrypted.getText());
             objos.writeObject(p);
@@ -70,12 +69,12 @@ public class ChosenCiphertextAttack extends AttackerSetupController
         }
     }
 
-    public void listenIn(){
+    private void listenIn(){
         new Thread(()->{
             while(!attack_socket.isClosed()) {
                 try {
                     Message e = (Message) objis.readObject();
-                    System.out.println("found messg: "+e.encryptedMessage);
+                    System.out.println("found messg: "+e.message);
                     Platform.runLater(() -> {
                         list.add(e);
                         plaintext.getItems().setAll(list);
@@ -87,8 +86,5 @@ public class ChosenCiphertextAttack extends AttackerSetupController
             }
 
         }).start();
-    }
-
-    public void save(ActionEvent actionEvent) {
     }
 }
