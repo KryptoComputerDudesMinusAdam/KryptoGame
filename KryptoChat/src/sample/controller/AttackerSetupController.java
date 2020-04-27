@@ -20,7 +20,6 @@ public class AttackerSetupController implements Serializable
     ObjectOutputStream objos;
     volatile boolean socketClosed = false;
 
-    private String selected;
     @FXML
     private Button connect;
     @FXML
@@ -35,8 +34,7 @@ public class AttackerSetupController implements Serializable
 
     public void handleConnectButton(ActionEvent event)
     {
-        setSelection();
-        if(port.getText().length() != 0 && comboBox.getValue() != null)
+        if(port.getText() != null)
         {
             int pt = Integer.parseInt(port.getText());
             try {
@@ -46,6 +44,8 @@ public class AttackerSetupController implements Serializable
                     objos = new ObjectOutputStream(attack_socket.getOutputStream());
                 }
                 FXMLLoader loader = new FXMLLoader();
+                String selected = comboBox.getValue().replaceAll(" ","").replaceAll("-","");
+                System.out.println("Selected: "+selected);
                 loader.setLocation(getClass().getResource("../view/"+selected+".fxml"));
                 Parent root = loader.load();
                 AttackerSetupController UI = loader.getController();
@@ -84,24 +84,5 @@ public class AttackerSetupController implements Serializable
                 "Chosen Plaintext Attack",
                 "Chosen Ciphertext Attack");
         comboBox.getSelectionModel().selectFirst();
-    }
-
-    private void setSelection()
-    {
-        switch (comboBox.getValue())
-        {
-            case "Known-Plaintext Attack":
-                this.selected = "KnownPlaintextAttack";
-                break;
-            case "Ciphertext Only Attack":
-                this.selected ="CiphertextOnlyAttack";
-                break;
-            case "Chosen Plaintext Attack":
-                this.selected ="ChosenPlaintextAttack";
-                break;
-            case "Chosen Ciphertext Attack":
-                this.selected ="ChosenCiphertextAttack";
-                break;
-        }
     }
 }
