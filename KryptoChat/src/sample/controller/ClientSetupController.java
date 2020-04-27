@@ -36,7 +36,7 @@ public class ClientSetupController {
             clientServerThread.clientName = clientNameTextField.getText();
             clientServerThread.start();
         }
-        encryptionComboBox.getItems().setAll(Message.cipherMonoAlphabetic, Message.cipherVigenere, Message.cipherStream);
+        encryptionComboBox.getItems().setAll(Message.cipherMonoAlphabetic, Message.cipherVigenere, Message.cipherStream, Message.cipherRSA);
         encryptionComboBox.getSelectionModel().selectFirst();
     }
 

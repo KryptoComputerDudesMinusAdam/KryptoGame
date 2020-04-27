@@ -11,12 +11,14 @@ public class Message implements Serializable {
     public final static String conversationAccept = "conversationAccept";
     public final static String conversationDecline = "conversationDecline";
     public final static String terminate = "terminate";
-    public final static String conversationKey = "key";
+    public final static String conversationPublicKey = "conversationPublicKey";
+    public final static String conversationPrivateKey = "conversationPrivateKey";
     public final static String uniqueID = "conversationUniqueID";
     public final static String simpleMessage = "simpleMessage";
     public final static String cipherMonoAlphabetic = "monoalphabetic";
     public final static String cipherVigenere = "vigenere";
     public final static String cipherStream = "stream";
+    public final static String cipherRSA = "RSA";
 
     public String from;
     public String to;

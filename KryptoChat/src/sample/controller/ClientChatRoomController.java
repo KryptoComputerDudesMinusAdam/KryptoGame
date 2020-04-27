@@ -10,10 +10,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Cipher;
 import sample.model.Message;
+import sample.model.RSA;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.*;
 import java.net.Socket;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -84,20 +91,23 @@ public class ClientChatRoomController {
         client.sendMessage(sendTextArea.getText());
     }
 
-    public void handleDecryptButton(ActionEvent event){
+    public void handleDecryptButton(ActionEvent event) throws InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException {
         if(chatListView.getSelectionModel().getSelectedItem() != null
                     && chatListView.getSelectionModel().getSelectedItem().isEncrypted) {
             Message m = chatListView.getSelectionModel().getSelectedItem();
             String[] headAndTail = getHeadAndTail(receiveTextArea.getText());
             switch(client.typeOfCipher){
                 case Message.cipherMonoAlphabetic:
-                    m.message = headAndTail[0] + Cipher.monoalphabeticDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.monoalphabeticDec(client.publicKey, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherVigenere:
-                    m.message = headAndTail[0] + Cipher.vigenereDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.vigenereDec(client.publicKey, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherStream:
-                    m.message = headAndTail[0] + Cipher.streamDec(client.key, headAndTail[1]).toLowerCase();
+                    m.message = headAndTail[0] + Cipher.streamDec(client.publicKey, headAndTail[1]).toLowerCase();
+                    break;
+                case Message.cipherRSA:
+                    m.message = headAndTail[0] +  RSA.decrypt(headAndTail[1], client.privateKey);
                     break;
             }
             m.isEncrypted = false;
@@ -117,13 +127,14 @@ public class ClientChatRoomController {
 }
 
 class ClientThread extends Thread{
-    Socket socket;
+    private Socket socket;
     private String clientName;
     String receiverId;
     ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
     ClientChatRoomController clientChatRoomController;
-    String key;
+    String publicKey;
+    String privateKey;
     String typeOfCipher;
 
     public ClientThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
@@ -138,10 +149,17 @@ class ClientThread extends Thread{
         // constantly listen in for new messages
         new Thread(()->{
             try {
-                Message keyFromServer = (Message) objectInputStream.readObject();
-                System.out.println("Received key: "+keyFromServer.message);
-                key = keyFromServer.message;
-                typeOfCipher = keyFromServer.typeOfCipher;
+                Message publicKeyMessage = (Message) objectInputStream.readObject();
+                System.out.println("Received key: "+publicKeyMessage.message);
+                publicKey = publicKeyMessage.message;
+                typeOfCipher = publicKeyMessage.typeOfCipher;
+
+                // check if you need to expect a private key too for RSA
+                if(typeOfCipher.equals(Message.cipherRSA)){
+                    Message privateKeyMessage = (Message) objectInputStream.readObject();
+                    System.out.println("Received private key: "+privateKeyMessage.message);
+                    privateKey = privateKeyMessage.message;
+                }
 
                 while(true){
                     System.out.println("In while loop!");
@@ -188,16 +206,19 @@ class ClientThread extends Thread{
             String e;
             switch(typeOfCipher){
                 case Message.cipherMonoAlphabetic:
-                    e = Cipher.monoalphabeticEnc(key, str);
+                    e = Cipher.monoalphabeticEnc(publicKey, str);
                     break;
                 case Message.cipherVigenere:
-                    e = Cipher.vigenereEnc(key, str);
+                    e = Cipher.vigenereEnc(publicKey, str);
                     break;
                 case Message.cipherStream:
-                    e = Cipher.streamEnc(key, str);
+                    e = Cipher.streamEnc(publicKey, str);
+                    break;
+                case Message.cipherRSA:
+                    e = Base64.getEncoder().encodeToString(RSA.encrypt(str, publicKey));
                     break;
                 default:
-                    e = Cipher.monoalphabeticEnc(key, str);
+                    e = Cipher.monoalphabeticEnc(publicKey, str);
                     break;
             }
             Message m = new Message(e);
@@ -211,7 +232,7 @@ class ClientThread extends Thread{
                 clientChatRoomController.chatListView.refresh();
             });
             objectOutputStream.writeObject(m);
-        } catch (IOException e) {
+        } catch (IOException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
         }
     }

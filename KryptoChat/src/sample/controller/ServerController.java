@@ -6,14 +6,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import sample.model.Cipher;
-import sample.model.Conversation;
-import sample.model.Message;
+import sample.model.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -83,7 +87,7 @@ class ServerThread extends Thread {
                 sct.start();
                 ServerThread.clients.add(sct);
             }
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -123,13 +127,16 @@ class ServerClientThread extends Thread {
     private boolean foundConversation = false;
     private Conversation conversation;
     private ServerClientThread client2;
+    RSAGenerator keyPairGenerator;
 
-    ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread) {
+
+    ServerClientThread(Socket socket, ServerController serverController, ServerThread serverThread) throws NoSuchAlgorithmException {
         this.socket = socket;
         this.serverController = serverController;
         this.serverThread = serverThread;
         this.port = socket.getPort();
         this.conversation = new Conversation();
+        this.keyPairGenerator  = new RSAGenerator();
     }
 
     public void run() {
@@ -227,6 +234,10 @@ class ServerClientThread extends Thread {
                             case Message.cipherStream:
                                 key = Cipher.generateBasicKey();
                                 break;
+                            case Message.cipherRSA:
+                                key = Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded());
+                                System.out.println("PUBLIC: " + key);
+                                break;
                             default:
                                 key = Cipher.generateMonoKey();
                                 break;
@@ -234,12 +245,29 @@ class ServerClientThread extends Thread {
                         conversation.setPublicKey(key);
                         client2.conversation.setPublicKey(key);
                         conversation.setTypeOfEncryption(typeOfCipher);
-                        Message keyMessage = new Message(key);
-                        keyMessage.typeOfCipher = typeOfCipher;
-                        keyMessage.typeOfMessage = Message.conversationKey;
-                        objectOutputStream.writeObject(keyMessage);
-                        client.objectOutputStream.writeObject(keyMessage);
-                        serverController.displayNewMessage(new Message("Generated secret key " + keyMessage.message));
+                        Message publicKeyMessage = new Message(key);
+                        publicKeyMessage.typeOfCipher = typeOfCipher;
+                        publicKeyMessage.typeOfMessage = Message.conversationPublicKey;
+                        objectOutputStream.writeObject(publicKeyMessage);
+                        client2.objectOutputStream.writeObject(publicKeyMessage);
+                        serverController.displayNewMessage(new Message("Generated public key " + publicKeyMessage.message));
+
+                        // generate potential private key for RSA
+                        if(typeOfCipher.equals(Message.cipherRSA)){
+                            String privateKey1 = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
+                            Message privateKeyMessage1 = new Message(privateKey1);
+                            privateKeyMessage1.typeOfCipher = typeOfCipher;
+                            privateKeyMessage1.typeOfMessage = Message.conversationPrivateKey;
+                            objectOutputStream.writeObject(privateKeyMessage1);
+                            System.out.println("PRIVATE 1: " + privateKeyMessage1.message);
+
+                            String privateKey2 = Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded());
+                            Message privateKeyMessage2 = new Message(privateKey2);
+                            privateKeyMessage2.typeOfCipher = typeOfCipher;
+                            privateKeyMessage2.typeOfMessage = Message.conversationPrivateKey;
+                            client2.objectOutputStream.writeObject(privateKeyMessage2);
+                            System.out.println("PRIVATE 2: " + privateKeyMessage2.message);
+                        }
                     }
                     break;
                 }
