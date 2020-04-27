@@ -271,7 +271,7 @@ class ServerClientThread extends Thread {
                         serverController.displayNewMessage(new Message("Closing socket " + socket.getPort()));
                         socket.close();
                     }
-                    serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.message + "\n\tEncryption Type: " + message.typeOfCipher));
+                    serverController.displayNewMessage(new Message("Transferring encrypted message: " + message.message + "\n\tEncryption Type: " + typeOfCipher));
                     break;
                 }
             }
