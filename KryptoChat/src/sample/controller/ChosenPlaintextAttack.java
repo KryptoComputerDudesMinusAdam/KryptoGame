@@ -35,6 +35,8 @@ public class ChosenPlaintextAttack extends AttackerSetupController
             Stage stage = (Stage) disconnect.getScene().getWindow();
             stage.close();
 
+            objos.close();
+            objis.close();
             attack_socket.close();
             attack_socket = null;
         } catch (Exception e){

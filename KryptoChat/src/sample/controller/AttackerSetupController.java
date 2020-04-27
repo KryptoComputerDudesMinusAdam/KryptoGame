@@ -65,15 +65,21 @@ public class AttackerSetupController implements Serializable
                         break;
                     case "Ciphertext Only Attack":
                         CiphertextOnlyAttack cto = loader.getController();
+                        cto.objis = this.objis;
+                        cto.objos = this.objos;
                         cto.init();
                         break;
                     case "Chosen Plaintext Attack":
                         ChosenPlaintextAttack cp = loader.getController();
+                        cp.objis = this.objis;
+                        cp.objos = this.objos;
                         m = new Message("AttackerChosePlaintext");
                         objos.writeObject(m);
                         break;
                     case "Chosen Ciphertext Attack":
                         ChosenCiphertextAttack cc = loader.getController();
+                        cc.objis = this.objis;
+                        cc.objos = this.objos;
                         m = new Message("AttackerChoseCiphertext");
                         objos.writeObject(m);
                         break;
