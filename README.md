@@ -49,7 +49,7 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
     - Monalphabetic: works by replacing each letter of the plaintext with another letter
     - Vigenere: uses 26 x 26 table for each letter of the alphabet as well as a key word in order to encrypt a given message 
     - Stream: the plaintext characters are encrypted one at a time where each character is dependent on the current state of the cipher.
-    - RSA: an encrytion envolving the generation and distribution of a public key used to encrypt a desired message. 
+    - RSA: this cipher involves asymmetric encryption where the server generates a public and private key for Alice and Bob each, Alice then gives Bob her public key for encryption (vice versa) while keeping her private key secret and meant only for decrypting messages from Bob (vice versa once again).
 - Attacker (Chuck)
   - Important Notes: 
     - All attackers can run a query and an analysis but ONLY ONCE!
