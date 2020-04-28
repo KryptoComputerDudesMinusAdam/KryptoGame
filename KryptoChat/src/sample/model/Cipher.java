@@ -17,19 +17,20 @@ public class Cipher {
         return x;
     }
 
-    public static String xorOperation(byte[] arr1, byte[] arr2)
+    public static String xorOperation(byte[] pArr1, byte[] kArr2)
     {
-        if(arr2.length > arr1.length)
+        if(kArr2.length > pArr1.length)
         {
-            byte[] temp;
-            temp = arr2;
-            arr2 = arr1;
-            arr1 = temp;
+            byte[] temp = new byte[pArr1.length];
+            for(int i = 0; i<pArr1.length; i++){
+                temp[i] = kArr2[i];
+            }
+            kArr2 = temp;
         }
-        byte[] outputByteArr = new byte[arr1.length];
+        byte[] outputByteArr = new byte[pArr1.length];
         String returnArr = "";
-        for (int i = 0; i < arr1.length; i++) {
-            outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
+        for (int i = 0; i < pArr1.length; i++) {
+            outputByteArr[i] = (byte) (pArr1[i] ^ kArr2[i%kArr2.length]);
             returnArr += outputByteArr[i] + ",";
         }
         return returnArr;
@@ -80,15 +81,23 @@ public class Cipher {
         String k = info[1];
         int[][] table = vigenereTable();
         String encrypted = "";
-
-        for (int i = 0; i < p.length(); i++) {
-            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32) {
+        for (int i = 0; i < p.length(); i++)
+        {
+            if (p.charAt(i) < 'A' || p.charAt(i) > 'Z')
+            {
+                encrypted += p.charAt(i);
+                continue;
+            }
+            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32)
+            {
                 encrypted += " ";
             }
-            else {
+            else
+            {
                 encrypted += (char)table[(int)p.charAt(i)-65][(int)k.charAt(i)-65];
             }
         }
+        System.out.println("Encrypted Text: " + encrypted);
 
         return encrypted;
     }
@@ -98,15 +107,25 @@ public class Cipher {
         String p = info[0];
         String k = info[1];
         String decryptedText = "";
-
-        for (int i = 0; i < p.length(); i++) {
-            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32){
+        for (int i = 0; i < p.length(); i++)
+        {
+            if (p.charAt(i) < 'A' || p.charAt(i) > 'Z')
+            {
+                decryptedText += p.charAt(i);
+                continue;
+            }
+            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32)
+            {
                 decryptedText += " ";
-            } else {
+            }
+            else
+            {
                 decryptedText += (char)(65 + decryptCounter((int)k.charAt(i), (int)p.charAt(i)));
             }
         }
+        System.out.println("Decrypted Text: " + decryptedText);
         return decryptedText;
+
     }
 
     private static String[] getInfo(String message, String key) {
