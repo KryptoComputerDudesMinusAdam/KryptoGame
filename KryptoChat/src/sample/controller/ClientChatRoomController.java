@@ -226,7 +226,12 @@ class ClientThread extends Thread{
             m.isEncrypted = true;
             Platform.runLater(() -> {
                 clientChatRoomController.sendTextArea.clear();
-                m.message = "["+clientName.replaceAll("[^a-zA-Z]","")+"]: "+m.message;
+                if(typeOfCipher.equals(Message.cipherRSA)){
+                    m.message = "["+clientName.replaceAll("[^a-zA-Z]","")+"]: "+str;
+                    m.isEncrypted = false;
+                } else{
+                    m.message = "["+clientName.replaceAll("[^a-zA-Z]","")+"]: "+m.message;
+                }
                 clientChatRoomController.messages.add(m);
                 clientChatRoomController.chatListView.getItems().setAll(clientChatRoomController.messages);
                 clientChatRoomController.chatListView.refresh();

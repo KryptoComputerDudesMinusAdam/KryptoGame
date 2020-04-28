@@ -63,8 +63,12 @@ public class RSA {
             RSAGenerator keyPairGenerator = new RSAGenerator();
             String encryptedString = Base64.getEncoder().encodeToString(RSA.encrypt("Dhiraj is the author", Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded())));
             System.out.println(encryptedString);
+
             String decryptedString = RSA.decrypt(encryptedString, Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded()));
             System.out.println(decryptedString);
+
+            String decryptedString2 = RSA.decrypt(encryptedString, Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded()));
+            System.out.println(decryptedString2);
         } catch (NoSuchAlgorithmException e) {
             System.err.println(e.getMessage());
         }
