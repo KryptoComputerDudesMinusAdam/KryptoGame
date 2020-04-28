@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Message;
 
@@ -23,6 +24,8 @@ public class ChosenCiphertextAttack extends AttackerSetupController
     ListView<Message> plaintext;
     private List<Message> list = new ArrayList<>();
     private int currQueries = 0;
+    @FXML
+    TextField plainTextField;
 
     public void init() throws IOException {
         System.out.println("Initializing UI");
@@ -91,5 +94,14 @@ public class ChosenCiphertextAttack extends AttackerSetupController
             }
 
         }).start();
+    }
+
+    public void handleListViewClicked(MouseEvent event){
+        try{
+            Message m = plaintext.getSelectionModel().getSelectedItem();
+            plainTextField.setText(m.message);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
