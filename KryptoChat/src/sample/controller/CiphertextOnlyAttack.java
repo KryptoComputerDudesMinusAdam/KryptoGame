@@ -15,7 +15,6 @@ import sample.model.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -177,7 +176,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                     switch (con.typeOfEncryption.toLowerCase())
                     {
                         case "monoalphabetic":
-                            FrequencyAnalysis f = new FrequencyAnalysis();
+                            Tool f = new Tool();
                             f.analyze((((bf.toString()).replaceAll("[^a-zA-Z]","")).toUpperCase()));
                             result = (f.printMaps()).split("#");
                             Platform.runLater(() -> {

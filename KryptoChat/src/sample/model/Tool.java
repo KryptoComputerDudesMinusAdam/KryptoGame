@@ -3,14 +3,14 @@ package sample.model;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class FrequencyAnalysis
+public class Tool
 {
     public static Map<Character,Double> freq = new HashMap<>();
     public static Map<Character,Double> fE = new HashMap<>();
     public static char [] arrl = {'E','T','A','O','I','N','S','R','H','D','L','U',
             'C','M','F','Y','W','G','P','B','V','K','X','Q',
             'J','Z'};
-    public FrequencyAnalysis()
+    public Tool()
     {
         init();
     }
@@ -61,7 +61,7 @@ public class FrequencyAnalysis
     {
         List<Entry<Character, Double>> list = new LinkedList<>(map.entrySet());
         // Defined Custom Comparator here
-        list.sort(FrequencyAnalysis::compare);
+        list.sort(Tool::compare);
 
         // Here I am copying the sorted list in HashMap
         // using LinkedHashMap to preserve the insertion order
