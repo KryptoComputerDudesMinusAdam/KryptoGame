@@ -68,4 +68,4 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
 - JavaFX
 
 ## Demo Of Applicaion
-[![IMAGE ALT TEXT](https://github.com/KryptoComputerDudesMinusAdam/KryptoGame/blob/master/KryptoChat/application.png)](https://www.youtube.com/watch?v=5Ogsu51Gz60 "Krypto Chat")
+[![IMAGE ALT TEXT](https://github.com/KryptoComputerDudesMinusAdam/KryptoGame/blob/master/KryptoChat/application.png)](https://www.youtube.com/watch?v=SQIbeAk-bFA "Krypto Chat")
