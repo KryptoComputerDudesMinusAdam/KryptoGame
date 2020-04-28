@@ -75,7 +75,7 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
     - Xavier LaRosa
     - Matthew Lee
   - Attackers UI/Functionality
-    - Monohar Chitoda
+    - Manohar Chitoda
 - Ciphers/Decryptions
   - Monoalphabetic
     - Shireen Ahmad
