@@ -156,7 +156,7 @@ class ServerClientThread extends Thread {
             } else {
                 handleClient();
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | InvalidKeyException | BadPaddingException | NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException e) {
             e.printStackTrace();
         }
     }
@@ -250,10 +250,12 @@ class ServerClientThread extends Thread {
                         publicKeyMessage.typeOfCipher = typeOfCipher;
                         publicKeyMessage.typeOfMessage = Message.conversationPublicKey;
                         if(typeOfCipher.equals(Message.cipherRSA)){
+                            client2.conversation.RSApublicKey = publicKeyMessage.message;
                             client2.objectOutputStream.writeObject(publicKeyMessage);
                             Message publicKeyMessage2 = new Message(Base64.getEncoder().encodeToString(client2.keyPairGenerator.getPublicKey().getEncoded()));
                             publicKeyMessage2.typeOfCipher = typeOfCipher;
                             publicKeyMessage2.typeOfMessage = Message.conversationPublicKey;
+                            conversation.RSApublicKey = publicKeyMessage2.message;
                             objectOutputStream.writeObject(publicKeyMessage2);
                         } else{
                             objectOutputStream.writeObject(publicKeyMessage);
@@ -267,6 +269,7 @@ class ServerClientThread extends Thread {
                             Message privateKeyMessage1 = new Message(privateKey1);
                             privateKeyMessage1.typeOfCipher = typeOfCipher;
                             privateKeyMessage1.typeOfMessage = Message.conversationPrivateKey;
+                            conversation.RSAprivateKey = privateKeyMessage1.message;
                             objectOutputStream.writeObject(privateKeyMessage1);
                             serverController.displayNewMessage(new Message("Generated private key ending in:\n\t " + privateKeyMessage1.message.substring(privateKeyMessage1.message.length()-5)));
                             System.out.println("PRIVATE 1: " + privateKeyMessage1.message);
@@ -275,6 +278,7 @@ class ServerClientThread extends Thread {
                             Message privateKeyMessage2 = new Message(privateKey2);
                             privateKeyMessage2.typeOfCipher = typeOfCipher;
                             privateKeyMessage2.typeOfMessage = Message.conversationPrivateKey;
+                            client2.conversation.RSAprivateKey = privateKeyMessage2.message;
                             client2.objectOutputStream.writeObject(privateKeyMessage2);
                             serverController.displayNewMessage(new Message("Generated private key ending in:\n\t " + privateKeyMessage2.message.substring(privateKeyMessage2.message.length()-5)));
                             System.out.println("PRIVATE 2: " + privateKeyMessage2.message);
@@ -319,7 +323,7 @@ class ServerClientThread extends Thread {
         }
     }
 
-    private void handleAttacker(String clientName) throws IOException {
+    private void handleAttacker(String clientName) throws IOException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException {
         System.out.println("In Switch: " + clientName);
         Conversation cs = findCurrentCon();
         if(cs != null){
@@ -349,6 +353,9 @@ class ServerClientThread extends Thread {
                             case Message.cipherStream:
                                 m = new Message(Cipher.streamDec(cs.getPublicKey(), cs.msgs.get(i).message));
                                 break;
+                            case Message.cipherRSA:
+                                m = new Message(RSA.dec(cs.msgs.get(i).message, cs.getRSAprivateKey()));
+                                break;
                             default:
                                 m = new Message();
                                 break;
@@ -376,6 +383,9 @@ class ServerClientThread extends Thread {
                                     break;
                                 case Message.cipherStream:
                                     str = Cipher.streamDec(cs.getPublicKey(), m.message);
+                                    break;
+                                case Message.cipherRSA:
+                                    str = RSA.dec(m.message, cs.getRSAprivateKey());
                                     break;
                             }
                             //send message enc out
@@ -409,6 +419,9 @@ class ServerClientThread extends Thread {
                                     break;
                                 case Message.cipherStream:
                                     str = Cipher.streamEnc(cs.getPublicKey(), m.message);
+                                    break;
+                                case Message.cipherRSA:
+                                    str = Base64.getEncoder().encodeToString(RSA.enc(m.message, cs.getRSApublicKey()));
                                     break;
                             }
                             //send message enc out
