@@ -92,3 +92,6 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
 ## Languages
 - Java
 - JavaFX
+
+## Demo of Application
+[![Krypto Chat](https://github.com/KryptoComputerDudesMinusAdam/KryptoGame/blob/master/KryptoChat/application.png)](https://www.youtube.com/watch?v=SQIbeAk-bFA "Application")
