@@ -72,7 +72,7 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
 ## Distribution of Works
 - System Design
   - Messengers UI/Functionality
-    - Xavier LaRosa: 60%
+    - Xavier LaRosa: 70%
     - Matthew Lee: 30%
   - Attackers UI/Functionality
     - Manohar Chitoda: 100%
