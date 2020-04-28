@@ -21,12 +21,13 @@ import java.util.ResourceBundle;
 
 public class CiphertextOnlyAttack extends AttackerSetupController implements Initializable
 {
+    private static int max = 100;
     private static boolean found = false;
+    private static boolean counter = true;
+    private static boolean selected = false;
     public static String gen_key;
     public static String masterKey;
-    boolean selected = false;
-    BruteForce work = new BruteForce();
-    int counter=0;
+    static BruteForce work = new BruteForce();
     String[] result;
     Conversation con;
 
@@ -40,6 +41,8 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     TextArea fq, key;
     @FXML
     ProgressIndicator progress;
+    @FXML
+    ChoiceBox<Integer> keyLength;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -98,7 +101,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     public void query(ActionEvent actionEvent) throws IOException, ClassNotFoundException
     {
         AnalyzeThread at = new AnalyzeThread();
-        if(counter < 1)
+        if(counter)
         {
             Message m = new Message("");
             m.from = "AttackerCiphertextOnly";
@@ -108,16 +111,17 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                 con = (Conversation)o;
                 for(int i = 0; i < con.msgs.size();i++ )
                     mess.add(con.msgs.get(i).message);
+
                 cipherList.setItems(mess);
                 at.start();
-                counter++;
+                counter=false;
             }else {
                 Alert alert = new Alert(Alert.AlertType.WARNING,"\nNo Conversation to Intercept!", ButtonType.OK);
                 alert.show();
             }
         }
 
-        if(counter>=1)
+        if(!counter)
             queryCipheretext.setDisable(true);
 
     }
@@ -131,7 +135,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
         @Override
         protected Integer call() throws Exception
         {
-            int max = 10;
+            int max = CiphertextOnlyAttack.max;
             for(int i = 0; !found && i < max; i++)
             {
                 updateProgress(i+1,max);
@@ -142,6 +146,8 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                     return max;
                 }
             }
+            if(CiphertextOnlyAttack.selected)
+                CiphertextOnlyAttack.work.cancel(true);
             return max;
         }
 
@@ -182,6 +188,10 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                         case "stream":
                             break;
                         case "vigenere":
+                            List<Integer> e = new ArrayList<>();
+                            for(int i=0; i < 30; i++)
+                                e.add(i);
+                            keyLength.getItems().setAll(e);
                             break;
                         default:
                             break;
