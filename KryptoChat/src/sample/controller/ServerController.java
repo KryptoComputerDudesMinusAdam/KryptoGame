@@ -37,7 +37,8 @@ public class ServerController {
         Controller.initializeListView(messages, listView);
 
         // start up the server thread
-        if (portTextField.getText() != null) {
+        if (portTextField.getText() != null &&
+                portTextField.getText() != "") {
             int port = Integer.parseInt(portTextField.getText());
             ServerThread serverThread = new ServerThread(this);
             serverThread.port = port;
@@ -421,6 +422,13 @@ class ServerClientThread extends Thread {
                         System.out.println(e.getMessage());
                     }
             }
+        }else{
+            switch (clientName)
+            {
+                case "CiphertextOnly":
+                    objectOutputStream.writeObject(cs);
+                    break;
+            }
         }
     }
 
@@ -435,6 +443,5 @@ class ServerClientThread extends Thread {
         } else{
             return null;
         }
-
     }
 }

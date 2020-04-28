@@ -14,8 +14,6 @@ public class Cipher {
     public static String streamDec( String key, String cipherText)
     {
         String x = new String(xorOperation2(cipherText, key.getBytes()));
-        System.out.println("dec "+x);
-
         return x;
     }
 
@@ -34,7 +32,6 @@ public class Cipher {
             outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
             returnArr += outputByteArr[i] + ",";
         }
-        System.out.println("returnArr"+returnArr);
         return returnArr;
     }
 
@@ -42,7 +39,6 @@ public class Cipher {
     {
         StringTokenizer st = new StringTokenizer(arrx, " \t\n\r\f,");
         int length = arrx.length() - arrx.replace(",", "").length();
-        System.out.println("tokens");
         byte[] arr1 = new byte[length];
         int y = 0;
         while(st.hasMoreTokens())
@@ -63,7 +59,6 @@ public class Cipher {
             outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
             returnArr += outputByteArr[i] + "";
         }
-        System.out.println("returnArr2"+returnArr);
         return outputByteArr;
     }
 
@@ -183,7 +178,6 @@ public class Cipher {
         return count;
     }
 
-
     // MONOALPHABETIC CIPHER
     public static String generateMonoKey(){
         String strAlphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -196,7 +190,6 @@ public class Cipher {
         for(char c : alphabet){
             strB.append(c);
         }
-        System.out.println("Generated key: "+strB);
         return strB.toString();
     }
 
@@ -205,8 +198,6 @@ public class Cipher {
         int a;
         char[] alphabets = {'a', 'b', 'c', 'd', 'e', 'f','g', 'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x','y', 'z',};
         char[] ciphertext = plaintext.toCharArray();
-        System.out.println("TEST: "+key.length());
-        System.out.println("TEST: "+ciphertext.length);
 
         for(x = 0; x < ciphertext.length;x++)
         {
@@ -225,8 +216,6 @@ public class Cipher {
                 }
             }
         }
-        System.out.println("Encrypted text: ");
-        System.out.print(ciphertext);
         return new String(ciphertext);
     }
 
@@ -253,8 +242,6 @@ public class Cipher {
                 }
             }
         }
-        System.out.print("Decrypted text: ");
-        System.out.print(plaintext);
         return new String(plaintext);
     }
 }

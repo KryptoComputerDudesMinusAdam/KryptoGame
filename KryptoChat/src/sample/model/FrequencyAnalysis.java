@@ -37,6 +37,7 @@ public class FrequencyAnalysis
             if(charArray[0] != ' ')
                 freq.put(Character.toUpperCase(charArray[0]), ((count/spaces) * 100));
             s = s.replace("" +charArray[0], "");
+            charArray = s.toCharArray();
         }
 
         for (int i = 0; i < arrl.length; i++)
@@ -74,8 +75,8 @@ public class FrequencyAnalysis
     public String printMaps()
     {
         StringBuilder s = new StringBuilder();
-        s.append(sort(freq).replaceAll("[^a-zA-Z,]", ""));
-        String reversed = (s.reverse()).toString()+",";
+        s.append(sort(freq));
+        String reversed = (((s.reverse()).toString()).replaceAll("[^a-zA-Z,]",""))+",";
         String freqResult = "";
         for(int i = 0; i < arrl.length;i++)
             freqResult += arrl[i] + ":"+String.format("%.2f",freq.get(arrl[i]))+",";
