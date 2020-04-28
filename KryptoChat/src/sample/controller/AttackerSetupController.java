@@ -30,7 +30,8 @@ public class AttackerSetupController implements Serializable
 
     public void handleConnectButton(ActionEvent event)
     {
-        if(port.getText() != null) {
+        if(port.getText() != null && port.getText().length() > 0)
+        {
             try {
                 // initialize socket
                 if(attack_socket == null) {

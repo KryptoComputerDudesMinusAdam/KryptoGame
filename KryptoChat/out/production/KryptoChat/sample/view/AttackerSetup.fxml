@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.AttackerSetupController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.AttackerSetupController">
    <children>
       <Label layoutX="246.0" layoutY="23.0" styleClass="logout" stylesheets="@styles.css" text="Attack Home">
          <font>
@@ -20,6 +17,6 @@
          </font></TextField>
       <Line endX="499.0" layoutX="101.0" layoutY="64.0" startX="-100.0" />
       <Button fx:id="connect" layoutX="267.0" layoutY="279.0" mnemonicParsing="false" onAction="#handleConnectButton" prefHeight="38.0" prefWidth="85.0" stylesheets="@styles.css" text="Connect" />
-      <ComboBox fx:id="comboBox" layoutX="235.0" layoutY="188.0" prefWidth="150.0" />
+      <ComboBox fx:id="comboBox" layoutX="209.0" layoutY="187.0" prefHeight="27.0" prefWidth="199.0" />
    </children>
 </Pane>

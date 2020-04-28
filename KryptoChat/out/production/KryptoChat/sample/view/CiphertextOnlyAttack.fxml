@@ -12,19 +12,19 @@
                 <Font size="21.0" />
             </font>
         </Label>
-        <Button fx:id="disconnect" layoutX="19.0" layoutY="339.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css" text="Disconnect" />
-      <Button fx:id="queryCipheretext" layoutX="19.0" layoutY="228.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css" text="Query Ciphertext" textAlignment="CENTER" />
+        <Button fx:id="disconnect" layoutX="19.0" layoutY="333.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" prefHeight="57.0" prefWidth="200.0" stylesheets="@styles.css" text="Disconnect" />
+      <Button fx:id="queryCipheretext" layoutX="19.0" layoutY="265.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#query" prefHeight="57.0" prefWidth="200.0" stylesheets="@styles.css" text="Query Ciphertext" textAlignment="CENTER" />
       <Label layoutX="90.0" layoutY="52.0" stylesheets="@styles.css" text="Ciphertext" textAlignment="CENTER" />
-      <Button fx:id="runAnalysis" layoutX="19.0" layoutY="266.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runAnalysis" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css" text="Run Analysis" />
-      <ListView fx:id="cipherList" layoutX="19.0" layoutY="69.0" prefHeight="148.0" prefWidth="200.0" />
+      <Button fx:id="runAnalysis" layoutX="247.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runAnalysis" prefHeight="30.0" prefWidth="166.0" stylesheets="@styles.css" text="Run Analysis" />
+      <ListView fx:id="cipherList" layoutX="19.0" layoutY="69.0" prefHeight="185.0" prefWidth="200.0" />
       <Line endX="499.0" layoutX="101.0" layoutY="54.0" startX="-100.0" />
       <Line endX="-116.0" endY="299.0" layoutX="358.0" layoutY="101.0" startX="-116.0" startY="-47.50000762939453" />
-      <Line endX="504.0" endY="47.5" layoutX="96.0" layoutY="134.0" startX="145.5" startY="47.5" />
-      <TextArea fx:id="fq" editable="false" layoutX="249.0" layoutY="73.0" prefHeight="17.0" prefWidth="344.0" promptText="Frequency of letters" wrapText="true" />
-      <TextArea fx:id="key" editable="false" layoutX="249.0" layoutY="132.0" prefHeight="47.0" prefWidth="344.0" promptText="Possible Key" />
+      <TextArea fx:id="fq" editable="false" layoutX="249.0" layoutY="73.0" prefHeight="95.0" prefWidth="344.0" promptText="Frequency of letters" wrapText="true" />
+      <TextArea fx:id="key" editable="false" layoutX="249.0" layoutY="195.0" prefHeight="95.0" prefWidth="344.0" promptText="Possible Key" />
       <Label layoutX="330.0" layoutY="54.0" text="Frequency of Letters in Ciphertext" />
-      <Label layoutX="322.0" layoutY="114.0" text="Possible Key: Ciphertext -&gt; Plaintext" />
-      <Button fx:id="bruteforce" layoutX="20.0" layoutY="302.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#bruteforce" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css" text="Bruteforce" />
+      <Label layoutX="322.0" layoutY="173.0" text="Possible Key: Ciphertext -&gt; Plaintext" />
+      <Button fx:id="bruteforce" layoutX="247.0" layoutY="307.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#bruteforce" prefHeight="30.0" prefWidth="166.0" stylesheets="@styles.css" text="Bruteforce" />
       <ProgressIndicator fx:id="progress" layoutX="554.0" layoutY="8.0" prefHeight="41.0" prefWidth="28.0" progress="0.0" />
+      <ChoiceBox fx:id="keyLength" layoutX="432.0" layoutY="309.0" prefWidth="150.0" />
     </children>
 </Pane>

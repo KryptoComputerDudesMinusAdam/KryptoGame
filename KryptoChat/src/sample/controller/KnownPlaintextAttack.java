@@ -17,11 +17,11 @@ import java.util.List;
 public class KnownPlaintextAttack extends AttackerSetupController
 {
     @FXML
-    Button disconnect, queryServer, run_analysis;
+    Button disconnect, queryServer, analysis;
 
     @FXML
-    ListView<String> response;
-
+    ListView<String> results;
+    List<String> resultL = new ArrayList<>();
     @FXML
     ListView<Message> ciphertext, plaintext;
     List<Message> obsvE = new ArrayList<>();
@@ -40,6 +40,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
     public void query(ActionEvent event){
         System.out.println("after first write");
         listenIn();
+
     }
 
     public void listenIn(){
@@ -91,5 +92,10 @@ public class KnownPlaintextAttack extends AttackerSetupController
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public void runAnalysis(ActionEvent actionEvent)
+    {
+
     }
 }
