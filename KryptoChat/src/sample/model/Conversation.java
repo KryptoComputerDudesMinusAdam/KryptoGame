@@ -11,6 +11,8 @@ public class Conversation implements Serializable {
     public String client2id;
     public String typeOfEncryption;
     public String publicKey;
+    public String RSApublicKey;
+    public String RSAprivateKey;
 
     // No-Arg Constructor
     public Conversation()
@@ -64,5 +66,18 @@ public class Conversation implements Serializable {
     }
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
+    }
+
+    public String getRSApublicKey() {
+        return RSApublicKey;
+    }
+    public void setRSApublicKey(String RSApublicKey) {
+        this.RSApublicKey = RSApublicKey;
+    }
+    public String getRSAprivateKey() {
+        return RSAprivateKey;
+    }
+    public void setRSAprivateKey(String RSAprivateKey) {
+        this.RSAprivateKey = RSAprivateKey;
     }
 }
