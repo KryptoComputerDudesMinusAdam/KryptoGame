@@ -80,15 +80,23 @@ public class Cipher {
         String k = info[1];
         int[][] table = vigenereTable();
         String encrypted = "";
-
-        for (int i = 0; i < p.length(); i++) {
-            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32) {
+        for (int i = 0; i < p.length(); i++)
+        {
+            if (p.charAt(i) < 'A' || p.charAt(i) > 'Z')
+            {
+                encrypted += p.charAt(i);
+                continue;
+            }
+            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32)
+            {
                 encrypted += " ";
             }
-            else {
+            else
+            {
                 encrypted += (char)table[(int)p.charAt(i)-65][(int)k.charAt(i)-65];
             }
         }
+        System.out.println("Encrypted Text: " + encrypted);
 
         return encrypted;
     }
@@ -98,15 +106,25 @@ public class Cipher {
         String p = info[0];
         String k = info[1];
         String decryptedText = "";
-
-        for (int i = 0; i < p.length(); i++) {
-            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32){
+        for (int i = 0; i < p.length(); i++)
+        {
+            if (p.charAt(i) < 'A' || p.charAt(i) > 'Z')
+            {
+                decryptedText += p.charAt(i);
+                continue;
+            }
+            if(p.charAt(i) == (char)32 && k.charAt(i) == (char)32)
+            {
                 decryptedText += " ";
-            } else {
+            }
+            else
+            {
                 decryptedText += (char)(65 + decryptCounter((int)k.charAt(i), (int)p.charAt(i)));
             }
         }
+        System.out.println("Decrypted Text: " + decryptedText);
         return decryptedText;
+
     }
 
     private static String[] getInfo(String message, String key) {
