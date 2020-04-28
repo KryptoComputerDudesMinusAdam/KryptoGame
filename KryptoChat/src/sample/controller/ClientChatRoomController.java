@@ -116,7 +116,7 @@ public class ClientChatRoomController {
         }
     }
 
-    public String[] getHeadAndTail(String str){
+    private String[] getHeadAndTail(String str){
         char[] testChar = str.toCharArray();
         int i = 0;
         while(testChar[i] != ':'){
@@ -137,7 +137,7 @@ class ClientThread extends Thread{
     String privateKey;
     String typeOfCipher;
 
-    public ClientThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
+    ClientThread(Socket socket, String clientName, String receiverId, ObjectOutputStream oos, ObjectInputStream ois){
         this.socket = socket;
         this.clientName = clientName;
         this.receiverId = receiverId;
@@ -200,7 +200,6 @@ class ClientThread extends Thread{
     }
 
     void sendMessage(String str){
-
         try {
             System.out.println("Trying to send a message!");
             String e;
