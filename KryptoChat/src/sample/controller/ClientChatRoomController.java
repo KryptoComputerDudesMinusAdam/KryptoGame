@@ -107,7 +107,7 @@ public class ClientChatRoomController {
                     m.message = headAndTail[0] + Cipher.streamDec(client.publicKey, headAndTail[1]).toLowerCase();
                     break;
                 case Message.cipherRSA:
-                    m.message = headAndTail[0] +  RSA.decrypt(headAndTail[1], client.privateKey);
+                    m.message = headAndTail[0] +  RSA.dec(headAndTail[1], client.privateKey);
                     break;
             }
             m.isEncrypted = false;
@@ -215,7 +215,7 @@ class ClientThread extends Thread{
                     e = Cipher.streamEnc(publicKey, str);
                     break;
                 case Message.cipherRSA:
-                    e = Base64.getEncoder().encodeToString(RSA.encrypt(str, publicKey));
+                    e = Base64.getEncoder().encodeToString(RSA.enc(str, publicKey));
                     break;
                 default:
                     e = Cipher.monoalphabeticEnc(publicKey, str);
