@@ -1,4 +1,3 @@
-<p align="center"><img width=12.5% src="https://github.com/KryptoComputerDudesMinusAdam/KryptoGame"></p>
 <h1 align="center">Krypto Game</h1>
 <p align="center">Computer Security Group Project</p>
 <p align="center">By: Matthew Lee, Xavier LaRosa, Manohar Chitoda, Adam Chang, Malcom Akinseye and Shireen Ahmad</p>
