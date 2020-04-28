@@ -64,7 +64,6 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     {
         try{
             // display user interface
-            work.cancel(true);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../view/AttackerSetup.fxml"));
             Parent root = loader.load();
@@ -79,6 +78,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
             objis.close();
             attack_socket.close();
             attack_socket = null;
+            work.cancel(true);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

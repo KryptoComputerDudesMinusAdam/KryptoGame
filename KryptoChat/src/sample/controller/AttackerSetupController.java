@@ -75,8 +75,8 @@ public class AttackerSetupController implements Serializable
 
     // add data to the choice box
     private void addData() {
-        comboBox.getItems().setAll("Known-Plaintext Attack",
-                "Ciphertext Only Attack",
+        comboBox.getItems().setAll("Ciphertext Only Attack",
+                "Known-Plaintext Attack",
                 "Chosen Plaintext Attack",
                 "Chosen Ciphertext Attack");
         comboBox.getSelectionModel().selectFirst();
