@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -18,5 +19,7 @@
     <Label layoutX="138.0" layoutY="73.0" text="Plaintext" />
     <Label layoutX="408.0" layoutY="73.0" text="Ciphertext" />
     <TextArea fx:id="plaintext" layoutX="32.0" layoutY="94.0" prefHeight="213.0" prefWidth="258.0" promptText="Enter plaintext to encrypt..." />
-   <ListView fx:id="ciphertext" layoutX="308.0" layoutY="94.0" prefHeight="213.0" prefWidth="258.0" />
+   <ListView fx:id="ciphertext" onMouseClicked="#handleListViewClicked" layoutX="308.0" layoutY="94.0" prefHeight="213.0" prefWidth="258.0" />
+   <TextField fx:id="cipherTextField" layoutX="308.0" layoutY="346.0" prefHeight="27.0" prefWidth="258.0" />
+   <Label layoutX="308.0" layoutY="319.0" text="Selected Ciphertext" />
 </Pane>
