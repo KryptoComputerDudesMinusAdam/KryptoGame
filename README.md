@@ -80,7 +80,7 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
   - Monoalphabetic
     - Shireen Ahmad: 100%
   - Vigenere
-    - Malcom AKinseye: 100%
+    - Malcom Akinseye: 100%
   - Stream:
     - Adam Chang: 100%
   - RSA: 
