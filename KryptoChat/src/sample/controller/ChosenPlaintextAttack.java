@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Message;
 
@@ -20,6 +21,9 @@ public class ChosenPlaintextAttack extends AttackerSetupController
 
     @FXML
     TextArea plaintext;
+
+    @FXML
+    TextField cipherTextField;
 
     @FXML
     ListView<Message> ciphertext;
@@ -95,5 +99,14 @@ public class ChosenPlaintextAttack extends AttackerSetupController
                 }
             }
         }).start();
+    }
+
+    public void handleListViewClicked(MouseEvent event){
+        try{
+            Message m = ciphertext.getSelectionModel().getSelectedItem();
+            cipherTextField.setText(m.message);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
