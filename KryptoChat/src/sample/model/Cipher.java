@@ -49,10 +49,12 @@ public class Cipher {
         }
         if(arr2.length > arr1.length)
         {
-            byte[] temp;
-            temp = arr2;
-            arr2 = arr1;
-            arr1 = temp;
+            byte [] temp = new byte[length];
+            for(int i =0; i < length; i ++)
+            {
+                temp[i] = arr2[i];
+            }
+            arr2 = temp;
         }
         byte[] outputByteArr = new byte[arr1.length];
         String returnArr = "";
