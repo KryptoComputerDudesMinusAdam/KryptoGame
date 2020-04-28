@@ -1,14 +1,13 @@
 <p align="center"><img width=12.5% src="https://github.com/KryptoComputerDudesMinusAdam/KryptoGame"></p>
 <h1 align="center">Krypto Game</h1>
 <p align="center">Computer Security Group Project</p>
-<p align="center">By: Matthew Lee... thats it just me baby</p>
+<p align="center">By: Matthew Lee, Xavier LaRosa, Manohar Chitoda, Adam Chang, Malcom Akinseye and Shireen Ahmad</p>
 <br>
 
 ## Objective
 
 - The objective of this project is to illsutrate a simple, real life simulation of interactions between two messengers (Alice and Bob)
-and an adversary (Chuck) attempting to infiltrate their conversations. The catch is that the conversations are encrypted with various (3)
-encryptions in which the adversary will have to decrypt.
+and an adversary (Chuck) attempting to infiltrate their conversations. The catch is that the conversations are encrypted with various (3) encryptions in which the adversary will have to decrypt.
 
 ## How to set up
 - Server
@@ -42,12 +41,20 @@ encryptions in which the adversary will have to decrypt.
   - There will be two text boxes displayed in the UI
     - TextBox 1: User can input their desired message and send to their recipeint by clicking the blue send button next to this box
     - TextBox 2: When a message is sent or recieved, click it followed by the green button next to this box. The decrypted message will appear within the original display of messages and its encyrption will be displayed here in TextBox 2.
- - Attacker (Chuck)
+  - Messengers will have the following options to encrypt their code:
+    - Monalphabetic
+    - Vigenere
+    - Stream
+    - RSA
+- Attacker (Chuck)
+  - Note: All attackers can run a query and an analysis but ONLY ONCE!
   - Known Plaintext
     - This settings allows the attacker to see both the plaintext and the ciphertext.
     - In order to view what messages have been set, simply click the "Query Server" button.
     - Once visible both plaintext and ciphertext will be accessible to analyze. 
-  - Chosen Plaintext
+    - You have a maximum of 5 pairs of text in which you can queue.
+  - Ciphertext Only
+    - As the name describes, you are only able to see the ciphertexts amongst the messengers.
     - 
     
 
