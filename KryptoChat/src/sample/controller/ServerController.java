@@ -418,7 +418,7 @@ class ServerClientThread extends Thread {
                             serverController.displayNewMessage(new Message("Sending out encrypted message to attacker:\n\t" + output.message));
                         }
                     } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
                     }
             }
         }

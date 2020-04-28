@@ -66,7 +66,7 @@ public class KnownPlaintextAttack extends AttackerSetupController
                     }
                 }
             } catch (IOException | ClassNotFoundException ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         }).start();
     }

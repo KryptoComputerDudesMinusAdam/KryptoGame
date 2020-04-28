@@ -5,9 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import sample.model.Message;
 
@@ -26,6 +24,7 @@ public class ChosenPlaintextAttack extends AttackerSetupController
     @FXML
     ListView<Message> ciphertext;
     List<Message> list = new ArrayList<>();
+    private int currQueries = 0;
 
     public void init() throws IOException
     {
@@ -61,15 +60,23 @@ public class ChosenPlaintextAttack extends AttackerSetupController
     }
 
     public void queryEncryption(ActionEvent actionEvent) {
-        try {
-            Message p = new Message(plaintext.getText());
-            System.out.println("Sending: "+plaintext.getText());
-            objos.writeObject(p);
-            System.out.println("*** in thread");
-        } catch (IOException e) {
-            e.printStackTrace();
+        int maxQueries = 5;
+        if(currQueries< maxQueries) {
+                try {
+                    Message p = new Message(plaintext.getText());
+                    System.out.println("Sending: " + plaintext.getText());
+                    objos.writeObject(p);
+                    System.out.println("*** in thread");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                currQueries++;
+        } else{
+            Alert alert = new Alert(Alert.AlertType.ERROR, "You have reached your max amount of queries", ButtonType.OK);
+            alert.showAndWait();
         }
     }
+
 
     private void listenIn() {
         new Thread(()->{
@@ -84,7 +91,7 @@ public class ChosenPlaintextAttack extends AttackerSetupController
                         ciphertext.refresh();
                     });
                 } catch (IOException | ClassNotFoundException ex) {
-                    ex.printStackTrace();
+                    System.out.println(ex.getMessage());
                 }
             }
         }).start();
