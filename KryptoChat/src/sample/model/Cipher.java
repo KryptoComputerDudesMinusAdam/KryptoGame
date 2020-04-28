@@ -17,19 +17,20 @@ public class Cipher {
         return x;
     }
 
-    public static String xorOperation(byte[] arr1, byte[] arr2)
+    public static String xorOperation(byte[] pArr1, byte[] kArr2)
     {
-        if(arr2.length > arr1.length)
+        if(kArr2.length > pArr1.length)
         {
-            byte[] temp;
-            temp = arr2;
-            arr2 = arr1;
-            arr1 = temp;
+            byte[] temp = new byte[pArr1.length];
+            for(int i = 0; i<pArr1.length; i++){
+                temp[i] = kArr2[i];
+            }
+            kArr2 = temp;
         }
-        byte[] outputByteArr = new byte[arr1.length];
+        byte[] outputByteArr = new byte[pArr1.length];
         String returnArr = "";
-        for (int i = 0; i < arr1.length; i++) {
-            outputByteArr[i] = (byte) (arr1[i] ^ arr2[i%arr2.length]);
+        for (int i = 0; i < pArr1.length; i++) {
+            outputByteArr[i] = (byte) (pArr1[i] ^ kArr2[i%kArr2.length]);
             returnArr += outputByteArr[i] + ",";
         }
         return returnArr;
