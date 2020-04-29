@@ -1,4 +1,3 @@
-<p align="center"><img width=12.5% src="https://github.com/KryptoComputerDudesMinusAdam/KryptoGame"></p>
 <h1 align="center">Krypto Game</h1>
 <p align="center">Computer Security Group Project</p>
 <p align="center">By: Matthew Lee, Xavier LaRosa, Manohar Chitoda, Adam Chang, Malcom Akinseye and Shireen Ahmad</p>
@@ -16,6 +15,11 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
 - Messenger (Alice and Bob)
   - If you are a messenger, you will need to input the designated numerical input in which was created by instantiating the server.
   - For the host name, keep it at its default value of "0.0.0.0"
+  - The messengers have the following options to encrypt their conversations: 
+    - Monalphabetic
+    - Vigenere
+    - Stream
+    - RSA
   - Once connected, you will be given a list of users who are within the same server.
   - Click your desired partner and you will be able to chat with them through the messaging input after they have accepted your   invitation. 
 - Attacker (Chuck)
@@ -29,7 +33,7 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
     - Chose Ciphertext Attack
   - The challenges are derived based upon what kind of information you want to be given as the adversary.
   - Once all inputs are filled, click connect
-- Note: there can be more than 2 messengers as well as more than 1 attacker per server.
+- Note: There can be more than 2 messengers per server.
   
 ## Main Features
 - Server
@@ -42,30 +46,63 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
     - TextBox 1: User can input their desired message and send to their recipeint by clicking the blue send button next to this box
     - TextBox 2: When a message is sent or recieved, click it followed by the green button next to this box. The decrypted message will appear within the original display of messages and its encyrption will be displayed here in TextBox 2.
   - Messengers will have the following options to encrypt their code:
-    - Monalphabetic
-    - Vigenere
-    - Stream
-    - RSA
+    - Monalphabetic: works by replacing each letter of the plaintext with another letter
+    - Vigenere: uses 26 x 26 table for each letter of the alphabet as well as a key word in order to encrypt a given message 
+    - Stream: the plaintext characters are encrypted one at a time where each character is dependent on the current state of the cipher.
+    - RSA: this cipher involves asymmetric encryption where the server generates a public and private key for Alice and Bob each, Alice then gives Bob her public key for encryption (vice versa) while keeping her private key secret and meant only for decrypting messages from Bob (vice versa once again).
 - Attacker (Chuck)
-  - Note: All attackers can run a query and an analysis but ONLY ONCE!
+  - Important Notes: 
+    - All attackers can run a query and an analysis but ONLY ONCE!
+    - All attackers can queue AT MOST 10 messages total.
   - Known Plaintext
     - This settings allows the attacker to see both the plaintext and the ciphertext.
     - In order to view what messages have been set, simply click the "Query Server" button.
     - Once visible both plaintext and ciphertext will be accessible to analyze. 
-    - You have a maximum of 5 pairs of text in which you can queue.
   - Ciphertext Only
     - As the name describes, you are only able to see the ciphertexts amongst the messengers.
-    - 
-    
-
+    - Running the analysis the attacker will be able to view the frequency of letters.
+    - You may also perform a brute force protcol that will test each letter of the alphabet. 
+  - Chosen Known Plaintext
+    - Choosing this will display two text boxes: one for the desired plaintext input and the other for the crypted output. 
+    - The goal with this option is to be able to decrypt which ever encryption option that was chosen amongst the messengers.
+  - Chosen Ciphertext
+    - Similar to its counter part, this option will display the inverse of the known plaintext option.
+    - In other words, you will input a ciphered text and receive its plain text on the second box
+    - It excercises the same theme, being unable to view that actual conversation.
+## Distribution of Works
+- System Design
+  - Messengers UI/Functionality
+    - Xavier LaRosa
+    - Matthew Lee
+  - Attackers UI/Functionality
+    - Manohar Chitoda
+- Ciphers/Decryptions
+  - Monoalphabetic
+    - Shireen Ahmad
+  - Vigenere
+    - Malcom Akinseye
+  - Stream:
+    - Adam Chang
+  - RSA: 
+    - Xavier LaRosa
+- Final Report
+  - Matthew Lee
+  
+## Bonus Points (20 pts total)
+  - Xavier LaRosa: 6 pts (30%)
+  - Matthew Lee: 2 pts (10%)
+  - Manohar Chitoda: 6 pts (30%)
+  - Adam Chang: 2 pts (10%)
+  - Shireen Ahmad: 2 pts (10%)
+  - Malcom Akinseye: 2 pts (10%)
+  
 ## Technologies Used
 - Intellij
 - Scene Builder
 - Github/Github Desktop
-
 ## Languages
 - Java
 - JavaFX
 
-## Demo Of Applicaion
-[![IMAGE ALT TEXT](https://github.com/KryptoComputerDudesMinusAdam/KryptoGame/blob/master/KryptoChat/application.png)](https://www.youtube.com/watch?v=SQIbeAk-bFA "Krypto Chat")
+## Demo of Application
+[![Krypto Chat](https://github.com/KryptoComputerDudesMinusAdam/KryptoGame/blob/master/KryptoChat/application.png)](https://www.youtube.com/watch?v=SQIbeAk-bFA "Application")
