@@ -1,6 +1,6 @@
 <h1 align="center">Krypto Game</h1>
 <p align="center">Computer Security Group Project</p>
-<p align="center">By: Matthew Lee, Xavier LaRosa, Manohar Chitoda, Adam Chang, Malcolm Akinseye and Shireen Ahmad</p>
+<p align="center">By: Matthew Lee, Xavier La Rosa, Manohar Chitoda, Adam Chang, Malcolm Akinseye and Shireen Ahmad</p>
 <br>
 
 ## Objective
