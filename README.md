@@ -89,12 +89,12 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
   - Matthew Lee
   
 ## Bonus Points (20 pts total)
-  - Xavier LaRosa: 6pts (30%)
-  - Matthew Lee: 2pts (10%)
-  - Manohar Chitoda: 6pts (30%)
-  - Adam Chang: 2pts (10%)
-  - Shireen Ahmad: 2pts (10%)
-  - Malcom Akinseye: 2pts (10%)
+  - Xavier LaRosa: 6 pts (30%)
+  - Matthew Lee: 2 pts (10%)
+  - Manohar Chitoda: 6 pts (30%)
+  - Adam Chang: 2 pts (10%)
+  - Shireen Ahmad: 2 pts (10%)
+  - Malcom Akinseye: 2 pts (10%)
   
 ## Technologies Used
 - Intellij
