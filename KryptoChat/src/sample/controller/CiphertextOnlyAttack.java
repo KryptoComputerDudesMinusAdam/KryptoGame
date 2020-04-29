@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import sample.model.Tool;
 
 public class CiphertextOnlyAttack extends AttackerSetupController implements Initializable
 {
@@ -173,11 +174,12 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                     StringBuffer bf = new StringBuffer();
                     for(int i = 0; i < cipherList.getItems().size(); i++)
                         bf.append(" "+cipherList.getItems().get(i));
+                    String s = ((bf.toString()).replaceAll("[^a-zA-Z]", "")).toUpperCase();
                     switch (con.typeOfEncryption.toLowerCase())
                     {
                         case "monoalphabetic":
                             Tool f = new Tool();
-                            f.analyze((((bf.toString()).replaceAll("[^a-zA-Z]","")).toUpperCase()));
+                            f.analyze(s);
                             result = (f.printMaps()).split("#");
                             Platform.runLater(() -> {
                                 runAnalysis.setDisable(false);
@@ -191,6 +193,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                             for(int i=0; i < 30; i++)
                                 e.add(i);
                             keyLength.getItems().setAll(e);
+                            result = (Tool.VigenereAttacker.init(s,keyLength.getValue())).split("#");
                             break;
                         default:
                             break;

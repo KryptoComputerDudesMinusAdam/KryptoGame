@@ -89,7 +89,7 @@ public class Tool
         return (freqResult+reversed);
     }
 
-    static class VigenereAttacker
+    public static class VigenereAttacker
     {
     final static double freq[] = {
             0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015,
@@ -129,8 +129,9 @@ public class Tool
                         keyFinal[i] = key[i];
             }
         }//End of for loop
-        String decrypted = decrypt(cipherText, ((Arrays.toString(keyFinal)).replaceAll("[^a-zA-Z]", "")));
-        return decrypted;
+        String keyToUnlock = ((Arrays.toString(keyFinal)).replaceAll("[^a-zA-Z]", ""));
+        String decrypted = decrypt(cipherText, keyToUnlock);
+        return (decrypted+"#"+keyToUnlock);
     }
     static double freq_every_nth(final int []msg, int len, int interval, char[] key)
     {
