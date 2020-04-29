@@ -72,21 +72,29 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
 ## Distribution of Works
 - System Design
   - Messengers UI/Functionality
-    - Xavier LaRosa: 70%
-    - Matthew Lee: 30%
+    - Xavier LaRosa
+    - Matthew Lee
   - Attackers UI/Functionality
-    - Manohar Chitoda: 100%
+    - Manohar Chitoda
 - Ciphers/Decryptions
   - Monoalphabetic
-    - Shireen Ahmad: 100%
+    - Shireen Ahmad
   - Vigenere
-    - Malcom Akinseye: 100%
+    - Malcom Akinseye
   - Stream:
-    - Adam Chang: 100%
+    - Adam Chang
   - RSA: 
-    - Xavier LaRosa: 100%
+    - Xavier LaRosa
 - Final Report
-  - Matthew Lee: 100%
+  - Matthew Lee
+  
+## Bonus Points (20 pts total)
+  - Xavier LaRosa: 6pts (30%)
+  - Matthew Lee: 2pts (10%)
+  - Manohar Chitoda: 6pts (30%)
+  - Adam Chang: 2pts (10%)
+  - Shireen Ahmad: 2pts (10%)
+  - Malcom Akinseye: 2pts (10%)
   
 ## Technologies Used
 - Intellij
