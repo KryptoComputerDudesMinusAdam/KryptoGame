@@ -56,11 +56,16 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     @Override
     public void init() throws IOException
     {
-        runAnalysis.setDisable(true);
-        bruteforce.setDisable(true);
         progress.setProgress(0);
         this.cipherList.setItems(this.mess);
         this.cipherList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        List<Integer> e = new ArrayList<>();
+        for(int i=4; i < 30; i++)
+            e.add(i);
+        Platform.runLater(()->{
+            keyLength.getItems().setAll(e);
+            keyLength.getSelectionModel().selectFirst();
+        });
     }
     // Disconnect
     public void goBack(ActionEvent event)
@@ -90,15 +95,9 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     //Run analysis on ciphertext
     public void runAnalysis(ActionEvent actionEvent)
     {
-        AnalyzeThread at = new AnalyzeThread();
-        at.start();
+        new AnalyzeThread().start();
         masterKey = Cipher.generateMonoKey();
         selected = true;
-        if(result.length > 0)
-        {
-            fq.setText(result[0]);
-            key.setText(result[1]);
-        }
     }
 
     //Query the server for ciphertext
@@ -117,6 +116,7 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
 
                 cipherList.setItems(mess);
                 counter=false;
+                this.runAnalysis.setDisable(false);
             }else {
                 Alert alert = new Alert(Alert.AlertType.WARNING,"\nNo Conversation to Intercept!", ButtonType.OK);
                 alert.show();
@@ -191,22 +191,20 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                         case "stream":
                             break;
                         case "vigenere":
-                            List<Integer> e = new ArrayList<>();
-                            for(int i=4; i < 30; i++)
-                                e.add(i);
-                            Platform.runLater(()->{
-                                keyLength.getItems().setAll(e);
-                                keyLength.getSelectionModel().selectFirst();
-                            });
                             result = (Tool.VigenereAttacker.init(s,keyLength.getValue())).split("#");
-                            runAnalysis.setDisable(false);
-                            bruteforce.setDisable(false);
+                            Platform.runLater(()->{
+                                runAnalysis.setDisable(false);
+                                bruteforce.setDisable(false);
+                            });
                             break;
                         default:
                             break;
                     }
-                }else {
-
+                }
+                if(result != null)
+                {
+                    fq.setText(result[0]);
+                    key.setText(result[1]);
                 }
             }).start();
         }
