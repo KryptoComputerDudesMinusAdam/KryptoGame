@@ -14,12 +14,12 @@
             <Font size="20.0" />
         </font>
     </Label>
-    <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
-    <Button fx:id="queryEncryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryEncryption" prefHeight="27.0" prefWidth="258.0" text="Query Encryption" />
+    <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#goBack" stylesheets="@styles.css" text="Disconnect" />
+    <Button fx:id="queryEncryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryEncryption" prefHeight="27.0" prefWidth="258.0" stylesheets="@styles.css" text="Query Encryption" />
     <Label layoutX="138.0" layoutY="73.0" text="Plaintext" />
     <Label layoutX="408.0" layoutY="73.0" text="Ciphertext" />
     <TextArea fx:id="plaintext" layoutX="32.0" layoutY="94.0" prefHeight="213.0" prefWidth="258.0" promptText="Enter plaintext to encrypt..." />
-   <ListView fx:id="ciphertext" onMouseClicked="#handleListViewClicked" layoutX="308.0" layoutY="94.0" prefHeight="213.0" prefWidth="258.0" />
+   <ListView fx:id="ciphertext" layoutX="308.0" layoutY="94.0" onMouseClicked="#handleListViewClicked" prefHeight="213.0" prefWidth="258.0" />
    <TextField fx:id="cipherTextField" layoutX="308.0" layoutY="346.0" prefHeight="27.0" prefWidth="258.0" />
    <Label layoutX="308.0" layoutY="319.0" text="Selected Ciphertext" />
 </Pane>

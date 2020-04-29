@@ -56,11 +56,16 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     @Override
     public void init() throws IOException
     {
-        runAnalysis.setDisable(true);
-        bruteforce.setDisable(true);
         progress.setProgress(0);
         this.cipherList.setItems(this.mess);
         this.cipherList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        List<Integer> e = new ArrayList<>();
+        for(int i=4; i < 30; i++)
+            e.add(i);
+        Platform.runLater(()->{
+            keyLength.getItems().setAll(e);
+            keyLength.getSelectionModel().selectFirst();
+        });
     }
     // Disconnect
     public void goBack(ActionEvent event)
@@ -90,17 +95,14 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     //Run analysis on ciphertext
     public void runAnalysis(ActionEvent actionEvent)
     {
+        new AnalyzeThread().start();
         masterKey = Cipher.generateMonoKey();
         selected = true;
-        fq.setText(result[0]);
-        key.setText(result[1]);
-        this.runAnalysis.setDisable(true);
     }
 
     //Query the server for ciphertext
     public void query(ActionEvent actionEvent) throws IOException, ClassNotFoundException
     {
-        AnalyzeThread at = new AnalyzeThread();
         if(counter)
         {
             Message m = new Message("");
@@ -113,8 +115,8 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                     mess.add(con.msgs.get(i).message);
 
                 cipherList.setItems(mess);
-                at.start();
                 counter=false;
+                this.runAnalysis.setDisable(false);
             }else {
                 Alert alert = new Alert(Alert.AlertType.WARNING,"\nNo Conversation to Intercept!", ButtonType.OK);
                 alert.show();
@@ -189,17 +191,20 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                         case "stream":
                             break;
                         case "vigenere":
-                            List<Integer> e = new ArrayList<>();
-                            for(int i=0; i < 30; i++)
-                                e.add(i);
-                            keyLength.getItems().setAll(e);
                             result = (Tool.VigenereAttacker.init(s,keyLength.getValue())).split("#");
+                            Platform.runLater(()->{
+                                runAnalysis.setDisable(false);
+                                bruteforce.setDisable(false);
+                            });
                             break;
                         default:
                             break;
                     }
-                }else {
-
+                }
+                if(result != null)
+                {
+                    fq.setText(result[0]);
+                    key.setText(result[1]);
                 }
             }).start();
         }

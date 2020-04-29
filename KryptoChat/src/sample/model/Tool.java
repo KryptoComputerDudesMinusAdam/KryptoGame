@@ -96,11 +96,12 @@ public class Tool
             0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,
             0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758,
             0.00978, 0.02360, 0.00150, 0.01974, 0.00074};
-
+    public static int lenghtOfEncodedMessage;
     public static String init (String cipherText, int keyLength)
     {
         //Initialize variables
-        int lenghtOfEncodedMessage = cipherText.length();
+
+        lenghtOfEncodedMessage = cipherText.length();
         char[] cipherTextCharacters = new char [lenghtOfEncodedMessage];
         char[] key =  new char [lenghtOfEncodedMessage];
         char[] keyFinal =  new char [lenghtOfEncodedMessage];
@@ -143,36 +144,25 @@ public class Tool
         for (j = 0; j < interval; j++)
         {
             for (i = 0; i < 26; i++)
-            {
                 out[i] = 0;
-            }
             for (i = j; i < len; i += interval)
-            {
                 out[msg[i]]++;
-            }
 
             rot = best_match(out, freq);
 
             try
             {
                 key[j] = (char)(rot + 'A');
-
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 System.out.print(e.getMessage());
             }
             for (i = 0; i < 26; i++)
-            {
                 accu[i] += out[(i + rot) % 26];
-            }
-
         }
 
         for (i = 0, sum = 0; i < 26; i++)
-        {
             sum += accu[i];
-        }
 
 
         for (i = 0, ret = 0; i < 26; i++)
@@ -181,7 +171,7 @@ public class Tool
             ret += d * d / freq[i];
         }
 
-        key[interval] = '\0';
+        key[interval-1] = '\0';
         return ret;
     }
 
@@ -221,7 +211,7 @@ public class Tool
         {
             char c = text.charAt(i);
             if (c < 'A' || c > 'Z') continue;
-            res += (char)((c - key.charAt(j) + 26) % 26 + 'A');
+            res += (char) (((c - key.charAt(j) + 26) % 26) + 'A');
             j = ++j % key.length();
         }
         return res;
