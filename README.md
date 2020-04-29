@@ -4,7 +4,7 @@
 <br>
 
 ### Link to GitHub: https://github.com/KryptoComputerDudesMinusAdam/KryptoGame
-### Link to Demo Video: https://github.com/KryptoComputerDudesMinusAdam/KryptoGame
+### Link to Demo Video: https://youtu.be/VJwq26C1qjg
 
 ## Objective
 
