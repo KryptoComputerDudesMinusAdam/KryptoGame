@@ -15,12 +15,12 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#goBack" text="Disconnect" />
-      <Button fx:id="queryDecryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryDecryption" prefHeight="27.0" prefWidth="258.0" text="Query Decryption" />
+      <Button fx:id="disconnect" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#goBack" stylesheets="@styles.css" text="Disconnect" />
+      <Button fx:id="queryDecryption" layoutX="36.0" layoutY="314.0" mnemonicParsing="false" onAction="#queryDecryption" prefHeight="27.0" prefWidth="258.0" stylesheets="@styles.css" text="Query Decryption" />
       <Label layoutX="108.0" layoutY="64.0" text="Unknown Ciphertext" />
       <Label layoutX="375.0" layoutY="64.0" text="Decrypted Ciphertext" />
       <TextArea fx:id="encrypted" layoutX="36.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" promptText="Enter your ciphertext" />
-      <ListView fx:id="plaintext" onMouseClicked="#handleListViewClicked" layoutX="307.0" layoutY="81.0" prefHeight="218.0" prefWidth="258.0" />
+      <ListView fx:id="plaintext" layoutX="307.0" layoutY="81.0" onMouseClicked="#handleListViewClicked" prefHeight="218.0" prefWidth="258.0" />
       <TextField fx:id="plainTextField" layoutX="307.0" layoutY="346.0" prefHeight="27.0" prefWidth="258.0" />
       <Label layoutX="307.0" layoutY="319.0" text="Selected Plaintext" />
    </children>
