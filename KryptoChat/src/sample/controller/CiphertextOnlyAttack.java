@@ -90,17 +90,20 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
     //Run analysis on ciphertext
     public void runAnalysis(ActionEvent actionEvent)
     {
+        AnalyzeThread at = new AnalyzeThread();
+        at.start();
         masterKey = Cipher.generateMonoKey();
         selected = true;
-        fq.setText(result[0]);
-        key.setText(result[1]);
-        this.runAnalysis.setDisable(true);
+        if(result.length > 0)
+        {
+            fq.setText(result[0]);
+            key.setText(result[1]);
+        }
     }
 
     //Query the server for ciphertext
     public void query(ActionEvent actionEvent) throws IOException, ClassNotFoundException
     {
-        AnalyzeThread at = new AnalyzeThread();
         if(counter)
         {
             Message m = new Message("");
@@ -113,7 +116,6 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                     mess.add(con.msgs.get(i).message);
 
                 cipherList.setItems(mess);
-                at.start();
                 counter=false;
             }else {
                 Alert alert = new Alert(Alert.AlertType.WARNING,"\nNo Conversation to Intercept!", ButtonType.OK);
@@ -190,10 +192,15 @@ public class CiphertextOnlyAttack extends AttackerSetupController implements Ini
                             break;
                         case "vigenere":
                             List<Integer> e = new ArrayList<>();
-                            for(int i=0; i < 30; i++)
+                            for(int i=4; i < 30; i++)
                                 e.add(i);
-                            keyLength.getItems().setAll(e);
+                            Platform.runLater(()->{
+                                keyLength.getItems().setAll(e);
+                                keyLength.getSelectionModel().selectFirst();
+                            });
                             result = (Tool.VigenereAttacker.init(s,keyLength.getValue())).split("#");
+                            runAnalysis.setDisable(false);
+                            bruteforce.setDisable(false);
                             break;
                         default:
                             break;

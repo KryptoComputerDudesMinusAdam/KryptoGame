@@ -143,36 +143,25 @@ public class Tool
         for (j = 0; j < interval; j++)
         {
             for (i = 0; i < 26; i++)
-            {
                 out[i] = 0;
-            }
             for (i = j; i < len; i += interval)
-            {
                 out[msg[i]]++;
-            }
 
             rot = best_match(out, freq);
 
             try
             {
                 key[j] = (char)(rot + 'A');
-
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 System.out.print(e.getMessage());
             }
             for (i = 0; i < 26; i++)
-            {
                 accu[i] += out[(i + rot) % 26];
-            }
-
         }
 
         for (i = 0, sum = 0; i < 26; i++)
-        {
             sum += accu[i];
-        }
 
 
         for (i = 0, ret = 0; i < 26; i++)
