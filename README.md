@@ -8,7 +8,13 @@
 - The objective of this project is to illutrate a simple, real life simulation of interactions between two messengers (Alice and Bob)
 and an adversary (Chuck) attempting to infiltrate their conversations. The catch is that the conversations are encrypted with various (4) encryptions in which the adversary will have to decrypt.
 
-## How to set up
+## How to setup the app on your IDE
+- If you have JDK 10 or lower
+  - Then you are good to go, just open the project into your IDE with KryptoChat/ as your root folder and run Main.java in the src/sample folder
+- If you have JDK 11 or higher
+  - Then you need to install JavaFX modular dependency since it does not ship with Java automatically anymore. Then open the project into your IDE with KryptoChat/ as your root folder and run Main.java in the src/sample folder.
+  
+## How to use the app
 - Server
   - When creating the server, simply type in a numerical input of any size (4 digits is recommended) and click connect.
   - The server must be created before anything else and the numerical input will be shared with ALL parties.
@@ -113,12 +119,11 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
   - Malcom Akinseye: 2 pts (10%)
   
 ## Technologies Used
+- Java
+- JavaFX
 - Intellij
 - Scene Builder
 - Github/Github Desktop
-## Languages
-- Java
-- JavaFX
 
 ## Demo of Application
 [![Krypto Chat](https://github.com/KryptoComputerDudesMinusAdam/KryptoGame/blob/master/KryptoChat/application.png)](https://www.youtube.com/watch?v=SQIbeAk-bFA "Application")
