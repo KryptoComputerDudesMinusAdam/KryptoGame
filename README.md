@@ -3,6 +3,8 @@
 <p align="center">By: Matthew Lee, Xavier La Rosa, Manohar Chitoda, Adam Chang, Malcolm Akinseye and Shireen Ahmad</p>
 <br>
 
+### Link to GitHub: https://github.com/KryptoComputerDudesMinusAdam/KryptoGame
+
 ## Objective
 
 - The objective of this project is to illutrate a simple, real life simulation of interactions between two messengers (Alice and Bob)
