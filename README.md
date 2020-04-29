@@ -5,8 +5,8 @@
 
 ## Objective
 
-- The objective of this project is to illsutrate a simple, real life simulation of interactions between two messengers (Alice and Bob)
-and an adversary (Chuck) attempting to infiltrate their conversations. The catch is that the conversations are encrypted with various (3) encryptions in which the adversary will have to decrypt.
+- The objective of this project is to illutrate a simple, real life simulation of interactions between two messengers (Alice and Bob)
+and an adversary (Chuck) attempting to infiltrate their conversations. The catch is that the conversations are encrypted with various (4) encryptions in which the adversary will have to decrypt.
 
 ## How to set up
 - Server
