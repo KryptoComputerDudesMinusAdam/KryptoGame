@@ -183,7 +183,7 @@ class ClientThread extends Thread{
                                 e.printStackTrace();
                             }
                         });
-                    } else{
+                    } else if(!m.typeOfMessage.equals(Message.contacts)){
                         System.out.println("Got a message! "+m.message);
                         m.message = "["+receiverId.replaceAll("[^a-zA-Z]","")+"]: "+m.message;
                         Platform.runLater(() -> {
