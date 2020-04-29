@@ -69,10 +69,26 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
     - Similar to its counter part, this option will display the inverse of the known plaintext option.
     - In other words, you will input a ciphered text and receive its plain text on the second box
     - It excercises the same theme, being unable to view that actual conversation.
+    
+## Challenges the team faced
+- Only basic to intermediate experience in Java Socket and Threading
+  - Found issues of clients leaving the session but threads created on that session still run and create heavy performance issues.
+  - Since JavaFX works on it's own thread we ran through issues when implementing new threads that performed logic and also updated the UI. Our dirty solution involved JavaFX controller classes using new Thread(()->{}).start() to perform logic and then a Platform.runLater({}); thread inside when updating UI
+- Time/Deadline
+  - Team had to quickly implement features as deadline got closer. Ended up creating a couple features that are not incredibly protected by edge cases. 
+  - Some features were not able to be implemented such as adding pointers for the attacker or have the attacker check if they attacked the key successfully
+- GitHub Repo Control
+  - Working with a team this large it was hard to organize and syncrhonize our commits so that no single file is being worked on by multiple people and that no merge conflicts emerged.
+- Build issues
+  - Java stopped shipping with JavaFX after Java 10 so the team fell through build issues since some of us ran Java 9 and others Java 13
+- Overall system design
+  - If the team had designed the system in a better way then the interactions with server client and attackers would have been much more smoother
+  - Could have developed a better system design where server acts dynamically with client instead of expecting certain messages to come from client at specific steps during the process because if those messsages were not in sync then the socket between a server and client would crash or point null
+  
 ## Distribution of Works
 - System Design
   - Messengers UI/Functionality
-    - Xavier LaRosa
+    - Xavier La Rosa
     - Matthew Lee
   - Attackers UI/Functionality
     - Manohar Chitoda
@@ -80,11 +96,11 @@ and an adversary (Chuck) attempting to infiltrate their conversations. The catch
   - Monoalphabetic
     - Shireen Ahmad
   - Vigenere
-    - Malcom Akinseye
+    - Malcolm Akinseye
   - Stream:
     - Adam Chang
   - RSA: 
-    - Xavier LaRosa
+    - Xavier La Rosa
 - Final Report
   - Matthew Lee
   
